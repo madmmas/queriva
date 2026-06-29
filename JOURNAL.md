@@ -1,0 +1,58 @@
+# Queriva — Development Journal
+
+Personal log of daily progress, blockers, and decisions.
+One entry per working day. Most recent entry at the top.
+
+## 2026-06-29
+
+### Built
+- Created GitHub repo: madmmas/queriva
+- Copied all 25 foundation files (SPEC, ISSUES, ADRs, Cursor rules, fixture, seed script)
+- Set up .gitignore, README stub, seed script permissions
+
+### Blocked
+- Nothing yet
+
+### Decided
+- Starting fresh repo rather than retrofitting old one
+- All 12 ADRs already written — #meta issue is effectively pre-done
+
+### Tomorrow
+- Start issue #0: scaffold Turborepo monorepo (packages/api, embed-sidecar, ingest-cli, ui)
+
+
+
+Format:
+```
+## YYYY-MM-DD
+### Built
+### Blocked
+### Decided
+### Tomorrow
+```
+
+---
+
+## YYYY-MM-DD
+
+### Built
+- (What was completed today — issue number, specific component)
+
+### Blocked
+- (What slowed you down or stopped you — be specific)
+
+### Decided
+- (Any micro-decision made today not big enough for an ADR)
+
+### Tomorrow
+- (The one thing to start with first thing tomorrow)
+
+---
+
+<!--
+TIPS:
+- Write this at end of day, takes 5 minutes
+- "Blocked" appearing 3+ days in a row = stop and resolve it
+- "Decided" entries are seeds for blog posts
+- "Tomorrow" is your morning standup with yourself
+-->

@@ -1,0 +1,63 @@
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Java / Maven
+target/
+*.class
+*.jar
+*.war
+*.ear
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.Python
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+*.egg
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+
+# Node / JavaScript
+node_modules/
+dist/
+.turbo/
+*.tsbuildinfo
+
+# IDE
+.idea/
+*.iml
+*.iws
+.DS_Store
+Thumbs.db
+
+# Docker
+.docker/
+
+# ML model weights — never commit these
+*.bin
+*.safetensors
+*.gguf
+*.pt
+*.pth
+*.onnx
+
+# OS
+.DS_Store
+*.swp
+*.swo
+
+# Logs
+*.log
+logs/

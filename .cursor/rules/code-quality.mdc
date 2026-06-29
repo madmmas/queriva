@@ -1,0 +1,427 @@
+---
+description: Queriva code quality rules — Java, Python, TypeScript
+globs: ["packages/**/*"]
+alwaysApply: true
+---
+
+# Queriva — Code Quality Rules
+
+Applies to all code in all packages. These define production quality for
+a sole-developer project that will be shown to Upwork clients and used
+as a portfolio piece.
+
+---
+
+## SECTION A — Universal (all languages)
+
+### A1 — No dead code
+No commented-out code, unused imports, or unused variables.
+Temporary disables need a comment with issue number:
+`// TODO: re-enable after #42`
+
+### A2 — No magic numbers or strings
+All constants must be named. No inline thresholds, ports, URLs, model
+names, collection names, or timeout values.
+
+```java
+// BAD
+if (score > 0.60) { }
+// GOOD
+if (score > minScore) { }  // minScore from @Value("${search.min-score:0.60}")
+```
+
+```python
+# BAD
+if score > 0.60:
+# GOOD
+if score > min_score:  # from os.getenv("SEARCH_MIN_SCORE", "0.60")
+```
+
+### A3 — Every public method has a docstring or Javadoc
+One sentence minimum. Required for: controllers, services, loaders,
+CLI entry points, public utility methods.
+
+### A4 — Fail fast, fail loud
+Validate inputs at the entry point. Raise immediately with a descriptive
+message. Never silently swallow errors or return null/None where a value
+is expected.
+
+### A5 — Single responsibility
+- Classes: one clear responsibility, ≤ 300 lines
+- Methods: one thing, ≤ 30 lines
+- If a method needs a comment explaining phases, split it
+
+### A6 — Meaningful names, no abbreviations
+No `tmp`, `val`, `obj`, `data`, `mgr`, `svc`, `res`, `q`, `col`.
+
+```java
+// BAD
+List<Map<String, Object>> res = svc.search(q, col);
+// GOOD
+List<SearchHit> searchHits = qdrantSearchService.search(query, collection);
+```
+
+### A7 — Error messages are actionable
+Every exception tells the caller what went wrong AND what to do.
+
+```java
+// BAD
+throw new RuntimeException("Embed failed");
+// GOOD
+throw new EmbedSidecarException(
+    "Embed sidecar returned 503 for model '" + model + "'. " +
+    "Verify embed-sidecar is running: GET http://embed-sidecar:8001/api/health"
+);
+```
+
+### A8 — No silent nulls in public APIs
+Use `Optional<T>` in Java. Raise an exception in Python. Return empty
+collections, not null/None, for list results.
+
+---
+
+## SECTION B — Java / Spring Boot
+
+### B1 — Package structure matches SPEC §5
+```
+dev.queriva
+├── QuerivaApplication.java
+├── search/
+│   ├── SearchController.java
+│   ├── SearchRequest.java       ← record
+│   ├── SearchResponse.java      ← record
+│   ├── SearchHit.java           ← record
+│   ├── SearchFilters.java       ← record
+│   ├── QueryEmbeddingService.java
+│   ├── QdrantSearchService.java
+│   ├── LLMSynthesisService.java
+│   └── SearchResultMapper.java
+└── ingest/
+    ├── IngestController.java
+    ├── IngestRequest.java       ← record
+    ├── IngestResponse.java      ← record
+    ├── IngestService.java
+    ├── ChunkingService.java
+    ├── Chunk.java               ← record
+    └── CollectionManager.java
+```
+
+### B2 — DTOs are Java records
+No Lombok on DTOs. Use compact constructors for defaults.
+
+```java
+public record SearchRequest(
+    @NotBlank String query,
+    @NotBlank String collection,
+    @Min(1) @Max(100) int topK,
+    double minScore,
+    String mode,
+    SearchFilters filters
+) {
+    public SearchRequest {
+        if (topK == 0) topK = 10;
+        if (minScore == 0.0) minScore = 0.60;
+        if (mode == null || mode.isBlank()) mode = "search";
+    }
+}
+```
+
+### B3 — Constructor injection only
+No `@Autowired` on fields. All dependencies via constructor.
+
+### B4 — No @Transactional unless explicitly needed
+Qdrant is not JPA-transactional. Do not add `@Transactional` by default.
+
+### B5 — HTTP clients have explicit timeouts and one retry
+- Connect timeout: 5s
+- Read timeout: 30s (Ollama can be slow)
+- One retry on 5xx or IOException
+- No retry on 4xx
+
+### B6 — Bean Validation on all controllers
+`@Valid` on every `@RequestBody`. Never validate manually in controller body.
+
+### B7 — Controllers return ResponseEntity
+```java
+// GOOD
+public ResponseEntity<SearchResponse> search(@Valid @RequestBody SearchRequest req) {
+    return ResponseEntity.ok(searchService.search(req));
+}
+```
+
+### B8 — One GlobalExceptionHandler via @ControllerAdvice
+All uncaught exceptions handled in one place. No try/catch in controllers.
+Controllers contain only: validation → service call → response mapping.
+
+### B9 — Latency via System.nanoTime(), never estimated
+```java
+long start = System.nanoTime();
+float[] vector = queryEmbeddingService.embed(query, model);
+long embedMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - start);
+```
+
+### B10 — No @SuppressWarnings without explanation
+```java
+@SuppressWarnings("unchecked") // safe: Qdrant payload always List<String> here
+```
+
+---
+
+## SECTION C — Python (embed-sidecar + ingest-cli)
+
+### C1 — Type hints on all public functions
+```python
+def embed(text: str, model: str) -> list[float]: ...
+```
+
+### C2 — Pydantic for all FastAPI request/response shapes
+```python
+class EmbedRequest(BaseModel):
+    text: str
+    model: str = "LaBSE"
+
+class EmbedResponse(BaseModel):
+    vector: list[float]
+    dimensions: int
+
+@app.post("/api/embed", response_model=EmbedResponse)
+async def embed(req: EmbedRequest) -> EmbedResponse: ...
+```
+
+### C3 — Constants at the top of the module
+```python
+DEFAULT_MODEL = "LaBSE"
+DEFAULT_CHUNK_SIZE = 512
+DEFAULT_OVERLAP = 64
+DEFAULT_BATCH_SIZE = 32
+MAX_BODY_SNIPPET_CHARS = 500
+```
+
+### C4 — No bare except
+```python
+# BAD
+try:
+    model = SentenceTransformer(name)
+except:
+    pass
+
+# GOOD
+try:
+    model = SentenceTransformer(name)
+except OSError as e:
+    logger.error("Failed to load model '%s': %s", name, e)
+    raise HTTPException(status_code=503,
+        detail=f"Model '{name}' could not be loaded.")
+```
+
+### C5 — logging module, never print
+```python
+import logging
+logger = logging.getLogger(__name__)
+logger.info("Loaded model '%s' (%d-dim)", model_name, dimensions)
+```
+
+### C6 — CLI argparse with help strings
+Every flag has a `help=` string. `--help` must be self-contained.
+
+### C7 — httpx over requests
+`httpx.Client` in sync (CLI). `httpx.AsyncClient` in async (sidecar).
+
+### C8 — os.getenv with defaults, never os.environ["KEY"]
+```python
+QDRANT_URL = os.getenv("QDRANT_URL", "http://localhost:6333")
+```
+
+---
+
+## SECTION D — TypeScript / React
+
+### D1 — Strict TypeScript, no any
+`tsconfig.json`: `"strict": true`. Use `unknown` + type guards, not `any`.
+
+### D2 — API types in src/types/api.ts, derived from SPEC §6
+Never inline API shapes in components. One source of truth.
+
+### D3 — Named props interfaces, not inline types
+```typescript
+interface ResultCardProps {
+  title: string;
+  score: number;
+  snippet: string;
+  language: string;
+  source: string;
+  publishedAt: string;
+  onClick?: () => void;
+}
+```
+
+### D4 — No inline styles except dynamic values
+Dynamic only (e.g. score bar width). All other styling via CSS variables
+or className.
+
+### D5 — Custom hooks for all data fetching
+No fetch calls in component bodies. All API calls in `src/hooks/`.
+
+### D6 — useReducer for complex state, useState for simple
+`useSearch`: useReducer. `ModeToggle`, `FilterChip`: useState.
+
+### D7 — UI strings as constants in src/constants/ui.ts
+No hardcoded strings in JSX.
+
+### D8 — Accessibility
+Icon-only buttons: `aria-label`. Decorative icons: `aria-hidden="true"`.
+Search input: associated `<label>` (visually hidden is OK).
+
+### D9 — Explicit loading, error, empty states in every component
+```typescript
+if (loading) return <SearchSkeleton />;
+if (error)   return <ErrorBanner message={error} />;
+if (!results.length) return <EmptyState query={query} />;
+return <ResultsList results={results} />;
+```
+
+### D10 — SearchWidget functional with only apiUrl + collection
+All other props are optional with documented defaults.
+
+---
+
+## SECTION E — Security
+
+### E1 — No secrets in logs
+Never log API keys, auth tokens, or user query content at INFO level.
+Query text may be logged at DEBUG level only.
+
+```java
+// BAD
+logger.info("Searching collection {} with query: {}", collection, query);
+// GOOD
+logger.info("Searching collection {} ({} results)", collection, results.size());
+logger.debug("Query text: {}", query); // DEBUG only
+```
+
+### E2 — Input length limits on all endpoints
+Query string: max 1000 characters.
+Document body: max 100,000 characters (100KB).
+Collection name: max 64 characters, alphanumeric + underscore only.
+Reject with 400 if exceeded — never truncate silently.
+
+```java
+public record SearchRequest(
+    @NotBlank @Size(max = 1000) String query,
+    @NotBlank @Pattern(regexp = "^[a-zA-Z0-9_]{1,64}$") String collection,
+    ...
+) {}
+```
+
+### E3 — Path traversal prevention in file loader
+The ingest-cli `file_loader.py` must resolve and validate all file paths
+before reading. Reject any path that escapes the specified source directory.
+
+```python
+def safe_path(base_dir: str, user_path: str) -> Path:
+    resolved = Path(base_dir).resolve() / user_path
+    if not str(resolved).startswith(str(Path(base_dir).resolve())):
+        raise ValueError(f"Path traversal detected: {user_path}")
+    return resolved
+```
+
+### E4 — URL allowlist or validation in url_loader
+The `url_loader.py` must not fetch private network addresses (localhost,
+10.x.x.x, 192.168.x.x, 172.16-31.x.x). Reject with a clear error.
+
+```python
+import ipaddress, socket
+
+def is_safe_url(url: str) -> bool:
+    host = urllib.parse.urlparse(url).hostname
+    try:
+        ip = ipaddress.ip_address(socket.gethostbyname(host))
+        return not (ip.is_private or ip.is_loopback or ip.is_link_local)
+    except Exception:
+        return False
+```
+
+### E5 — Qdrant filter injection prevention
+Never build Qdrant filter conditions from raw user string concatenation.
+Always use the typed Qdrant client filter builder.
+
+```java
+// BAD
+String filterJson = "{\"must\":[{\"key\":\"language\",\"match\":{\"value\":\"" + lang + "\"}}]}";
+
+// GOOD
+Filter filter = Filter.newBuilder()
+    .addMust(Condition.newBuilder()
+        .setFieldCondition(FieldCondition.newBuilder()
+            .setKey("language")
+            .setMatch(Match.newBuilder().setKeyword(lang))))
+    .build();
+```
+
+### E6 — Dependency versions are pinned exactly
+
+Java (`pom.xml`): use exact versions, no ranges.
+```xml
+<!-- BAD -->
+<version>[1.0,2.0)</version>
+<!-- GOOD -->
+<version>1.9.4</version>
+```
+
+Python (`requirements.txt`): pin exact versions.
+```
+# BAD
+httpx>=0.27
+# GOOD
+httpx==0.27.0
+```
+
+Node (`package.json`): exact versions, no `^` or `~`.
+```json
+// BAD
+"react": "^18.3.1"
+// GOOD
+"react": "18.3.1"
+```
+
+### E7 — Heavy ML dependencies belong only in embed-sidecar
+`torch`, `transformers`, `sentence-transformers` are allowed only in
+`packages/embed-sidecar/requirements.txt`.
+`ingest-cli` must not import any ML libraries — it calls the sidecar API.
+
+---
+
+## SECTION F — Architecture
+
+### F1 — Layers do not skip levels
+```
+Controller → Service → Repository/Client
+```
+Controllers never call Qdrant directly.
+Services never format HTTP responses.
+Mappers never contain business logic.
+
+### F2 — No circular dependencies between packages
+`api` calls `embed-sidecar` via HTTP.
+`ingest-cli` calls `api` via HTTP.
+`ui` calls `api` via HTTP.
+No package imports code from another package at build time.
+
+### F3 — Feature flags via environment variables
+Incomplete features gated with env var, not commented-out code.
+```java
+@Value("${features.rag.enabled:true}")
+private boolean ragEnabled;
+```
+
+### F4 — Health checks actively verify dependencies
+`GET /api/health` calls each dependency. Never return `"ok"` without
+actively verifying Qdrant, Ollama, and embed-sidecar.
+
+### F5 — Config documented at point of use
+Every `@Value` or `os.getenv` references the SPEC section and env key.
+```java
+// SPEC §13: SEARCH_MIN_SCORE — default 0.60
+@Value("${search.min-score:0.60}")
+private double defaultMinScore;
+```

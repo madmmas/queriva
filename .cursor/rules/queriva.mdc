@@ -1,0 +1,320 @@
+---
+description: Queriva development workflow — sole developer rules
+globs: ["**/*"]
+alwaysApply: true
+---
+
+# Queriva — Cursor Workflow Rules
+
+Sole developer: Moinuddin Masud (@madmmas)
+Stack: Spring Boot 3.x / Java 21 · FastAPI / Python 3.11 · React 18 / Vite / TypeScript
+Infra: Qdrant · Ollama · Docker Compose · Turborepo
+
+Key files:
+- Specification: `docs/SPEC.md`
+- Issue backlog: `docs/ISSUES.md`
+- ADR directory: `docs/adr/`
+- Changelog: `CHANGELOG.md`
+- Journal: `JOURNAL.md`
+
+---
+
+## Rule 0 — When uncertain, stop and ask
+
+This rule overrides everything else.
+
+If any of the following is true, STOP and ask before writing any code:
+
+- The SPEC is silent or ambiguous on what to build
+- A new dependency is needed that is not already in the project
+- An issue task conflicts with an ADR
+- The correct package or layer for a piece of logic is unclear
+- A test is architecturally impossible without changing the production code design
+- Implementing a task would require changing the SPEC
+
+Do not guess. Do not make a silent assumption. One question asked upfront
+saves hours of rework. State the ambiguity clearly and propose two options
+for the developer to choose from.
+
+---
+
+## Rule 1 — Read before writing
+
+Before writing any code for an issue, read in order:
+1. `docs/SPEC.md` — full spec, especially the sections referenced in the issue
+2. The current issue in `docs/ISSUES.md` — tasks, acceptance criteria, test plan
+3. Any ADR in `docs/adr/` that covers decisions relevant to this issue
+
+Never contradict SPEC.md. If SPEC.md needs updating, update it first
+(see Rule 18), then implement.
+
+---
+
+## Rule 2 — ADR before implementation
+
+When the current issue has a mapped ADR, write the ADR file before any code.
+
+ADR location: `docs/adr/ADR-NNN-short-title.md`
+
+Template:
+```markdown
+# ADR-NNN — [Title]
+
+## Status
+Accepted
+
+## Context
+[Problem being solved and forces at play]
+
+## Decision
+[One sentence: what was decided]
+
+## Alternatives considered
+| Option | Reason rejected |
+|---|---|
+
+## Consequences
+**Makes easier:**
+**Makes harder:**
+
+## References
+- SPEC.md §N
+- Issue #N
+```
+
+ADR → Issue mapping:
+- Before #0: ADR-001, ADR-004, ADR-005, ADR-011, ADR-012
+- Before #1: ADR-009
+- Before #2: ADR-002, ADR-006
+- Before #6: ADR-003, ADR-007
+- Before #7: ADR-008
+- Before #25: ADR-010
+
+After writing an ADR, add a `Docs` entry to `CHANGELOG.md` under `[Unreleased]`.
+
+---
+
+## Rule 3 — One issue at a time
+
+Never start issue N+1 until issue N is fully complete.
+
+Complete means:
+- All task checkboxes done
+- All acceptance criteria pass
+- All test plan items have passing tests
+- No TODO/FIXME/placeholder in touched files
+- CHANGELOG.md updated
+- JOURNAL.md entry written for the day
+- Commit pushed: `[issue-N] description`
+
+---
+
+## Rule 4 — Tests are not optional
+
+Every issue has a test plan. Implement every item in it.
+See `test-quality.mdc` for what a good test looks like.
+See `code-quality.mdc` for what good code looks like.
+
+Makefile test targets:
+```
+make test         → unit + integration (all packages)
+make test-unit    → unit only, no Docker
+make test-int     → integration, requires Docker
+make smoke        → Playwright E2E against full docker compose stack
+```
+
+---
+
+## Rule 5 — API contract is the source of truth
+
+All request/response shapes must match `docs/SPEC.md §6` exactly.
+Quote the SPEC section in a comment above every controller:
+
+```java
+// SPEC.md §6 — POST /api/search
+@RestController public class SearchController { ... }
+```
+
+If implementation reveals a SPEC error, fix SPEC.md first (Rule 18),
+then implement.
+
+---
+
+## Rule 6 — Config via environment variables only
+
+No hardcoded URLs, ports, model names, thresholds, or timeouts.
+Every config key is defined in `docs/SPEC.md §13` and `.env.example`.
+
+Java:  `@Value("${key:default}")`
+Python: `os.getenv("KEY", "default")`
+
+Defaults must match `.env.example` exactly.
+
+---
+
+## Rule 7 — Qdrant payload schema
+
+Every Qdrant point must have the payload fields from `docs/SPEC.md §14`.
+`document_id` is required. `body_snippet` max 500 chars, no title prefix.
+Never store raw full body text in a Qdrant payload field.
+
+---
+
+## Rule 8 — Embedding model consistency
+
+Query embedding model must match ingest embedding model.
+Store model name in collection metadata at creation time.
+Validate in `QueryEmbeddingService` — return 400 if mismatch.
+Default: `LaBSE` (768-dim, Cosine). See ADR-002.
+
+---
+
+## Rule 9 — Chunking rules
+
+From ADR-003 and ADR-007:
+- Character-based sliding window, no tokenizer in Java
+- chunk_size=512 chars, overlap=64 chars (configurable via env)
+- Prepend title to every chunk: `"{title}. {body_slice}"`
+- Chunk point ID: `{document_id}-chunk-{N}`
+- body_snippet = first 500 chars of chunk body, no title prefix
+- On overwrite: delete existing chunks by document_id, then upsert new ones
+
+---
+
+## Rule 10 — Zero external API calls at runtime
+
+No calls to OpenAI, Anthropic, HuggingFace Inference API, Pinecone, Cohere,
+or any external service during normal operation.
+All inference: Ollama. All embeddings: embed-sidecar. All search: Qdrant.
+This is non-negotiable — it is Queriva's core value proposition.
+
+---
+
+## Rule 11 — Makefile is the single command interface
+
+All package operations go through the root Makefile.
+Required targets: install, install-node, install-python, build, test,
+test-unit, test-int, test-api, test-embed, test-ingest, test-ui,
+smoke, seed, clean, help.
+
+When adding any new script or command, add the Makefile target first.
+
+---
+
+## Rule 12 — CORS config
+
+Allowed origins: `localhost:3000`, `localhost:5173`, and `CORS_ALLOWED_ORIGINS` env var.
+Never use `*` wildcard CORS — not even in Docker Compose dev config.
+
+---
+
+## Rule 13 — Logging and latency
+
+Every search and ingest request logs: operation, collection, latency
+breakdown, result/chunk count.
+Java: SLF4J only. Python: `logging` module only.
+No `System.out.println`. No `print()`.
+
+---
+
+## Rule 14 — Docker Compose is the deployment contract
+
+Every package has a `Dockerfile`.
+`docker-compose.yml` is the source of truth for service config.
+All services have `healthcheck` blocks.
+Service names: `qdrant`, `ollama`, `embed-sidecar`, `api`, `ui`.
+
+---
+
+## Rule 15 — No disabled tests without a linked issue
+
+`@Disabled`, `pytest.mark.skip`, `xit` are forbidden without a comment:
+`// Disabled — see #N`
+Fix the test or open an issue. Never silently skip.
+
+---
+
+## Rule 16 — CHANGELOG.md on every issue
+
+Before committing a completed issue, add entries to `CHANGELOG.md`
+under `## [Unreleased]`.
+
+Format: `- **Category** [package] description (#N)`
+Categories: Added, Changed, Fixed, Removed, Infrastructure, Docs
+Packages: [api], [embed-sidecar], [ingest-cli], [ui], [infra], [ci], [adr], [docs]
+
+Never commit a completed issue without a CHANGELOG entry.
+
+---
+
+## Rule 17 — Release checklist
+
+When all issues for a version are complete:
+1. Move `[Unreleased]` entries to `## [X.Y.Z] — YYYY-MM-DD` in CHANGELOG.md
+2. Add one-line tagline under version header
+3. Verify: `make test` exits 0, `make smoke` exits 0, CI green
+4. Commit: `release: vX.Y.Z`
+5. Tag: `git tag -a vX.Y.Z -m "Release vX.Y.Z"`
+6. Create GitHub release — paste CHANGELOG section as release notes
+7. Record Loom demo per schedule in SPEC.md §18
+
+Version → Upwork action:
+- v0.3.0 → start applying with Loom terminal demo
+- v0.4.0 → update Upwork profile with UI screenshot + blog post
+- v1.0.0 → pitch Queriva as a deliverable to clients
+
+---
+
+## Rule 18 — SPEC.md is a living document
+
+SPEC.md may be updated during implementation when reality diverges.
+Rules for updating SPEC:
+- Update SPEC.md before updating implementation, never after
+- Add a comment in the commit: `[spec] updated §N — reason`
+- If the SPEC change affects an ADR, update that ADR in the same commit
+- Add a SPEC version line at the top of SPEC.md: `> Last updated: YYYY-MM-DD`
+- Never silently diverge from SPEC — update it or raise a question (Rule 0)
+
+---
+
+## Rule 19 — Git hygiene
+
+Branch naming: `issue-N/short-description`
+Examples: `issue-6/chunking-service`, `issue-14/search-api`
+
+Never commit directly to `main`. Always work on a branch.
+Exception: ADR-only commits and release commits may go directly to main.
+
+Commit format: `[issue-N] description` or `[adr-NNN] title` or `release: vX.Y.Z`
+
+Never commit:
+- `.env` files (only `.env.example`)
+- Binary files: `.jar`, `.class`, `.pyc`, model weights
+- Build artifacts: `target/`, `dist/`, `__pycache__`, `node_modules/`
+- IDE files: `.idea/`, `.vscode/` (only `.cursor/` is committed)
+
+`.gitignore` must cover all of the above before the first commit.
+
+---
+
+## Rule 20 — README.md follows the template
+
+When writing or updating `README.md` (issue #29), follow `README-TEMPLATE.md`
+exactly. The README must:
+- Be validated by doing a fresh clone on a clean machine
+- Reach "search working" in ≤ 5 commands and ≤ 20 minutes
+- Have no placeholder text, "coming soon", or "TODO" in committed form
+- Include the CI badge, architecture diagram, and link to SPEC
+
+---
+
+## Commit message reference
+
+```
+[issue-0]  scaffold turborepo monorepo
+[adr-001]  Qdrant as vector database
+[issue-6]  ChunkingService sliding window with title prepend
+[issue-14] POST /api/search search mode
+[spec]     updated §7.4 — chunk overlap default 64→128 chars
+release:   v0.2.0
+```

@@ -1,0 +1,589 @@
+---
+description: Queriva test quality rules — Java, Python, TypeScript
+globs: ["packages/**/test*/**", "packages/**/*test*", "packages/**/*spec*", "packages/**/e2e/**"]
+alwaysApply: true
+---
+
+# Queriva — Test Quality Rules
+
+These rules define what a "good test" means for Queriva. Every test written
+by Cursor must satisfy all applicable rules before an issue is considered done.
+
+---
+
+## SECTION A — Universal Test Rules (all languages)
+
+### A1 — Tests are the specification
+A test must read like a specification of behaviour, not a description of
+implementation. If the test name requires knowing how the code works internally
+to understand it, rename it.
+
+```java
+// BAD — describes implementation
+@Test void testChunkServiceSlidingWindow() { ... }
+
+// GOOD — describes behaviour
+@Test void should_produce_overlapping_chunks_when_body_exceeds_chunk_size() { ... }
+```
+
+### A2 — One assertion group per test
+Each test verifies one behaviour. Multiple `assert` calls are fine if they
+all verify the same outcome. If a test needs to check two different behaviours,
+write two tests.
+
+```java
+// BAD — two separate behaviours in one test
+@Test void testIngest() {
+    IngestResponse r = service.ingest(request);
+    assertEquals(3, r.ingested());       // behaviour 1: count
+    assertNull(r.errors());              // behaviour 2: no errors
+    verify(qdrantClient, times(1))...;   // behaviour 3: qdrant called
+}
+
+// GOOD — split
+@Test void should_report_correct_ingested_count() { ... }
+@Test void should_report_no_errors_when_all_documents_succeed() { ... }
+@Test void should_upsert_to_qdrant_once_per_chunk() { ... }
+```
+
+### A3 — Arrange / Act / Assert structure with blank lines
+Every test body follows AAA with a blank line between sections.
+No comments labelling the sections — the blank lines are sufficient.
+
+```java
+@Test
+void should_return_top3_results_when_querying_seeded_collection() {
+    String query = "floods in Dhaka";
+    String collection = "news_radar";
+
+    SearchResponse response = searchService.search(query, collection, 3, 0.60, "search", null);
+
+    assertThat(response.results()).hasSize(3);
+    assertThat(response.results().get(0).score()).isGreaterThan(0.60);
+}
+```
+
+### A4 — No test depends on another test's state
+Tests are independent. No `@TestMethodOrder`, no shared mutable state between
+tests, no assumptions about execution order.
+
+Each test must set up its own data and clean up after itself (or use
+`@BeforeEach`/`@AfterEach`).
+
+### A5 — No Thread.sleep or time.sleep in tests
+Use `Awaitility` (Java) or `pytest-asyncio` (Python) for async assertions.
+Sleeping is flaky by definition.
+
+```java
+// BAD
+Thread.sleep(2000);
+assertEquals("ok", response.status());
+
+// GOOD
+await().atMost(5, SECONDS).until(() -> health().status().equals("ok"));
+```
+
+### A6 — Test data is realistic, not minimal
+Use data that resembles production. For Queriva: real news article titles,
+real multilingual content (Bangla + English), realistic score values.
+
+The fixture file `fixtures/news_radar_dhaka_floods.json` is the canonical
+test corpus. All ingest and search tests use this fixture or a subset of it.
+
+```java
+// BAD
+Document doc = new Document("id1", "title", "body", "src", "en", null, null, null);
+
+// GOOD
+Document doc = new Document(
+    "cluster-001",
+    "Buriganga river overflows, floods low-lying Dhaka areas",
+    "Heavy monsoon rains caused the Buriganga river to overflow its banks...",
+    "prothomalo.com", "bn", "2026-06-15T08:30:00Z", "national",
+    "https://prothomalo.com/bangladesh/article-xyz"
+);
+```
+
+### A7 — Edge cases are tested explicitly
+For every method, test at least:
+- Happy path (normal input, expected output)
+- Empty input (empty string, empty list, zero)
+- Boundary values (min_score=0.0, top_k=1, top_k=100)
+- Invalid input (null, blank, wrong type)
+- Failure path (service down, Qdrant unreachable)
+
+### A8 — Test names follow a convention
+```
+Java:    should_[expected_outcome]_when_[condition]()
+Python:  test_[unit]_[condition]_[expected_outcome]
+Vitest:  it('should [expected outcome] when [condition]', ...)
+```
+
+### A9 — Coverage is a floor, not a target
+Minimum coverage thresholds are enforced by CI but coverage percentage
+is not the goal — meaningful coverage is.
+
+| Package | Line coverage minimum |
+|---|---|
+| api (unit) | 80% |
+| embed-sidecar | 90% |
+| ingest-cli | 80% |
+| ui (components + hooks) | 80% |
+
+A 95% coverage score with trivial getter tests is worse than 80% coverage
+with meaningful behaviour tests.
+
+### A10 — Flaky tests are treated as bugs
+A test that passes sometimes and fails sometimes is a bug in the test.
+Open a GitHub issue immediately. Do not merge flaky tests. Do not
+`@Disabled` without a linked issue.
+
+---
+
+## SECTION B — Java Test Rules
+
+### B1 — Use AssertJ, not JUnit assertions
+AssertJ produces better failure messages and has a fluent API.
+
+```java
+// BAD
+assertEquals(3, results.size());
+assertTrue(results.get(0).score() > 0.60);
+
+// GOOD
+assertThat(results).hasSize(3);
+assertThat(results.get(0).score()).isGreaterThan(0.60);
+assertThat(results).extracting(SearchHit::language).containsOnly("bn");
+```
+
+### B2 — Unit tests use @ExtendWith(MockitoExtension.class)
+```java
+@ExtendWith(MockitoExtension.class)
+class IngestServiceTest {
+
+    @Mock QdrantClient qdrantClient;
+    @Mock EmbedSidecarClient embedClient;
+    @InjectMocks IngestService ingestService;
+
+    @Test
+    void should_skip_existing_documents_when_upsert_mode_is_skip_existing() {
+        // ...
+    }
+}
+```
+
+### B3 — Integration tests use @SpringBootTest + Testcontainers
+```java
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Testcontainers
+@Tag("integration")
+class SearchControllerIT {
+
+    @Container
+    static GenericContainer<?> qdrant =
+        new GenericContainer<>("qdrant/qdrant:latest")
+            .withExposedPorts(6333);
+
+    @Autowired TestRestTemplate restTemplate;
+
+    @Test
+    void should_return_ranked_results_when_querying_seeded_collection() {
+        // seed → search → assert
+    }
+}
+```
+
+### B4 — Controller tests use @WebMvcTest
+Do not use `@SpringBootTest` for controller-only tests. `@WebMvcTest` is faster
+and more focused.
+
+```java
+@WebMvcTest(SearchController.class)
+class SearchControllerTest {
+
+    @Autowired MockMvc mvc;
+    @MockBean SearchService searchService;
+
+    @Test
+    void should_return_400_when_query_is_blank() throws Exception {
+        mvc.perform(post("/api/search")
+                .contentType(APPLICATION_JSON)
+                .content("""{"query":"","collection":"news_radar"}"""))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.error").exists());
+    }
+}
+```
+
+### B5 — JSON assertions use jsonPath or typed deserialization
+Never assert on raw JSON strings. Use `jsonPath` in MockMvc tests or
+deserialize to the response DTO for comparison.
+
+```java
+// BAD
+assertTrue(response.contains("\"ingested\":3"));
+
+// GOOD
+assertThat(response.getIngested()).isEqualTo(3);
+// or
+mvc.perform(...).andExpect(jsonPath("$.ingested").value(3));
+```
+
+### B6 — WireMock for external HTTP dependencies in unit tests
+`QueryEmbeddingService` and `LLMSynthesisService` call external services.
+Use WireMock to simulate them in unit tests — not real services.
+
+```java
+@RegisterExtension
+static WireMockExtension embedSidecar = WireMockExtension.newInstance()
+    .options(wireMockConfig().dynamicPort())
+    .build();
+
+@BeforeEach
+void setUp() {
+    embedSidecar.stubFor(post(urlEqualTo("/api/embed"))
+        .willReturn(okJson("""{"vector":[0.1,0.2],"dimensions":2}""")));
+}
+```
+
+### B7 — Verify latency_ms is populated correctly
+Every search and ingest integration test must assert that `latency_ms`
+fields are present and non-zero.
+
+```java
+assertThat(response.latencyMs().embed()).isPositive();
+assertThat(response.latencyMs().search()).isPositive();
+assertThat(response.latencyMs().total()).isGreaterThan(
+    response.latencyMs().embed() + response.latencyMs().search()
+);
+```
+
+### B8 — Test both search modes explicitly
+Every search integration test runs both `mode=search` and `mode=rag`
+against the same query. The two responses must differ in predictable ways.
+
+```java
+@Test void should_return_null_summary_in_search_mode() { ... }
+@Test void should_return_non_empty_summary_in_rag_mode() { ... }
+```
+
+### B9 — Parameterized tests for filter combinations
+Use `@ParameterizedTest` for filter testing — do not write one test per filter.
+
+```java
+@ParameterizedTest
+@MethodSource("filterCombinations")
+void should_filter_results_correctly(SearchFilters filters, int expectedCount) {
+    SearchResponse response = searchService.search("floods in Dhaka", "news_radar",
+        10, 0.60, "search", filters);
+    assertThat(response.results()).hasSize(expectedCount);
+}
+
+static Stream<Arguments> filterCombinations() {
+    return Stream.of(
+        arguments(new SearchFilters("bn", null, null, null), 4),  // 4 Bangla articles
+        arguments(new SearchFilters("en", null, null, null), 4),  // 4 English articles
+        arguments(new SearchFilters(null, "2026-06-15", "2026-06-15", null), 2)
+    );
+}
+```
+
+---
+
+## SECTION C — Python Test Rules
+
+### C1 — Use pytest with fixtures, not setUp/tearDown
+```python
+# BAD (unittest style)
+class TestEmbedSidecar(unittest.TestCase):
+    def setUp(self):
+        self.client = TestClient(app)
+
+# GOOD
+@pytest.fixture
+def client():
+    return TestClient(app)
+
+def test_embed_returns_768_dims_for_labse(client):
+    response = client.post("/api/embed", json={"text": "hello", "model": "LaBSE"})
+    assert response.status_code == 200
+    assert response.json()["dimensions"] == 768
+```
+
+### C2 — Mock HTTP calls with pytest-httpx or respx
+Do not make real HTTP calls in unit tests.
+
+```python
+# embed-sidecar calling an external model download (mocked)
+def test_model_load_failure_returns_503(client, respx_mock):
+    respx_mock.post("https://huggingface.co/...").mock(side_effect=httpx.ConnectError)
+    response = client.post("/api/embed", json={"text": "test", "model": "unknown-model"})
+    assert response.status_code == 503
+    assert "could not be loaded" in response.json()["detail"]
+```
+
+### C3 — Use parametrize for multiple input cases
+```python
+@pytest.mark.parametrize("model,expected_dims", [
+    ("LaBSE", 768),
+    ("all-MiniLM-L6-v2", 384),
+    ("paraphrase-multilingual-mpnet-base-v2", 768),
+])
+def test_embed_returns_correct_dimensions(client, model, expected_dims):
+    response = client.post("/api/embed", json={"text": "test", "model": model})
+    assert response.json()["dimensions"] == expected_dims
+```
+
+### C4 — Use tmp_path fixture for file-based tests
+Never write to absolute paths or use hardcoded filenames in tests.
+
+```python
+def test_json_loader_reads_all_documents(tmp_path):
+    fixture = tmp_path / "articles.json"
+    fixture.write_text('[{"id": "1", "title": "Test", "body": "..."}]')
+
+    docs = json_loader.load(str(fixture))
+
+    assert len(docs) == 1
+    assert docs[0]["title"] == "Test"
+```
+
+### C5 — Assert response shape, not just status code
+```python
+# BAD
+def test_embed_endpoint(client):
+    response = client.post("/api/embed", json={"text": "test"})
+    assert response.status_code == 200
+
+# GOOD
+def test_embed_endpoint_returns_vector_and_dimensions(client):
+    response = client.post("/api/embed", json={"text": "flood in Dhaka", "model": "LaBSE"})
+
+    assert response.status_code == 200
+    body = response.json()
+    assert "vector" in body
+    assert "dimensions" in body
+    assert body["dimensions"] == 768
+    assert len(body["vector"]) == 768
+    assert all(isinstance(v, float) for v in body["vector"])
+```
+
+### C6 — CLI tests use subprocess, not direct function calls
+Test the CLI as a black box via `subprocess.run` to catch argument parsing
+errors and exit codes that function-level tests miss.
+
+```python
+def test_cli_exits_nonzero_on_missing_required_args():
+    result = subprocess.run(
+        ["python", "queriva_ingest.py"],
+        capture_output=True, text=True
+    )
+    assert result.returncode != 0
+    assert "--collection" in result.stderr or "required" in result.stderr
+```
+
+### C7 — Coverage enforced via pytest-cov in CI
+```ini
+# pytest.ini or pyproject.toml
+[tool.pytest.ini_options]
+addopts = "--cov=. --cov-report=term-missing --cov-fail-under=80"
+```
+
+---
+
+## SECTION D — TypeScript / React Test Rules
+
+### D1 — React Testing Library, not Enzyme
+Never use Enzyme. All component tests use `@testing-library/react`.
+Query priority: `getByRole` > `getByLabelText` > `getByText` > `getByTestId`.
+
+```typescript
+// BAD
+wrapper.find('.qv-mode-btn').at(1).simulate('click');
+
+// GOOD
+await userEvent.click(screen.getByRole('button', { name: /RAG/i }));
+```
+
+### D2 — MSW for all API mocking
+All API calls in component and hook tests are intercepted by MSW handlers.
+No `jest.mock('fetch')` or manual fetch mocking.
+
+```typescript
+// src/__tests__/handlers.ts
+export const handlers = [
+  http.post('/api/search', () =>
+    HttpResponse.json(mockSearchResponse)
+  ),
+  http.get('/api/health', () =>
+    HttpResponse.json({ status: 'ok', qdrant: 'connected',
+                        ollama: 'connected', embed_sidecar: 'connected' })
+  ),
+];
+```
+
+### D3 — Test user interactions, not implementation
+```typescript
+// BAD — tests internal state
+expect(component.state.mode).toBe('rag');
+
+// GOOD — tests what the user sees
+await userEvent.click(screen.getByRole('button', { name: /RAG/i }));
+expect(screen.getByRole('button', { name: /RAG/i })).toHaveClass('on');
+```
+
+### D4 — Every component tests loading and error states
+```typescript
+it('should show skeleton while search is loading', async () => {
+  server.use(http.post('/api/search', () => new Promise(() => {}))); // never resolves
+  render(<App />);
+  await userEvent.type(screen.getByRole('searchbox'), 'floods in Dhaka{Enter}');
+  expect(screen.getByTestId('search-skeleton')).toBeInTheDocument();
+});
+
+it('should show error banner when API returns 500', async () => {
+  server.use(http.post('/api/search', () => HttpResponse.error()));
+  render(<App />);
+  await userEvent.type(screen.getByRole('searchbox'), 'floods in Dhaka{Enter}');
+  expect(screen.getByRole('alert')).toBeInTheDocument();
+});
+```
+
+### D5 — useSearch hook tested in isolation via renderHook
+```typescript
+it('should update results when search completes', async () => {
+  const { result } = renderHook(() => useSearch());
+
+  act(() => { result.current.search({ query: 'floods', collection: 'news_radar' }); });
+
+  await waitFor(() => expect(result.current.loading).toBe(false));
+  expect(result.current.results).toHaveLength(4);
+  expect(result.current.error).toBeNull();
+});
+```
+
+### D6 — Accessibility tested with axe-core
+Every page-level component (`App`, `SearchWidget`) must pass axe-core
+accessibility audit in tests.
+
+```typescript
+import { axe, toHaveNoViolations } from 'jest-axe';
+expect.extend(toHaveNoViolations);
+
+it('should have no accessibility violations', async () => {
+  const { container } = render(<App />);
+  const results = await axe(container);
+  expect(results).toHaveNoViolations();
+});
+```
+
+### D7 — SearchWidget props contract tested
+The MFE widget must have tests for every prop in `SearchWidgetProps`:
+- default values when optional props are omitted
+- `onResultClick` fires with the correct `SearchResult` argument
+- `theme` prop changes CSS class / data attribute
+- `filters` prop pre-populates filter chips
+
+---
+
+## SECTION E — Integration + E2E Test Rules
+
+### E1 — Integration tests use a shared fixture corpus
+All integration tests that seed Qdrant use `fixtures/news_radar_dhaka_floods.json`.
+Never create ad-hoc fixture data in integration test code.
+
+```java
+// GOOD
+@BeforeAll
+static void seedQdrant() throws Exception {
+    String fixture = Files.readString(Path.of("fixtures/news_radar_dhaka_floods.json"));
+    // seed via ingest API
+}
+```
+
+### E2 — Integration tests assert the full response shape
+Do not assert only a single field. Assert the entire response structure
+against the SPEC §6 contract.
+
+```java
+@Test
+void should_return_complete_search_response_shape() {
+    SearchResponse r = restTemplate.postForObject("/api/search", request, SearchResponse.class);
+
+    assertThat(r.query()).isEqualTo("floods in Dhaka last week");
+    assertThat(r.mode()).isEqualTo("search");
+    assertThat(r.summary()).isNull();                             // search mode
+    assertThat(r.results()).isNotEmpty();
+    assertThat(r.latencyMs().embed()).isPositive();
+    assertThat(r.latencyMs().search()).isPositive();
+    assertThat(r.latencyMs().total()).isPositive();
+    assertThat(r.latencyMs().synthesis()).isNull();               // search mode
+}
+```
+
+### E3 — E2E tests cover the full user journey
+Playwright E2E tests must cover exactly the scenarios in the mock UI:
+
+1. Open UI → verify health status pills show connected
+2. Type "floods in Dhaka last week" → press Enter
+3. Verify ≥ 4 result cards appear
+4. Verify top result score > 0.60
+5. Toggle to RAG mode → verify AI summary panel appears
+6. Verify latency breakdown is shown
+7. Click a result card → verify URL opens
+
+### E4 — E2E tests are deterministic
+E2E tests run against a pre-seeded Qdrant instance (via `make seed`).
+The seed script is idempotent. E2E tests never seed inside the test itself.
+
+### E5 — Performance baselines are asserted in integration tests
+```java
+@Test
+void search_mode_completes_within_500ms() {
+    long start = System.currentTimeMillis();
+    SearchResponse r = searchService.search(query, collection, 10, 0.60, "search", null);
+    long elapsed = System.currentTimeMillis() - start;
+
+    assertThat(elapsed).isLessThan(500L);
+    assertThat(r.latencyMs().total()).isLessThan(500L);
+}
+```
+
+Baselines from SPEC §15:
+- Search mode: < 500ms
+- RAG mode: < 10s (conservative — Ollama on CPU)
+
+### E6 — Smoke test is a standalone script
+`scripts/e2e-smoke.sh` must be runnable without Playwright installed.
+It uses only `curl` to verify the critical path:
+
+```bash
+#!/bin/bash
+set -e
+
+echo "=== Queriva smoke test ==="
+
+echo "1. Health check..."
+curl -sf http://localhost:8080/api/health | grep '"status":"ok"'
+
+echo "2. Create collection..."
+curl -sf -X POST http://localhost:8080/api/ingest/collection \
+  -H "Content-Type: application/json" \
+  -d '{"collection":"smoke_test","vector_size":768,"distance":"Cosine"}'
+
+echo "3. Ingest one document..."
+curl -sf -X POST http://localhost:8080/api/ingest/documents \
+  -H "Content-Type: application/json" \
+  -d '{"collection":"smoke_test","documents":[{"id":"s1","title":"Smoke test","body":"This is a smoke test document for Queriva.","source":"test","language":"en"}]}'
+
+echo "4. Search..."
+RESULT=$(curl -sf -X POST http://localhost:8080/api/search \
+  -H "Content-Type: application/json" \
+  -d '{"query":"smoke test","collection":"smoke_test","top_k":1,"mode":"search"}')
+echo "$RESULT" | grep '"results"'
+
+echo "5. Cleanup..."
+curl -sf -X DELETE http://localhost:8080/api/ingest/collection/smoke_test
+
+echo "=== Smoke test PASSED ==="
+```
