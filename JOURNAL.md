@@ -5,6 +5,60 @@ One entry per working day. Most recent entry at the top.
 
 ---
 
+## 2026-06-29 — Issue #1: Test infrastructure
+
+Branch: `issue-1/test-infrastructure`
+Depends on: #0, ADR-009
+Blocks: #1b, #3, #8, #10, #15, #18, #24, #26, #28
+
+### Built
+
+**packages/api**
+- JUnit 5 + Spring Boot Test + Testcontainers (Qdrant) + AssertJ + WireMock 3.10
+- Maven profiles: `-Punit` (no Docker), `-Pintegration` (Testcontainers)
+- Placeholder tests: `QuerivaApplicationTest`, `WireMockSetupTest`, `QdrantContainerIT`
+- `TESTING.md` documenting tag conventions
+
+**packages/embed-sidecar**
+- pytest + pytest-asyncio + pytest-cov + httpx AsyncClient + respx
+- Placeholder tests: health endpoint (async), respx mock pattern, integration stub
+- `pytest.ini` with 80% coverage floor
+
+**packages/ingest-cli**
+- pytest + pytest-cov + subprocess CLI tests + direct `main()` unit tests
+- Loader and chunker stub tests
+- `pytest.ini` with 80% coverage floor
+
+**packages/ui**
+- Vitest + React Testing Library + MSW + jest-axe
+- `App.test.tsx` — render + accessibility audit
+- Separate `vitest.config.ts`; stub components excluded from coverage until #19–#25
+
+**Root**
+- Makefile `install-python` installs `requirements-dev.txt` for both Python packages
+- All Makefile test targets run real tests (removed `|| true` fallbacks)
+
+**Verification**
+- `make test-unit` → exit 0, no Docker
+- `make test-int` → exit 0, Testcontainers pulls `qdrant/qdrant:latest`
+- `make test` → exit 0 (all packages)
+
+### Blocked
+- UI jest-axe failed on duplicate `<main>` landmark — fixed with `afterEach(cleanup)`
+- WireMock artifact `wiremock-junit5` not on Maven Central — switched to `wiremock-standalone`
+- Python `test-int` failed coverage gate when only integration markers ran — use `--no-cov` for test-int
+
+### Decided
+- Integration test runs skip coverage (`--no-cov`) — coverage enforced on `test` and `test-unit` only
+- UI stub components excluded from Vitest coverage until implemented in later issues
+- WireMock 3.x verify API uses `getRequestedFor()` not `get()`
+
+### Tomorrow
+- Start issue #1b: GitHub Actions CI pipeline
+- Branch: `issue-1b/github-actions-ci`
+
+---
+
 ## 2026-06-29 (issue #0)
 
 ### Built

@@ -3,9 +3,9 @@
   "private": true,
   "scripts": {
     "build": "python3 -m compileall -q .",
-    "test": "python3 -m pytest -q 2>/dev/null || echo 'No tests yet'",
-    "test-unit": "python3 -m pytest -q 2>/dev/null || echo 'No tests yet'",
-    "test-int": "echo 'No integration tests yet'",
+    "test": "python3 -m pytest -q",
+    "test-unit": "python3 -m pytest -q -m unit",
+    "test-int": "python3 -m pytest -q -m integration --no-cov",
     "clean": "find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null; rm -rf .pytest_cache .coverage htmlcov"
   }
 }

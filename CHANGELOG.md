@@ -8,6 +8,10 @@ Versions follow [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+- **Infrastructure** [infra] Test infrastructure across all packages — JUnit 5, Testcontainers, WireMock, pytest, Vitest, MSW, jest-axe (#1)
+- **Infrastructure** [infra] Test tag conventions: `@Tag("unit")`, `@Tag("integration")`, `@Tag("slow")` documented per package (#1)
+- **Infrastructure** [infra] `make test`, `make test-unit`, `make test-int` wired via Turborepo (#1)
+- **Infrastructure** [infra] Coverage reporting for embed-sidecar, ingest-cli, and ui (80% floor) (#1)
 - **Infrastructure** [infra] Turborepo monorepo with api, embed-sidecar, ingest-cli, ui packages (#0)
 - **Infrastructure** [infra] Root Makefile with install, build, test, smoke, seed targets (#0)
 - **Infrastructure** [infra] `.env.example` with all SPEC §13 configuration keys (#0)
