@@ -5,6 +5,25 @@ One entry per working day. Most recent entry at the top.
 
 ---
 
+## 2026-06-29 (issue #0)
+
+### Built
+- Issue #0: scaffolded Turborepo monorepo per SPEC §5
+- Created packages/api (Spring Boot 3.4 / Java 21), embed-sidecar (FastAPI), ingest-cli, ui (React 18 + Vite)
+- Root package.json, turbo.json, Makefile, .env.example
+- `turbo run build` exits 0 across all four packages
+
+### Blocked
+- Nothing
+
+### Decided
+- Python packages use `python3` in npm scripts (macOS has no `python` shim)
+
+### Tomorrow
+- Start issue #1: test infrastructure (JUnit, pytest, Vitest + MSW)
+
+---
+
 ## 2026-06-29
 
 ### Built

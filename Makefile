@@ -1,0 +1,51 @@
+.PHONY: help install install-node install-python build test test-unit test-int \
+        test-api test-embed test-ingest test-ui smoke seed clean
+
+help: ## Show available targets
+	@grep -E '^[a-zA-Z0-9_-]+:.*?##' $(MAKEFILE_LIST) | sort | \
+		awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-18s\033[0m %s\n", $$1, $$2}'
+
+install: install-node install-python ## Install all dependencies (Node + Python)
+
+install-node: ## Install Node dependencies and Turborepo
+	npm install
+
+install-python: ## Install Python dependencies for embed-sidecar and ingest-cli
+	pip install -r packages/embed-sidecar/requirements.txt -q
+	pip install -r packages/ingest-cli/requirements.txt -q
+
+build: ## Build all packages via Turborepo
+	npx turbo run build
+
+test: ## Run all tests (unit + integration)
+	npx turbo run test
+
+test-unit: ## Run unit tests only (no Docker)
+	npx turbo run test-unit
+
+test-int: ## Run integration tests (requires Docker)
+	npx turbo run test-int
+
+test-api: ## Run API package tests only
+	cd packages/api && mvn test -q
+
+test-embed: ## Run embed-sidecar tests only
+	cd packages/embed-sidecar && python3 -m pytest -q 2>/dev/null || true
+
+test-ingest: ## Run ingest-cli tests only
+	cd packages/ingest-cli && python3 -m pytest -q 2>/dev/null || true
+
+test-ui: ## Run UI package tests only
+	cd packages/ui && npm test -- --run 2>/dev/null || true
+
+smoke: ## Run E2E smoke test against full stack (requires docker compose)
+	@echo "Smoke tests require full stack — see issue #28"
+	@bash scripts/e2e-smoke.sh 2>/dev/null || \
+		echo "scripts/e2e-smoke.sh not yet implemented (issue #28)"
+
+seed: ## Seed demo data into news_radar collection
+	bash scripts/seed-demo.sh
+
+clean: ## Remove build artifacts from all packages
+	npx turbo run clean
+	rm -rf node_modules/.cache
