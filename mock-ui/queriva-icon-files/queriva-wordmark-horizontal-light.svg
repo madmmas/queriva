@@ -1,0 +1,12 @@
+<svg width="280" height="72" viewBox="0 0 280 72" role="img" xmlns="http://www.w3.org/2000/svg">
+  <title>Queriva wordmark horizontal — light</title>
+  <desc>Queriva horizontal wordmark with icon and text on light background</desc>
+  <rect width="280" height="72" rx="16" fill="#F8FAFA"/>
+  <rect x="10" y="10" width="52" height="52" rx="13" fill="#0D1B2A"/>
+  <circle cx="36" cy="33" r="11" fill="none" stroke="#00C9B8" stroke-width="3.5"/>
+  <line x1="44" y1="41" x2="50" y2="48" stroke="#00C9B8" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M44 44 Q49 41 53 46 Q56 49 54 53" fill="none" stroke="#00C9B8" stroke-width="2" stroke-linecap="round"/>
+  <circle cx="54" cy="53" r="2.5" fill="#F6AD55"/>
+  <text x="76" y="38" font-family="Georgia, serif" font-size="24" font-weight="700" fill="#0D1B2A" letter-spacing="-0.5">Queriva</text>
+  <text x="77" y="53" font-family="Inter, Helvetica Neue, sans-serif" font-size="8" font-weight="400" fill="#9CA3AF" letter-spacing="2.5">ASK YOUR DATA ANYTHING</text>
+</svg>

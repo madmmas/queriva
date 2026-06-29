@@ -156,6 +156,12 @@ logic yet — only structure, tooling, and repo hygiene.
 - [ ] `fixtures/news_radar_dhaka_floods.json` — 8 articles (4 BN + 4 EN), full SPEC §14 payload fields
 - [ ] `scripts/seed-demo.sh` — idempotent curl-based seed script
 
+**Mock UI and brand assets:**
+- [ ] `mock-ui/queriva_mock_ui_v2.html` — interactive design reference (open in browser)
+- [ ] `mock-ui/queriva-icon-files/` — all 8 SVG brand assets
+- [ ] `mock-ui/README.md` — one paragraph explaining these are design references,
+      not production assets; production assets move to packages/ui in issue #19
+
 **SPEC and docs:**
 - [ ] `docs/SPEC.md` — current version (v3 with §18 version guide, §19 ADR index)
 - [ ] `docs/ISSUES.md` — this file
@@ -169,6 +175,7 @@ logic yet — only structure, tooling, and repo hygiene.
 - `.cursor/rules/` has all three `.mdc` files
 - `fixtures/news_radar_dhaka_floods.json` has 8 valid JSON documents
 - `.gitignore` prevents `.env`, build artifacts, and binary files
+- `mock-ui/` contains the HTML mock and all 8 SVG brand assets
 
 ### Test plan
 

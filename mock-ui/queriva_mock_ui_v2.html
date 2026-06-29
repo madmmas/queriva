@@ -1,0 +1,380 @@
+<style>
+:root {
+  --qv-navy: #0D1B2A;
+  --qv-navy-lt: #162436;
+  --qv-teal: #00C9B8;
+  --qv-teal-dim: rgba(0,201,184,0.12);
+  --qv-teal-border: rgba(0,201,184,0.28);
+  --qv-amber: #F6AD55;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+.qv { font-family: var(--font-sans), 'Inter', sans-serif; background: var(--surface-0); }
+
+.qv-bar {
+  background: var(--qv-navy);
+  padding: 0 20px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.qv-logo { display: flex; align-items: center; gap: 10px; }
+.qv-icon-wrap {
+  width: 30px; height: 30px;
+  background: var(--qv-navy-lt);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  border: 0.5px solid var(--qv-teal-border);
+}
+.qv-icon-wrap svg { width: 16px; height: 16px; }
+.qv-brand { font-family: var(--font-voice, Georgia, serif); font-size: 17px; font-weight: 500; color: var(--qv-teal); letter-spacing: -0.3px; }
+.qv-bar-right { display: flex; align-items: center; gap: 14px; }
+.qv-status-pill {
+  display: flex; align-items: center; gap: 6px;
+  background: rgba(255,255,255,0.06);
+  border: 0.5px solid rgba(255,255,255,0.1);
+  border-radius: 20px;
+  padding: 4px 10px;
+  font-size: 11px; color: rgba(255,255,255,0.45); letter-spacing: 0.3px;
+}
+.qv-status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--qv-teal); }
+.qv-status-pill i { font-size: 13px; color: rgba(255,255,255,0.3); }
+.qv-nav-icon { font-size: 18px; color: rgba(255,255,255,0.35); cursor: pointer; }
+.qv-nav-icon:hover { color: rgba(255,255,255,0.7); }
+
+.qv-search-zone { padding: 20px 20px 12px; border-bottom: 0.5px solid var(--border); }
+.qv-search-box {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--surface-2);
+  border: 0.5px solid var(--border-strong);
+  border-radius: 10px;
+  padding: 0 14px;
+}
+.qv-search-box:focus-within { border-color: var(--qv-teal); }
+.qv-search-box i { font-size: 17px; color: var(--qv-teal); flex-shrink: 0; }
+.qv-search-box input {
+  flex: 1; border: none; background: transparent;
+  font-size: 14px; color: var(--text-primary);
+  padding: 11px 0; outline: none; font-family: inherit;
+}
+.qv-search-box input::placeholder { color: var(--text-muted); }
+.qv-mode-seg { display: flex; gap: 4px; border-left: 0.5px solid var(--border); padding-left: 12px; }
+.qv-seg-btn {
+  font-size: 11px; font-weight: 500; padding: 4px 9px;
+  border-radius: 6px; border: 0.5px solid transparent;
+  background: transparent; color: var(--text-muted);
+  cursor: pointer; font-family: inherit; transition: all 0.1s;
+}
+.qv-seg-btn.on { background: var(--qv-teal-dim); color: var(--qv-teal); border-color: var(--qv-teal-border); }
+.qv-filter-strip { display: flex; align-items: center; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+.qv-chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 11px; padding: 3px 9px; border-radius: 20px;
+  border: 0.5px solid var(--border); color: var(--text-secondary);
+  background: var(--surface-1); cursor: pointer;
+}
+.qv-chip i { font-size: 12px; }
+.qv-chip.on { border-color: var(--qv-teal-border); color: var(--qv-teal); background: var(--qv-teal-dim); }
+.qv-chip.amber { border-color: #854F0B; color: #854F0B; background: #FAEEDA; }
+.qv-count { font-size: 11px; color: var(--text-muted); margin-left: auto; display: flex; align-items: center; gap: 4px; }
+.qv-count i { font-size: 13px; }
+
+.qv-body { display: grid; grid-template-columns: minmax(0,1fr) 280px; gap: 0; }
+.qv-left { padding: 16px 20px; border-right: 0.5px solid var(--border); }
+.qv-right { padding: 16px 16px 16px 16px; }
+
+.qv-sec-label {
+  font-size: 10px; font-weight: 500; letter-spacing: 1.2px;
+  color: var(--text-muted); margin-bottom: 10px;
+  display: flex; align-items: center; gap: 6px;
+}
+.qv-sec-label i { font-size: 13px; }
+
+.qv-card {
+  background: var(--surface-2);
+  border: 0.5px solid var(--border);
+  border-radius: 10px; padding: 12px 14px;
+  margin-bottom: 8px; cursor: pointer;
+  transition: border-color 0.12s;
+}
+.qv-card:hover { border-color: var(--border-strong); }
+.qv-card.top { border-color: var(--qv-teal-border); }
+.qv-card-head { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 5px; }
+.qv-rank {
+  width: 20px; height: 20px; border-radius: 5px;
+  background: var(--qv-teal-dim); color: var(--qv-teal);
+  font-size: 9px; font-weight: 500;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: 1px;
+}
+.qv-card-title { font-size: 13px; font-weight: 500; color: var(--text-primary); line-height: 1.4; flex: 1; }
+.qv-score-col { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; flex-shrink: 0; }
+.qv-score-num { font-size: 10px; font-weight: 500; color: var(--qv-teal); }
+.qv-score-bar { width: 36px; height: 3px; background: var(--border-strong); border-radius: 2px; overflow: hidden; }
+.qv-score-fill { height: 100%; background: var(--qv-teal); border-radius: 2px; }
+.qv-snippet { font-size: 12px; color: var(--text-secondary); line-height: 1.55; margin-bottom: 8px; }
+.qv-meta { display: flex; align-items: center; gap: 6px; }
+.qv-src { font-size: 11px; color: var(--text-muted); display: flex; align-items: center; gap: 4px; }
+.qv-src i { font-size: 12px; }
+.qv-lang-badge {
+  font-size: 9px; font-weight: 500; letter-spacing: 0.5px;
+  padding: 2px 6px; border-radius: 4px;
+}
+.qv-lang-bn { background: #E1F5EE; color: #0F6E56; }
+.qv-lang-en { background: #E6F1FB; color: #185FA5; }
+.qv-date { font-size: 11px; color: var(--text-muted); margin-left: auto; display: flex; align-items: center; gap: 3px; }
+.qv-date i { font-size: 12px; }
+
+.qv-more-btn {
+  width: 100%; padding: 8px; border-radius: 8px;
+  border: 0.5px solid var(--border); background: transparent;
+  font-size: 12px; color: var(--text-secondary);
+  cursor: pointer; font-family: inherit;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  margin-top: 4px;
+}
+.qv-more-btn:hover { background: var(--surface-1); }
+.qv-more-btn i { font-size: 14px; }
+
+.qv-ai-card {
+  background: var(--surface-1);
+  border: 0.5px solid var(--qv-teal-border);
+  border-radius: 10px; padding: 14px;
+  margin-bottom: 12px;
+}
+.qv-ai-head { display: flex; align-items: center; gap: 7px; margin-bottom: 10px; }
+.qv-ai-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--qv-teal); flex-shrink: 0; }
+.qv-ai-label { font-size: 10px; font-weight: 500; letter-spacing: 1px; color: var(--qv-teal); }
+.qv-ai-model {
+  margin-left: auto; font-size: 9px; color: var(--text-muted);
+  display: flex; align-items: center; gap: 3px;
+}
+.qv-ai-model i { font-size: 11px; }
+.qv-ai-body { font-size: 12px; line-height: 1.65; color: var(--text-secondary); }
+.qv-ai-body b { color: var(--text-primary); font-weight: 500; }
+.qv-ref {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 15px; height: 15px; border-radius: 3px;
+  background: var(--qv-teal-dim); color: var(--qv-teal);
+  font-size: 8px; font-weight: 500; vertical-align: middle; margin: 0 1px;
+}
+.qv-ai-footer {
+  margin-top: 10px; padding-top: 8px;
+  border-top: 0.5px solid var(--border);
+  display: flex; align-items: center; gap: 8px;
+}
+.qv-latency { font-size: 10px; color: var(--text-muted); display: flex; align-items: center; gap: 4px; flex: 1; }
+.qv-latency i { font-size: 12px; }
+.qv-latency b { color: var(--text-secondary); font-weight: 500; }
+.qv-ai-action {
+  font-size: 11px; color: var(--text-muted);
+  background: none; border: none; cursor: pointer;
+  display: flex; align-items: center; gap: 3px; font-family: inherit;
+  padding: 2px 4px; border-radius: 4px;
+}
+.qv-ai-action:hover { background: var(--surface-2); color: var(--text-secondary); }
+.qv-ai-action i { font-size: 13px; }
+
+.qv-suggest-label { margin-top: 14px; }
+.qv-suggest-btn {
+  width: 100%; text-align: left;
+  font-size: 12px; color: var(--text-secondary);
+  background: var(--surface-2); border: 0.5px solid var(--border);
+  border-radius: 8px; padding: 8px 10px;
+  cursor: pointer; font-family: inherit; line-height: 1.4;
+  display: flex; align-items: center; gap: 7px; margin-bottom: 5px;
+}
+.qv-suggest-btn:hover { border-color: var(--border-strong); background: var(--surface-1); }
+.qv-suggest-btn i { font-size: 14px; color: var(--text-muted); flex-shrink: 0; }
+
+.qv-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 12px; }
+.qv-stat {
+  background: var(--surface-1);
+  border-radius: var(--radius); padding: 8px 10px;
+}
+.qv-stat-val { font-size: 18px; font-weight: 500; color: var(--text-primary); line-height: 1; }
+.qv-stat-val span { font-size: 11px; font-weight: 400; color: var(--text-muted); }
+.qv-stat-lbl { font-size: 10px; color: var(--text-muted); margin-top: 3px; display: flex; align-items: center; gap: 3px; }
+.qv-stat-lbl i { font-size: 11px; }
+</style>
+
+<h2 class="sr-only">Queriva search interface — natural language search results for "floods in Dhaka last week" with AI-generated summary</h2>
+
+<div class="qv">
+
+  <div class="qv-bar">
+    <div class="qv-logo">
+      <div class="qv-icon-wrap">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="10.5" cy="10.5" r="6" stroke="#00C9B8" stroke-width="1.8"/>
+          <line x1="15.2" y1="15.2" x2="19" y2="19" stroke="#00C9B8" stroke-width="1.8" stroke-linecap="round"/>
+          <path d="M15 17 Q17.5 15.5 19.5 17.5 Q21 19 20 21" fill="none" stroke="#00C9B8" stroke-width="1.2" stroke-linecap="round"/>
+          <circle cx="20" cy="21" r="1.2" fill="#F6AD55"/>
+        </svg>
+      </div>
+      <span class="qv-brand">Queriva</span>
+    </div>
+    <div class="qv-bar-right">
+      <div class="qv-status-pill">
+        <div class="qv-status-dot"></div>
+        <i class="ti ti-database" aria-hidden="true"></i> qdrant
+        <i class="ti ti-cpu" aria-hidden="true"></i> ollama
+        <i class="ti ti-vector" aria-hidden="true"></i> labse
+      </div>
+      <i class="ti ti-settings qv-nav-icon" aria-label="Settings"></i>
+      <i class="ti ti-menu-2 qv-nav-icon" aria-label="Menu"></i>
+    </div>
+  </div>
+
+  <div class="qv-search-zone">
+    <div class="qv-search-box">
+      <i class="ti ti-search" aria-hidden="true"></i>
+      <input value="floods in Dhaka last week" placeholder="Ask your data anything…" readonly />
+      <div class="qv-mode-seg">
+        <button class="qv-seg-btn"><i class="ti ti-list-search" aria-hidden="true"></i> Search</button>
+        <button class="qv-seg-btn on"><i class="ti ti-sparkles" aria-hidden="true"></i> RAG</button>
+      </div>
+    </div>
+    <div class="qv-filter-strip">
+      <div class="qv-chip on"><i class="ti ti-language" aria-hidden="true"></i>Bangla</div>
+      <div class="qv-chip"><i class="ti ti-language" aria-hidden="true"></i>English</div>
+      <div class="qv-chip on"><i class="ti ti-calendar" aria-hidden="true"></i>Last 7 days</div>
+      <div class="qv-chip"><i class="ti ti-tag" aria-hidden="true"></i>National</div>
+      <div class="qv-chip"><i class="ti ti-cloud-rain" aria-hidden="true"></i>Weather</div>
+      <div class="qv-chip amber"><i class="ti ti-filter" aria-hidden="true"></i>news_radar</div>
+      <div class="qv-count"><i class="ti ti-file-text" aria-hidden="true"></i>8 results</div>
+    </div>
+  </div>
+
+  <div class="qv-body">
+
+    <div class="qv-left">
+      <div class="qv-sec-label"><i class="ti ti-list-search" aria-hidden="true"></i>Matching articles</div>
+
+      <div class="qv-card top">
+        <div class="qv-card-head">
+          <div class="qv-rank">1</div>
+          <div class="qv-card-title">Buriganga river overflows, floods low-lying Dhaka areas</div>
+          <div class="qv-score-col">
+            <span class="qv-score-num">0.92</span>
+            <div class="qv-score-bar"><div class="qv-score-fill" style="width:92%"></div></div>
+          </div>
+        </div>
+        <div class="qv-snippet">Heavy monsoon rains caused the Buriganga river to overflow its banks on June 15, submerging large parts of Old Dhaka and Demra. Fire service rescue operations were launched across six wards...</div>
+        <div class="qv-meta">
+          <span class="qv-src"><i class="ti ti-world" aria-hidden="true"></i>prothomalo.com</span>
+          <span class="qv-lang-badge qv-lang-bn">BN</span>
+          <span class="qv-date"><i class="ti ti-calendar" aria-hidden="true"></i>Jun 15, 2026</span>
+        </div>
+      </div>
+
+      <div class="qv-card top">
+        <div class="qv-card-head">
+          <div class="qv-rank">2</div>
+          <div class="qv-card-title">200,000 residents displaced by Dhaka flooding, BDRCS responds</div>
+          <div class="qv-score-col">
+            <span class="qv-score-num">0.87</span>
+            <div class="qv-score-bar"><div class="qv-score-fill" style="width:87%"></div></div>
+          </div>
+        </div>
+        <div class="qv-snippet">The Bangladesh Red Crescent Society deployed emergency teams across six flood-affected upazilas. Officials estimated over 200,000 people were displaced as water levels rose through the night...</div>
+        <div class="qv-meta">
+          <span class="qv-src"><i class="ti ti-world" aria-hidden="true"></i>thedailystar.net</span>
+          <span class="qv-lang-badge qv-lang-en">EN</span>
+          <span class="qv-date"><i class="ti ti-calendar" aria-hidden="true"></i>Jun 17, 2026</span>
+        </div>
+      </div>
+
+      <div class="qv-card">
+        <div class="qv-card-head">
+          <div class="qv-rank">3</div>
+          <div class="qv-card-title">WASA pumping stations overwhelmed amid monsoon surge</div>
+          <div class="qv-score-col">
+            <span class="qv-score-num">0.81</span>
+            <div class="qv-score-bar"><div class="qv-score-fill" style="width:81%"></div></div>
+          </div>
+        </div>
+        <div class="qv-snippet">WASA confirmed 14 pumping stations were running at capacity after 340mm of rainfall in 48 hours — the highest recorded in five years, overwhelming Dhaka's drainage infrastructure...</div>
+        <div class="qv-meta">
+          <span class="qv-src"><i class="ti ti-world" aria-hidden="true"></i>bdnews24.com</span>
+          <span class="qv-lang-badge qv-lang-en">EN</span>
+          <span class="qv-date"><i class="ti ti-calendar" aria-hidden="true"></i>Jun 16, 2026</span>
+        </div>
+      </div>
+
+      <div class="qv-card">
+        <div class="qv-card-head">
+          <div class="qv-rank">4</div>
+          <div class="qv-card-title">ঢাকার বন্যায় যোগাযোগ বিচ্ছিন্ন, সেনাবাহিনী মোতায়েন</div>
+          <div class="qv-score-col">
+            <span class="qv-score-num">0.77</span>
+            <div class="qv-score-bar"><div class="qv-score-fill" style="width:77%"></div></div>
+          </div>
+        </div>
+        <div class="qv-snippet">বন্যাকবলিত এলাকায় সড়ক যোগাযোগ বিচ্ছিন্ন হওয়ায় সেনাবাহিনীর নৌকা ব্যবহার করে উদ্ধার তৎপরতা পরিচালিত হচ্ছে। ছয়টি উপজেলায় ত্রাণ বিতরণ শুরু হয়েছে...</div>
+        <div class="qv-meta">
+          <span class="qv-src"><i class="ti ti-world" aria-hidden="true"></i>kalerkantho.com</span>
+          <span class="qv-lang-badge qv-lang-bn">BN</span>
+          <span class="qv-date"><i class="ti ti-calendar" aria-hidden="true"></i>Jun 18, 2026</span>
+        </div>
+      </div>
+
+      <button class="qv-more-btn" onclick="sendPrompt('Show 4 more Queriva results for floods in Dhaka last week')">
+        <i class="ti ti-chevron-down" aria-hidden="true"></i> 4 more results ↗
+      </button>
+    </div>
+
+    <div class="qv-right">
+
+      <div class="qv-stats">
+        <div class="qv-stat">
+          <div class="qv-stat-val">8 <span>hits</span></div>
+          <div class="qv-stat-lbl"><i class="ti ti-file-text" aria-hidden="true"></i>Results</div>
+        </div>
+        <div class="qv-stat">
+          <div class="qv-stat-val">0.92 <span>top</span></div>
+          <div class="qv-stat-lbl"><i class="ti ti-chart-bar" aria-hidden="true"></i>Best score</div>
+        </div>
+        <div class="qv-stat">
+          <div class="qv-stat-val">2 <span>lang</span></div>
+          <div class="qv-stat-lbl"><i class="ti ti-language" aria-hidden="true"></i>Languages</div>
+        </div>
+        <div class="qv-stat">
+          <div class="qv-stat-val">1.9 <span>s</span></div>
+          <div class="qv-stat-lbl"><i class="ti ti-clock" aria-hidden="true"></i>Total time</div>
+        </div>
+      </div>
+
+      <div class="qv-sec-label"><i class="ti ti-sparkles" aria-hidden="true"></i>AI summary</div>
+      <div class="qv-ai-card">
+        <div class="qv-ai-head">
+          <div class="qv-ai-dot"></div>
+          <span class="qv-ai-label">Queriva · RAG</span>
+          <div class="qv-ai-model"><i class="ti ti-cpu" aria-hidden="true"></i>mistral 7b</div>
+        </div>
+        <div class="qv-ai-body">
+          <b>Three flood events</b> hit Dhaka between June 14–20 following 340mm of rain in 48 hours — the heaviest monsoon in five years. <span class="qv-ref">3</span><br><br>
+          The Buriganga overflowed on June 15, submerging Old Dhaka and Demra. <span class="qv-ref">1</span> Over <b>200,000 residents</b> were displaced, prompting a Red Crescent response. <span class="qv-ref">2</span><br><br>
+          WASA's 14 pumping stations were overwhelmed <span class="qv-ref">3</span> and army boats deployed after road links were severed. <span class="qv-ref">4</span>
+        </div>
+        <div class="qv-ai-footer">
+          <span class="qv-latency"><i class="ti ti-clock" aria-hidden="true"></i>embed <b>43ms</b> · search <b>21ms</b> · llm <b>1.8s</b></span>
+          <button class="qv-ai-action" aria-label="Copy summary"><i class="ti ti-copy" aria-hidden="true"></i></button>
+          <button class="qv-ai-action" aria-label="Refresh"><i class="ti ti-refresh" aria-hidden="true"></i></button>
+        </div>
+      </div>
+
+      <div class="qv-sec-label qv-suggest-label"><i class="ti ti-arrow-right" aria-hidden="true"></i>Try also</div>
+      <button class="qv-suggest-btn" onclick="sendPrompt('Search Queriva for Dhaka flood relief efforts June 2026')">
+        <i class="ti ti-heart" aria-hidden="true"></i>Relief efforts after Dhaka floods ↗
+      </button>
+      <button class="qv-suggest-btn" onclick="sendPrompt('Search Queriva for monsoon rainfall records Bangladesh 2026')">
+        <i class="ti ti-cloud-rain" aria-hidden="true"></i>Monsoon rainfall records Bangladesh ↗
+      </button>
+      <button class="qv-suggest-btn" onclick="sendPrompt('Search Queriva for WASA infrastructure flood response Dhaka')">
+        <i class="ti ti-building" aria-hidden="true"></i>WASA flood infrastructure response ↗
+      </button>
+
+    </div>
+  </div>
+</div>
