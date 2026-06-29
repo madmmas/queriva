@@ -3,6 +3,8 @@
 Personal log of daily progress, blockers, and decisions.
 One entry per working day. Most recent entry at the top.
 
+---
+
 ## 2026-06-29
 
 ### Built
@@ -19,6 +21,8 @@ One entry per working day. Most recent entry at the top.
 
 ### Tomorrow
 - Start issue #0: scaffold Turborepo monorepo (packages/api, embed-sidecar, ingest-cli, ui)
+
+---
 
 ## 2026-06-29
 
@@ -39,6 +43,8 @@ One entry per working day. Most recent entry at the top.
 - Create branch: issue-0/scaffold-monorepo
 - Open Cursor, say: "Start issue #0"
 
+
+---
 
 Format:
 ```
