@@ -279,21 +279,31 @@ Rules for updating SPEC:
 
 ## Rule 19 — Git hygiene
 
-Branch naming: `issue-N/short-description`
-Examples: `issue-6/chunking-service`, `issue-14/search-api`
+### Branching strategy (sole developer)
 
-Never commit directly to `main`. Always work on a branch.
-Exception: ADR-only commits and release commits may go directly to main.
+Direct commits to main for:
+- Documentation, ADRs, config files
+- Single-package changes with no cross-service integration
+- Test-only changes
 
-Commit format: `[issue-N] description` or `[adr-NNN] title` or `release: vX.Y.Z`
+Use a branch for:
+- Issues that touch multiple services simultaneously (#7, #14, #17, #23, #27)
+- Any change where half-done work would break the build or docker compose stack
 
-Never commit:
-- `.env` files (only `.env.example`)
-- Binary files: `.jar`, `.class`, `.pyc`, model weights
-- Build artifacts: `target/`, `dist/`, `__pycache__`, `node_modules/`
-- IDE files: `.idea/`, `.vscode/` (only `.cursor/` is committed)
+Branch naming: issue-N/short-description
+No PRs — merge directly: git merge --no-ff
 
-`.gitignore` must cover all of the above before the first commit.
+### Commit format
+[issue-N] description
+[adr-NNN] title
+[spec] updated §N — reason
+release: vX.Y.Z
+
+### Never commit
+- .env files
+- target/, dist/, __pycache__/, node_modules/
+- *.jar, *.pyc, model weights (*.bin, *.gguf, *.safetensors)
+- IDE files except .cursor/
 
 ---
 
