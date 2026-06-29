@@ -10,9 +10,11 @@ install: install-node install-python ## Install all dependencies (Node + Python)
 install-node: ## Install Node dependencies and Turborepo
 	npm install
 
-install-python: ## Install Python dependencies for embed-sidecar and ingest-cli
-	pip install -r packages/embed-sidecar/requirements.txt -q
-	pip install -r packages/ingest-cli/requirements.txt -q
+install-python: ## Install Python runtime + dev/test dependencies
+	python3 -m pip install -r packages/embed-sidecar/requirements.txt -q
+	python3 -m pip install -r packages/embed-sidecar/requirements-dev.txt -q
+	python3 -m pip install -r packages/ingest-cli/requirements.txt -q
+	python3 -m pip install -r packages/ingest-cli/requirements-dev.txt -q
 
 build: ## Build all packages via Turborepo
 	npx turbo run build
@@ -30,13 +32,13 @@ test-api: ## Run API package tests only
 	cd packages/api && mvn test -q
 
 test-embed: ## Run embed-sidecar tests only
-	cd packages/embed-sidecar && python3 -m pytest -q 2>/dev/null || true
+	cd packages/embed-sidecar && python3 -m pytest -q
 
 test-ingest: ## Run ingest-cli tests only
-	cd packages/ingest-cli && python3 -m pytest -q 2>/dev/null || true
+	cd packages/ingest-cli && python3 -m pytest -q
 
 test-ui: ## Run UI package tests only
-	cd packages/ui && npm test -- --run 2>/dev/null || true
+	cd packages/ui && npm run test-unit
 
 smoke: ## Run E2E smoke test against full stack (requires docker compose)
 	@echo "Smoke tests require full stack — see issue #28"

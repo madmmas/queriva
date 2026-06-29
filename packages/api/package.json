@@ -4,8 +4,8 @@
   "scripts": {
     "build": "mvn package -q -DskipTests",
     "test": "mvn test -q",
-    "test-unit": "mvn test -q -Dgroups=unit -DexcludedGroups=integration,slow 2>/dev/null || mvn test -q",
-    "test-int": "mvn test -q -Dgroups=integration 2>/dev/null || echo 'No integration tests yet'",
+    "test-unit": "mvn test -q -Punit",
+    "test-int": "mvn test -q -Pintegration",
     "clean": "mvn clean -q"
   }
 }
