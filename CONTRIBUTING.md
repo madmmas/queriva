@@ -71,6 +71,23 @@ release: vX.Y.Z
 
 ---
 
+## CI and branch protection
+
+Every push to `main` and every pull request runs `.github/workflows/ci.yml`:
+
+```
+make install → make build → make test
+```
+
+Toolchain: Node 20, Java 21, Python 3.11 on `ubuntu-latest` with Docker
+(Testcontainers for Qdrant integration tests).
+
+**Branch protection (GitHub repo settings):** require the `CI / Build and test`
+check to pass before merging to `main`. Configure manually under
+*Settings → Branches → Branch protection rules*.
+
+---
+
 ## Releases
 
 Releases follow the version guide in `docs/SPEC.md §18`.

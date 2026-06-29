@@ -8,6 +8,9 @@ Versions follow [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+- **Infrastructure** [ci] GitHub Actions CI — build + test on every PR and push to main (#1b)
+- **Infrastructure** [ci] CI caches npm, Maven, and pip dependencies (#1b)
+- **Infrastructure** [ci] CI status badge in README (#1b)
 - **Infrastructure** [infra] Test infrastructure across all packages — JUnit 5, Testcontainers, WireMock, pytest, Vitest, MSW, jest-axe (#1)
 - **Infrastructure** [infra] Test tag conventions: `@Tag("unit")`, `@Tag("integration")`, `@Tag("slow")` documented per package (#1)
 - **Infrastructure** [infra] `make test`, `make test-unit`, `make test-int` wired via Turborepo (#1)
