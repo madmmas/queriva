@@ -1,0 +1,13 @@
+# SPEC §13 — API configuration defaults
+server:
+  port: ${API_PORT:8080}
+
+spring:
+  application:
+    name: queriva-api
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health

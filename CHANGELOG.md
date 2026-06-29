@@ -8,6 +8,13 @@ Versions follow [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+- **Infrastructure** [infra] Turborepo monorepo with api, embed-sidecar, ingest-cli, ui packages (#0)
+- **Infrastructure** [infra] Root Makefile with install, build, test, smoke, seed targets (#0)
+- **Infrastructure** [infra] `.env.example` with all SPEC §13 configuration keys (#0)
+- **Added** [api] Spring Boot 3.4 / Java 21 scaffold with search/ and ingest/ package stubs (#0)
+- **Added** [embed-sidecar] FastAPI skeleton with health endpoint stub (#0)
+- **Added** [ingest-cli] CLI skeleton with loaders/ directory stubs (#0)
+- **Added** [ui] React 18 + Vite + TypeScript scaffold with component stubs (#0)
 - **Docs** [adr] ADR-001 — Qdrant as vector database
 - **Docs** [adr] ADR-002 — LaBSE as default embedding model
 - **Docs** [adr] ADR-003 — Sliding window chunking with title prepending
