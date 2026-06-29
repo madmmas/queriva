@@ -20,6 +20,24 @@ One entry per working day. Most recent entry at the top.
 ### Tomorrow
 - Start issue #0: scaffold Turborepo monorepo (packages/api, embed-sidecar, ingest-cli, ui)
 
+## 2026-06-29
+
+### Built
+- All 12 ADRs written and committed in foundation commit
+- Closed #meta issue
+- CHANGELOG.md updated with all ADR entries
+
+### Blocked
+- Nothing
+
+### Decided
+- Single commit for all foundation files is cleaner than 12 separate ADR commits
+  at this stage — the repo is brand new and no CI is running yet
+
+### Tomorrow
+- Start issue #0: scaffold Turborepo monorepo
+- Create branch: issue-0/scaffold-monorepo
+- Open Cursor, say: "Start issue #0"
 
 
 Format:
