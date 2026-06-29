@@ -8,7 +8,18 @@ Versions follow [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
-> Entries accumulate here as issues complete. Moved to a versioned section at each release.
+- **Docs** [adr] ADR-001 — Qdrant as vector database
+- **Docs** [adr] ADR-002 — LaBSE as default embedding model
+- **Docs** [adr] ADR-003 — Sliding window chunking with title prepending
+- **Docs** [adr] ADR-004 — Spring Boot / Java 21 for API gateway
+- **Docs** [adr] ADR-005 — FastAPI sidecar over ONNX-in-JVM
+- **Docs** [adr] ADR-006 — Ollama + Mistral 7B over vLLM / llama.cpp
+- **Docs** [adr] ADR-007 — Character-based over token-based chunking
+- **Docs** [adr] ADR-008 — Source document_id as upsert identity key
+- **Docs** [adr] ADR-009 — Testcontainers over mock Qdrant client
+- **Docs** [adr] ADR-010 — Module Federation over iframe / Web Components
+- **Docs** [adr] ADR-011 — Ingest orchestration in Spring Boot
+- **Docs** [adr] ADR-012 — Turborepo over Nx
 
 ---
 
