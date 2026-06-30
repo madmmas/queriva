@@ -5,6 +5,31 @@ One entry per working day. Most recent entry at the top.
 
 ---
 
+## 2026-06-30
+
+### Built
+- **Issue #3** — embed sidecar full test coverage (`issue-3/embed-sidecar-test-coverage`)
+  - Concurrent embed requests — model loaded only once (thread-safe loader)
+  - Parametrized invalid model name → 422; dimension mismatch → 500
+  - Health endpoint SPEC contract test; `model_loader` unit tests
+  - Coverage floor raised to 90% in `pytest.ini`
+
+### Blocked
+- Nothing
+
+### Decided
+- Model names validated with `MODEL_NAME_PATTERN` — spaces and slashes return 422 before 503
+- Real model download tests stay out of CI — mocked `SentenceTransformer` keeps suite under 60s
+
+### Tomorrow
+- Issue #4 — Qdrant Docker service
+- Issue #5 — API skeleton + health + collection management
+- Issue #6 — ChunkingService
+- Issue #7 — Ingest API
+- Issue #8 — Ingest API integration tests
+
+---
+
 ## 2026-06-29
 
 ### Built

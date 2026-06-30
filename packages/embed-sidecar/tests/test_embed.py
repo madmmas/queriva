@@ -1,5 +1,6 @@
 """Unit tests for POST /api/embed."""
 
+import asyncio
 from unittest.mock import MagicMock, patch
 
 import numpy as np
@@ -9,11 +10,19 @@ from httpx import ASGITransport, AsyncClient
 from main import app
 
 EMBED_PATH = "/api/embed"
+CONCURRENT_REQUEST_COUNT = 8
 
 SUPPORTED_MODEL_CASES = [
     ("LaBSE", 768),
     ("all-MiniLM-L6-v2", 384),
     ("paraphrase-multilingual-mpnet-base-v2", 768),
+]
+
+INVALID_MODEL_NAME_CASES = [
+    "LaB SE",
+    "invalid model",
+    "model@bad",
+    "model/name",
 ]
 
 
@@ -56,6 +65,22 @@ async def test_embed_returns_422_when_text_is_empty() -> None:
 
 
 @pytest.mark.unit
+@pytest.mark.parametrize("invalid_model_name", INVALID_MODEL_NAME_CASES)
+@pytest.mark.asyncio
+async def test_embed_returns_422_when_model_name_has_invalid_characters(
+    invalid_model_name: str,
+) -> None:
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        response = await client.post(
+            EMBED_PATH,
+            json={"text": "hello", "model": invalid_model_name},
+        )
+
+    assert response.status_code == 422
+
+
+@pytest.mark.unit
 @pytest.mark.asyncio
 async def test_embed_returns_503_when_model_name_is_invalid() -> None:
     transport = ASGITransport(app=app)
@@ -92,6 +117,33 @@ async def test_model_loads_only_once_per_name_when_embed_called_twice(
 
 @pytest.mark.unit
 @pytest.mark.asyncio
+@patch("model_loader.SentenceTransformer")
+async def test_model_loads_only_once_under_concurrent_embed_requests(
+    mock_sentence_transformer: MagicMock,
+) -> None:
+    mock_model = MagicMock()
+    mock_model.encode.return_value = np.zeros(768, dtype=np.float32)
+    mock_sentence_transformer.return_value = mock_model
+
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        responses = await asyncio.gather(
+            *[
+                client.post(
+                    EMBED_PATH,
+                    json={"text": f"text-{index}", "model": "LaBSE"},
+                )
+                for index in range(CONCURRENT_REQUEST_COUNT)
+            ]
+        )
+
+    for response in responses:
+        assert response.status_code == 200
+    mock_sentence_transformer.assert_called_once()
+
+
+@pytest.mark.unit
+@pytest.mark.asyncio
 @patch("model_loader.SentenceTransformer", side_effect=OSError("download failed"))
 async def test_embed_returns_503_when_model_download_fails(
     _mock_sentence_transformer: MagicMock,
@@ -105,6 +157,27 @@ async def test_embed_returns_503_when_model_download_fails(
 
     assert response.status_code == 503
     assert "could not be loaded" in response.json()["detail"]
+
+
+@pytest.mark.unit
+@pytest.mark.asyncio
+@patch("model_loader.SentenceTransformer")
+async def test_embed_returns_500_when_vector_dimensions_mismatch(
+    mock_sentence_transformer: MagicMock,
+) -> None:
+    mock_model = MagicMock()
+    mock_model.encode.return_value = np.zeros(384, dtype=np.float32)
+    mock_sentence_transformer.return_value = mock_model
+
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        response = await client.post(
+            EMBED_PATH,
+            json={"text": "hello", "model": "LaBSE"},
+        )
+
+    assert response.status_code == 500
+    assert "expected 768" in response.json()["detail"]
 
 
 @pytest.mark.unit

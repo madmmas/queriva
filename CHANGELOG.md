@@ -8,6 +8,9 @@ Versions follow [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+- **Added** [embed-sidecar] Full test coverage for embed sidecar — concurrent load, validation, 90% floor (#3)
+- **Changed** [embed-sidecar] Thread-safe lazy model loading with lock on first load (#3)
+- **Changed** [embed-sidecar] Model name pattern validation on POST /api/embed — rejects spaces and invalid chars (#3)
 - **Added** [embed-sidecar] `POST /api/embed` — LaBSE, MiniLM, multilingual-mpnet support (#2)
 - **Added** [embed-sidecar] `GET /api/health` — sidecar health with `models_loaded` list (#2)
 - **Added** [embed-sidecar] Lazy model loading with in-memory cache per model name (#2)

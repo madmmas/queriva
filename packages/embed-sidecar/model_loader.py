@@ -1,6 +1,7 @@
 """Lazy-loaded sentence-transformer model cache."""
 
 import logging
+import threading
 from dataclasses import dataclass
 from typing import Final
 
@@ -45,6 +46,7 @@ class ModelLoader:
 
     def __init__(self) -> None:
         self._cache: dict[str, SentenceTransformer] = {}
+        self._load_lock = threading.Lock()
 
     def list_loaded_models(self) -> list[str]:
         """Returns model names currently held in the in-memory cache."""
@@ -67,7 +69,13 @@ class ModelLoader:
                 f"Model '{model_name}' is not supported. Use one of: {supported}."
             )
 
-        if model_name not in self._cache:
+        if model_name in self._cache:
+            return self._cache[model_name]
+
+        with self._load_lock:
+            if model_name in self._cache:
+                return self._cache[model_name]
+
             spec = SUPPORTED_MODELS[model_name]
             try:
                 transformer = SentenceTransformer(spec.huggingface_id)
