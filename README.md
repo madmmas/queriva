@@ -16,6 +16,10 @@ Self-hosted, LLM-powered semantic search. Ingest documents from any source,
 search in natural language, get AI-synthesized answers — zero external API calls.
 </p>
 
+<p align="center">
+  <img src="mock-ui/queriva-icon-files/ui.png" alt="Queriva search UI mock — floods in Dhaka query with RAG summary" width="900">
+</p>
+
 > **Status:** Implementation in progress. See [`docs/SPEC.md`](docs/SPEC.md)
 > for architecture and [`docs/ISSUES.md`](docs/ISSUES.md) for the backlog.
 
