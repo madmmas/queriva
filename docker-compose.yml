@@ -1,0 +1,29 @@
+# SPEC §12 — Docker Compose (Qdrant service; full stack added in issue #27)
+#
+# Qdrant ports (host → container):
+#   6333 — REST API  (curl http://localhost:6333/collections)
+#   6334 — gRPC API  (used by io.qdrant Java client in packages/api)
+#
+# Local access: set QDRANT_URL=http://localhost:6333 in .env (see .env.example)
+# In-stack access: http://qdrant:6333 when other services join this compose file
+
+services:
+  qdrant:
+    build:
+      context: .
+      dockerfile: infra/docker/qdrant.Dockerfile
+    image: queriva/qdrant:local
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    volumes:
+      - qdrant_data:/qdrant/storage
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6333/healthz"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+volumes:
+  qdrant_data:

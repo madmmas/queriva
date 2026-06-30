@@ -345,10 +345,10 @@ Runnable Qdrant instance in Docker with healthcheck (SPEC §12, ADR-001).
 
 ### Tasks
 
-- [ ] `qdrant` service in `docker-compose.yml` — ports 6333/6334, persistent volume
-- [ ] `healthcheck` block: `curl -f http://localhost:6333/healthz`
-- [ ] Testcontainers Qdrant config validated in API test module
-- [ ] Document ports and access in `docker-compose.yml` comments
+- [x] `qdrant` service in `docker-compose.yml` — ports 6333/6334, persistent volume
+- [x] `healthcheck` block: `curl -f http://localhost:6333/healthz`
+- [x] Testcontainers Qdrant config validated in API test module
+- [x] Document ports and access in `docker-compose.yml` comments
 
 ### Acceptance criteria
 
@@ -357,8 +357,8 @@ Runnable Qdrant instance in Docker with healthcheck (SPEC §12, ADR-001).
 
 ### Test plan
 
-- [ ] Manual: `curl localhost:6333/collections`
-- [ ] Testcontainers config verified by running placeholder API integration test
+- [x] Manual: `curl localhost:6333/collections`
+- [x] Testcontainers config verified by running placeholder API integration test
 
 ---
 

@@ -28,5 +28,6 @@ Never call real external services in unit tests.
 
 ## Qdrant integration tests
 
-Use Testcontainers with `qdrant/qdrant:latest`. Each test class gets a fresh
-container via `@Container` + `@Testcontainers`.
+Use `QdrantTestcontainersSupport` with `qdrant/qdrant:latest` — same image and
+ports (6333 REST, 6334 gRPC) as `docker-compose.yml`. Each test class gets a
+fresh container via `@Container` + `@Testcontainers`.
