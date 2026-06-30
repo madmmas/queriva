@@ -2,14 +2,14 @@
 
 from pydantic import BaseModel, Field
 
-DEFAULT_MODEL = "LaBSE"
+from config import DEFAULT_MODEL, MAX_EMBED_TEXT_CHARS
 
 
 class EmbedRequest(BaseModel):
     """Request body for POST /api/embed."""
 
-    text: str = Field(..., min_length=1)
-    model: str = DEFAULT_MODEL
+    text: str = Field(..., min_length=1, max_length=MAX_EMBED_TEXT_CHARS)
+    model: str = Field(default=DEFAULT_MODEL, min_length=1, max_length=128)
 
 
 class EmbedResponse(BaseModel):
