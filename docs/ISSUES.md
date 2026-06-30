@@ -314,12 +314,12 @@ Harden coverage to ≥ 90% before ingest and search depend on the sidecar.
 
 ### Tasks
 
-- [ ] Parametrized test: all three models × correct dimensions (test-quality.mdc C3)
-- [ ] Test empty text input
-- [ ] Test concurrent requests — model loaded only once
-- [ ] Test health endpoint shape
-- [ ] Test model name with spaces / invalid characters → 422
-- [ ] `pytest --cov` meets 90% threshold
+- [x] Parametrized test: all three models × correct dimensions (test-quality.mdc C3)
+- [x] Test empty text input
+- [x] Test concurrent requests — model loaded only once
+- [x] Test health endpoint shape
+- [x] Test model name with spaces / invalid characters → 422
+- [x] `pytest --cov` meets 90% threshold
 
 ### Acceptance criteria
 
@@ -328,8 +328,8 @@ Harden coverage to ≥ 90% before ingest and search depend on the sidecar.
 
 ### Test plan
 
-- [ ] `make test-embed` passes with coverage report
-- [ ] All edge cases have descriptive test names per convention
+- [x] `make test-embed` passes with coverage report
+- [x] All edge cases have descriptive test names per convention
 
 ---
 

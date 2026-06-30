@@ -11,3 +11,7 @@ PORT = int(os.getenv("PORT", str(DEFAULT_PORT)))
 
 # Rule E2 — document body max 100KB; embed accepts single chunk text
 MAX_EMBED_TEXT_CHARS = int(os.getenv("MAX_EMBED_TEXT_CHARS", "100000"))
+
+# Supported model names use letters, digits, dots, underscores, and hyphens only
+MODEL_NAME_PATTERN = r"^[a-zA-Z0-9][a-zA-Z0-9._-]*$"
+MODEL_NAME_MAX_LENGTH = 128

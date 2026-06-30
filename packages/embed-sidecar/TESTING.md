@@ -25,4 +25,4 @@ Use `respx` for mocking outbound HTTP. Use `httpx.AsyncClient` with
 
 ## Coverage
 
-`pytest.ini` enforces 80% line coverage via `--cov-fail-under=80`.
+`pytest.ini` enforces 90% line coverage via `--cov-fail-under=90`.
