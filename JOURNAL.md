@@ -5,6 +5,34 @@ One entry per working day. Most recent entry at the top.
 
 ---
 
+## 2026-06-30 — Issue #2: Embed sidecar
+
+Branch: `issue-2/embed-sidecar`
+Depends on: #0, #1, #1b, ADR-002, ADR-005
+Blocks: #3, #7, #13
+
+### Built
+- `POST /api/embed` — text + model → vector + dimensions (SPEC §6)
+- `GET /api/health` — status + `models_loaded` list
+- `model_loader.py` — lazy cache, three supported models, 503 on unknown/load failure
+- `config.py` — `DEFAULT_MODEL`, `PORT`, `MAX_EMBED_TEXT_CHARS` via `os.getenv`
+- `Dockerfile` — Python 3.11-slim, curl healthcheck, port 8001
+- `requirements.txt` — sentence-transformers 3.3.1, torch 2.5.1 (pinned)
+- Unit tests: parametrized dimensions, empty text 422, invalid model 503, lazy load, contract
+
+### Blocked
+- Nothing
+
+### Decided
+- Unit tests mock `SentenceTransformer` — no 1.8GB model download in CI (#3 adds real-model coverage)
+- Sync `def` routes for blocking `encode()` — FastAPI runs in thread pool
+- `DEFAULT_MODEL` env alias for `EMBED_DEFAULT_MODEL` in config.py
+
+### Tomorrow
+- Start issue #3: embed sidecar full test coverage (90%+, concurrent load test)
+
+---
+
 ## 2026-06-29 — Issue #1: Test infrastructure
 
 Branch: `issue-1/test-infrastructure`

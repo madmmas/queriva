@@ -8,6 +8,10 @@ Versions follow [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+- **Added** [embed-sidecar] `POST /api/embed` — LaBSE, MiniLM, multilingual-mpnet support (#2)
+- **Added** [embed-sidecar] `GET /api/health` — sidecar health with `models_loaded` list (#2)
+- **Added** [embed-sidecar] Lazy model loading with in-memory cache per model name (#2)
+- **Infrastructure** [embed-sidecar] Dockerfile with healthcheck on port 8001 (#2)
 - **Infrastructure** [ci] GitHub Actions CI — build + test on every PR and push to main (#1b)
 - **Infrastructure** [ci] CI caches npm, Maven, and pip dependencies (#1b)
 - **Infrastructure** [ci] CI status badge in README (#1b)
