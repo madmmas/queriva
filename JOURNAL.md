@@ -5,144 +5,36 @@ One entry per working day. Most recent entry at the top.
 
 ---
 
-## 2026-06-30 — Issue #2: Embed sidecar
-
-Branch: `issue-2/embed-sidecar`
-Depends on: #0, #1, #1b, ADR-002, ADR-005
-Blocks: #3, #7, #13
-
-### Built
-- `POST /api/embed` — text + model → vector + dimensions (SPEC §6)
-- `GET /api/health` — status + `models_loaded` list
-- `model_loader.py` — lazy cache, three supported models, 503 on unknown/load failure
-- `config.py` — `DEFAULT_MODEL`, `PORT`, `MAX_EMBED_TEXT_CHARS` via `os.getenv`
-- `Dockerfile` — Python 3.11-slim, curl healthcheck, port 8001
-- `requirements.txt` — sentence-transformers 3.3.1, torch 2.5.1 (pinned)
-- Unit tests: parametrized dimensions, empty text 422, invalid model 503, lazy load, contract
-
-### Blocked
-- Nothing
-
-### Decided
-- Unit tests mock `SentenceTransformer` — no 1.8GB model download in CI (#3 adds real-model coverage)
-- Sync `def` routes for blocking `encode()` — FastAPI runs in thread pool
-- `DEFAULT_MODEL` env alias for `EMBED_DEFAULT_MODEL` in config.py
-
-### Tomorrow
-- Start issue #3: embed sidecar full test coverage (90%+, concurrent load test)
-
----
-
-## 2026-06-29 — Issue #1: Test infrastructure
-
-Branch: `issue-1/test-infrastructure`
-Depends on: #0, ADR-009
-Blocks: #1b, #3, #8, #10, #15, #18, #24, #26, #28
-
-### Built
-
-**packages/api**
-- JUnit 5 + Spring Boot Test + Testcontainers (Qdrant) + AssertJ + WireMock 3.10
-- Maven profiles: `-Punit` (no Docker), `-Pintegration` (Testcontainers)
-- Placeholder tests: `QuerivaApplicationTest`, `WireMockSetupTest`, `QdrantContainerIT`
-- `TESTING.md` documenting tag conventions
-
-**packages/embed-sidecar**
-- pytest + pytest-asyncio + pytest-cov + httpx AsyncClient + respx
-- Placeholder tests: health endpoint (async), respx mock pattern, integration stub
-- `pytest.ini` with 80% coverage floor
-
-**packages/ingest-cli**
-- pytest + pytest-cov + subprocess CLI tests + direct `main()` unit tests
-- Loader and chunker stub tests
-- `pytest.ini` with 80% coverage floor
-
-**packages/ui**
-- Vitest + React Testing Library + MSW + jest-axe
-- `App.test.tsx` — render + accessibility audit
-- Separate `vitest.config.ts`; stub components excluded from coverage until #19–#25
-
-**Root**
-- Makefile `install-python` installs `requirements-dev.txt` for both Python packages
-- All Makefile test targets run real tests (removed `|| true` fallbacks)
-
-**Verification**
-- `make test-unit` → exit 0, no Docker
-- `make test-int` → exit 0, Testcontainers pulls `qdrant/qdrant:latest`
-- `make test` → exit 0 (all packages)
-
-### Blocked
-- UI jest-axe failed on duplicate `<main>` landmark — fixed with `afterEach(cleanup)`
-- WireMock artifact `wiremock-junit5` not on Maven Central — switched to `wiremock-standalone`
-- Python `test-int` failed coverage gate when only integration markers ran — use `--no-cov` for test-int
-
-### Decided
-- Integration test runs skip coverage (`--no-cov`) — coverage enforced on `test` and `test-unit` only
-- UI stub components excluded from Vitest coverage until implemented in later issues
-- WireMock 3.x verify API uses `getRequestedFor()` not `get()`
-
-### Tomorrow
-- Start issue #1b: GitHub Actions CI pipeline
-- Branch: `issue-1b/github-actions-ci`
-
----
-
-## 2026-06-29 (issue #0)
-
-### Built
-- Issue #0: scaffolded Turborepo monorepo per SPEC §5
-- Created packages/api (Spring Boot 3.4 / Java 21), embed-sidecar (FastAPI), ingest-cli, ui (React 18 + Vite)
-- Root package.json, turbo.json, Makefile, .env.example
-- `turbo run build` exits 0 across all four packages
-
-### Blocked
-- Nothing
-
-### Decided
-- Python packages use `python3` in npm scripts (macOS has no `python` shim)
-
-### Tomorrow
-- Start issue #1: test infrastructure (JUnit, pytest, Vitest + MSW)
-
----
-
 ## 2026-06-29
 
 ### Built
-- Created GitHub repo: madmmas/queriva
-- Copied all 25 foundation files (SPEC, ISSUES, ADRs, Cursor rules, fixture, seed script)
-- Set up .gitignore, README stub, seed script permissions
+- **Foundation** — GitHub repo `madmmas/queriva`, SPEC, ISSUES, all 12 ADRs, Cursor rules, fixture, seed script
+- **Issue #0** — Turborepo monorepo scaffold (`packages/api`, `embed-sidecar`, `ingest-cli`, `ui`); `turbo run build` exits 0
+- **Issue #1** — test infrastructure across all packages (JUnit/Testcontainers/WireMock, pytest, Vitest/MSW/jest-axe); `make test` exits 0
+- **Issue #1b** — GitHub Actions CI (`.github/workflows/ci.yml`); `make install` → `build` → `test` on every PR/push to `main`
+- **README** — Queriva SVG icon + centered header (PR #31)
 
 ### Blocked
-- Nothing yet
+- UI jest-axe duplicate `<main>` landmark — fixed with `afterEach(cleanup)`
+- WireMock `wiremock-junit5` not on Maven Central — switched to `wiremock-standalone`
+- Python `test-int` coverage gate on partial runs — use `--no-cov` for integration-only runs
+- macOS has no `python` shim — all scripts use `python3 -m pip`
 
 ### Decided
-- Starting fresh repo rather than retrofitting old one
-- All 12 ADRs already written — #meta issue is effectively pre-done
+- Fresh repo rather than retrofitting the old one
+- Single foundation commit for all ADRs at repo bootstrap
+- Python packages use `python3` in npm/turbo scripts
+- Integration test runs skip coverage; enforced on `test` and `test-unit` only
+- Branch protection on `main` — require `CI / Build and test` (manual GitHub settings)
 
 ### Tomorrow
-- Start issue #0: scaffold Turborepo monorepo (packages/api, embed-sidecar, ingest-cli, ui)
-
----
-
-## 2026-06-29
-
-### Built
-- All 12 ADRs written and committed in foundation commit
-- Closed #meta issue
-- CHANGELOG.md updated with all ADR entries
-
-### Blocked
-- Nothing
-
-### Decided
-- Single commit for all foundation files is cleaner than 12 separate ADR commits
-  at this stage — the repo is brand new and no CI is running yet
-
-### Tomorrow
-- Start issue #0: scaffold Turborepo monorepo
-- Create branch: issue-0/scaffold-monorepo
-- Open Cursor, say: "Start issue #0"
+- Issue #2 — embed sidecar
+- Issue #3 — embed sidecar full test coverage (90%+)
+- Issue #4 — Qdrant Docker service
+- Issue #5 — API skeleton + health + collection management
+- Issue #6 — ChunkingService
+- Issue #7 — Ingest API
+- Issue #8 — Ingest API integration tests
 
 
 ---
@@ -155,24 +47,6 @@ Format:
 ### Decided
 ### Tomorrow
 ```
-
----
-
-## YYYY-MM-DD
-
-### Built
-- (What was completed today — issue number, specific component)
-
-### Blocked
-- (What slowed you down or stopped you — be specific)
-
-### Decided
-- (Any micro-decision made today not big enough for an ADR)
-
-### Tomorrow
-- (The one thing to start with first thing tomorrow)
-
----
 
 <!--
 TIPS:
