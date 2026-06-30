@@ -13,6 +13,10 @@ One entry per working day. Most recent entry at the top.
   - Parametrized invalid model name → 422; dimension mismatch → 500
   - Health endpoint SPEC contract test; `model_loader` unit tests
   - Coverage floor raised to 90% in `pytest.ini`
+- **Issue #4** — Qdrant Docker service (`issue-4/qdrant-docker-service`)
+  - `docker-compose.yml` with qdrant on 6333/6334, `qdrant_data` volume, curl healthcheck
+  - `infra/docker/qdrant.Dockerfile` — curl added to official image for `/healthz` probe
+  - `QdrantTestcontainersSupport` + expanded `QdrantContainerIT` (healthz, collections)
 
 ### Blocked
 - Nothing
@@ -20,9 +24,10 @@ One entry per working day. Most recent entry at the top.
 ### Decided
 - Model names validated with `MODEL_NAME_PATTERN` — spaces and slashes return 422 before 503
 - Real model download tests stay out of CI — mocked `SentenceTransformer` keeps suite under 60s
+- Thin Dockerfile wrapper for curl — upstream `qdrant/qdrant` image ships without curl (#3491)
+- Compose file scoped to qdrant only; full stack deferred to issue #27
 
 ### Tomorrow
-- Issue #4 — Qdrant Docker service
 - Issue #5 — API skeleton + health + collection management
 - Issue #6 — ChunkingService
 - Issue #7 — Ingest API

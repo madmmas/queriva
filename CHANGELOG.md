@@ -8,6 +8,9 @@ Versions follow [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+- **Infrastructure** [infra] `docker-compose.yml` Qdrant service — ports 6333/6334, persistent volume, curl healthcheck (#4)
+- **Infrastructure** [infra] `infra/docker/qdrant.Dockerfile` — extends official image with curl for healthchecks (#4)
+- **Infrastructure** [api] `QdrantTestcontainersSupport` — shared Testcontainers config aligned with compose (#4)
 - **Added** [embed-sidecar] Full test coverage for embed sidecar — concurrent load, validation, 90% floor (#3)
 - **Changed** [embed-sidecar] Thread-safe lazy model loading with lock on first load (#3)
 - **Changed** [embed-sidecar] Model name pattern validation on POST /api/embed — rejects spaces and invalid chars (#3)
