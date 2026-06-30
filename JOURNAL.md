@@ -8,6 +8,11 @@ One entry per working day. Most recent entry at the top.
 ## 2026-06-30
 
 ### Built
+- **Issue #2** — embed sidecar (`issue-2/embed-sidecar`, PR #35)
+  - `POST /api/embed` and `GET /api/health` per SPEC §6 and §9
+  - `model_loader.py` — lazy cache for LaBSE (768), MiniLM (384), multilingual-mpnet (768)
+  - `config.py`, `Dockerfile`, pinned sentence-transformers + torch
+  - Unit tests with mocked `SentenceTransformer` — 12 passed, 96% coverage
 - **Issue #3** — embed sidecar full test coverage (`issue-3/embed-sidecar-test-coverage`)
   - Concurrent embed requests — model loaded only once (thread-safe loader)
   - Parametrized invalid model name → 422; dimension mismatch → 500
@@ -22,8 +27,10 @@ One entry per working day. Most recent entry at the top.
 - Nothing
 
 ### Decided
-- Model names validated with `MODEL_NAME_PATTERN` — spaces and slashes return 422 before 503
-- Real model download tests stay out of CI — mocked `SentenceTransformer` keeps suite under 60s
+- Unit tests mock `SentenceTransformer` — real model download deferred to issue #3 (#2)
+- Sync `def` routes for blocking `encode()` — FastAPI thread pool (#2)
+- Model names validated with `MODEL_NAME_PATTERN` — spaces and slashes return 422 before 503 (#3)
+- Real model download tests stay out of CI — mocked `SentenceTransformer` keeps suite under 60s (#3)
 - Thin Dockerfile wrapper for curl — upstream `qdrant/qdrant` image ships without curl (#3491)
 - Compose file scoped to qdrant only; full stack deferred to issue #27
 
