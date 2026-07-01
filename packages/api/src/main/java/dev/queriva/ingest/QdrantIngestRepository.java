@@ -201,6 +201,6 @@ public class QdrantIngestRepository {
     }
 
     private static Points.PointId buildStringPointId(String pointId) {
-        return Points.PointId.newBuilder().setUuid(pointId).build();
+        return QuerivaPointIdMapper.toQdrantPointId(pointId);
     }
 }
