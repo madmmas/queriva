@@ -35,6 +35,9 @@ class IngestControllerTest {
     @MockBean
     private CollectionManager collectionManager;
 
+    @MockBean
+    private IngestService ingestService;
+
     @Test
     void should_create_collection_when_request_is_valid() throws Exception {
         when(collectionManager.createCollection(any(CreateCollectionRequest.class)))

@@ -8,6 +8,8 @@ Versions follow [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+- **Added** [api] `POST /api/ingest/documents` — chunk → embed → upsert pipeline with upsert modes (#7)
+- **Added** [api] `IngestService`, `EmbedSidecarClient`, `QdrantIngestRepository`, `CollectionEmbeddingModelService` (#7)
 - **Added** [api] `ChunkingService` — sliding window 512 chars / 64 overlap with title prepending (#6)
 - **Added** [api] `Document` and `Chunk` records for ingest pipeline (#6)
 - **Added** [api] `GET /api/health` — live Qdrant, Ollama, and embed-sidecar connectivity (#5)

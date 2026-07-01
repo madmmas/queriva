@@ -461,18 +461,18 @@ Core ingest orchestration: chunk → embed → upsert (SPEC §7.1–§7.2, §7.5
 
 ### Tasks
 
-- [ ] `IngestController` — `POST /api/ingest/documents` with `@Valid @RequestBody`
-- [ ] `IngestService` — orchestrate ChunkingService → batched embed calls → Qdrant upsert
-- [ ] `IngestRequest` Java record: `collection`, `model`, `documents[]`, `chunking`, `upsert_mode`
-- [ ] `IngestResponse` Java record: `collection`, `ingested`, `chunks_created`, `skipped`, `errors`, `latency_ms`
-- [ ] Input validation: query max 1000 chars, collection name pattern, body max 100,000 chars (code-quality.mdc E2)
-- [ ] Upsert modes: `skip_existing`, `overwrite`, `error_on_conflict` (SPEC §7.5)
-- [ ] On `overwrite`: delete existing chunks by `document_id` payload filter before upserting
-- [ ] Batched embedding: `INGEST_BATCH_SIZE=32` env default
-- [ ] Qdrant payload per SPEC §14 + `document_id` per ADR-008
-- [ ] Qdrant filter conditions via typed client builder only — no string concatenation (code-quality.mdc E5)
-- [ ] `latency_ms` measured via `System.nanoTime()` (code-quality.mdc B9)
-- [ ] Embedding model mismatch → 400 with actionable error
+- [x] `IngestController` — `POST /api/ingest/documents` with `@Valid @RequestBody`
+- [x] `IngestService` — orchestrate ChunkingService → batched embed calls → Qdrant upsert
+- [x] `IngestRequest` Java record: `collection`, `model`, `documents[]`, `chunking`, `upsert_mode`
+- [x] `IngestResponse` Java record: `collection`, `ingested`, `chunks_created`, `skipped`, `errors`, `latency_ms`
+- [x] Input validation: query max 1000 chars, collection name pattern, body max 100,000 chars (code-quality.mdc E2)
+- [x] Upsert modes: `skip_existing`, `overwrite`, `error_on_conflict` (SPEC §7.5)
+- [x] On `overwrite`: delete existing chunks by `document_id` payload filter before upserting
+- [x] Batched embedding: `INGEST_BATCH_SIZE=32` env default
+- [x] Qdrant payload per SPEC §14 + `document_id` per ADR-008
+- [x] Qdrant filter conditions via typed client builder only — no string concatenation (code-quality.mdc E5)
+- [x] `latency_ms` measured via `System.nanoTime()` (code-quality.mdc B9)
+- [x] Embedding model mismatch → 400 with actionable error
 
 ### Acceptance criteria
 
@@ -485,13 +485,13 @@ Core ingest orchestration: chunk → embed → upsert (SPEC §7.1–§7.2, §7.5
 
 ### Test plan
 
-- [ ] Unit: `IngestService` with mocked embed client + mocked Qdrant
-- [ ] Unit: each upsert mode branching logic
-- [ ] Integration (Testcontainers): ingest 3 articles → correct Qdrant point count
-- [ ] Integration: `skip_existing` idempotency
-- [ ] Integration: `overwrite` replaces chunks
-- [ ] Contract test: response JSON matches SPEC §7.2 exactly
-- [ ] Security test: body > 100,000 chars → 400
+- [x] Unit: `IngestService` with mocked embed client + mocked Qdrant
+- [x] Unit: each upsert mode branching logic
+- [x] Integration (Testcontainers): ingest 3 articles → correct Qdrant point count
+- [x] Integration: `skip_existing` idempotency
+- [x] Integration: `overwrite` replaces chunks
+- [x] Contract test: response JSON matches SPEC §7.2 exactly
+- [x] Security test: body > 100,000 chars → 400
 
 ---
 

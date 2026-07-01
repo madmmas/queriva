@@ -14,19 +14,29 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-// SPEC.md §6 — collection management endpoints
+// SPEC.md §6 — ingest endpoints (collection management + document ingest)
 @RestController
 @RequestMapping("/api/ingest")
 @Validated
 public class IngestController {
 
     private final CollectionManager collectionManager;
+    private final IngestService ingestService;
 
     /**
      * Creates the ingest controller with collection lifecycle dependencies.
      */
-    public IngestController(CollectionManager collectionManager) {
+    public IngestController(CollectionManager collectionManager, IngestService ingestService) {
         this.collectionManager = collectionManager;
+        this.ingestService = ingestService;
+    }
+
+    /**
+     * Ingests documents via chunk → embed → upsert pipeline.
+     */
+    @PostMapping("/documents")
+    public ResponseEntity<IngestResponse> ingestDocuments(@Valid @RequestBody IngestRequest request) {
+        return ResponseEntity.ok(ingestService.ingestDocuments(request));
     }
 
     /**
