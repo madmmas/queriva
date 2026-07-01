@@ -15,39 +15,6 @@ Versions follow [Semantic Versioning](https://semver.org/).
 - **Infrastructure** [infra] `docker-compose.yml` Qdrant service — ports 6333/6334, persistent volume, curl healthcheck (#4)
 - **Infrastructure** [infra] `infra/docker/qdrant.Dockerfile` — extends official image with curl for healthchecks (#4)
 - **Infrastructure** [api] `QdrantTestcontainersSupport` — shared Testcontainers config aligned with compose (#4)
-- **Added** [embed-sidecar] Full test coverage for embed sidecar — concurrent load, validation, 90% floor (#3)
-- **Changed** [embed-sidecar] Thread-safe lazy model loading with lock on first load (#3)
-- **Changed** [embed-sidecar] Model name pattern validation on POST /api/embed — rejects spaces and invalid chars (#3)
-- **Added** [embed-sidecar] `POST /api/embed` — LaBSE, MiniLM, multilingual-mpnet support (#2)
-- **Added** [embed-sidecar] `GET /api/health` — sidecar health with `models_loaded` list (#2)
-- **Added** [embed-sidecar] Lazy model loading with in-memory cache per model name (#2)
-- **Infrastructure** [embed-sidecar] Dockerfile with healthcheck on port 8001 (#2)
-- **Infrastructure** [ci] GitHub Actions CI — build + test on every PR and push to main (#1b)
-- **Infrastructure** [ci] CI caches npm, Maven, and pip dependencies (#1b)
-- **Infrastructure** [ci] CI status badge in README (#1b)
-- **Infrastructure** [infra] Test infrastructure across all packages — JUnit 5, Testcontainers, WireMock, pytest, Vitest, MSW, jest-axe (#1)
-- **Infrastructure** [infra] Test tag conventions: `@Tag("unit")`, `@Tag("integration")`, `@Tag("slow")` documented per package (#1)
-- **Infrastructure** [infra] `make test`, `make test-unit`, `make test-int` wired via Turborepo (#1)
-- **Infrastructure** [infra] Coverage reporting for embed-sidecar, ingest-cli, and ui (80% floor) (#1)
-- **Infrastructure** [infra] Turborepo monorepo with api, embed-sidecar, ingest-cli, ui packages (#0)
-- **Infrastructure** [infra] Root Makefile with install, build, test, smoke, seed targets (#0)
-- **Infrastructure** [infra] `.env.example` with all SPEC §13 configuration keys (#0)
-- **Added** [api] Spring Boot 3.4 / Java 21 scaffold with search/ and ingest/ package stubs (#0)
-- **Added** [embed-sidecar] FastAPI skeleton with health endpoint stub (#0)
-- **Added** [ingest-cli] CLI skeleton with loaders/ directory stubs (#0)
-- **Added** [ui] React 18 + Vite + TypeScript scaffold with component stubs (#0)
-- **Docs** [adr] ADR-001 — Qdrant as vector database
-- **Docs** [adr] ADR-002 — LaBSE as default embedding model
-- **Docs** [adr] ADR-003 — Sliding window chunking with title prepending
-- **Docs** [adr] ADR-004 — Spring Boot / Java 21 for API gateway
-- **Docs** [adr] ADR-005 — FastAPI sidecar over ONNX-in-JVM
-- **Docs** [adr] ADR-006 — Ollama + Mistral 7B over vLLM / llama.cpp
-- **Docs** [adr] ADR-007 — Character-based over token-based chunking
-- **Docs** [adr] ADR-008 — Source document_id as upsert identity key
-- **Docs** [adr] ADR-009 — Testcontainers over mock Qdrant client
-- **Docs** [adr] ADR-010 — Module Federation over iframe / Web Components
-- **Docs** [adr] ADR-011 — Ingest orchestration in Spring Boot
-- **Docs** [adr] ADR-012 — Turborepo over Nx
 
 ---
 
@@ -78,29 +45,50 @@ Packages: `[api]`, `[embed-sidecar]`, `[ingest-cli]`, `[ui]`, `[infra]`, `[ci]`,
 
 ---
 
-## [0.1.0] — TBD
+## [0.1.0] — 2026-06-30
 > Foundation: monorepo scaffold, CI pipeline, and embed sidecar
 
 ### Added
 - **Added** [embed-sidecar] `POST /api/embed` — LaBSE, MiniLM, multilingual-mpnet support (#2)
-- **Added** [embed-sidecar] `GET /api/health` — sidecar health check (#2)
-- **Added** [embed-sidecar] Lazy model loading with in-memory cache (#2)
+- **Added** [embed-sidecar] `GET /api/health` — sidecar health with `models_loaded` list (#2)
+- **Added** [embed-sidecar] Lazy model loading with in-memory cache per model name (#2)
+- **Added** [api] Spring Boot 3.4 / Java 21 scaffold with search/ and ingest/ package stubs (#0)
+- **Added** [embed-sidecar] FastAPI skeleton with health endpoint stub (#0)
+- **Added** [ingest-cli] CLI skeleton with loaders/ directory stubs (#0)
+- **Added** [ui] React 18 + Vite + TypeScript scaffold with component stubs (#0)
+
+### Changed
+- **Changed** [embed-sidecar] Thread-safe lazy model loading with lock on first load (#3)
+- **Changed** [embed-sidecar] Model name pattern validation on POST /api/embed — rejects spaces and invalid chars (#3)
+- **Changed** [embed-sidecar] Full test coverage — concurrent load, validation, 90% floor (#3)
 
 ### Infrastructure
 - **Infrastructure** [infra] Turborepo monorepo with api, embed-sidecar, ingest-cli, ui packages (#0)
+- **Infrastructure** [infra] Root Makefile with install, build, test, smoke, seed targets (#0)
+- **Infrastructure** [infra] `.env.example` with all SPEC §13 configuration keys (#0)
 - **Infrastructure** [infra] MIT LICENSE, root README stub, .gitignore (#0)
-- **Infrastructure** [infra] Test infrastructure: JUnit 5 + Testcontainers (API), pytest + httpx (Python), Vitest + RTL + MSW (UI) (#1)
+- **Infrastructure** [infra] Test infrastructure across all packages — JUnit 5, Testcontainers, WireMock, pytest, Vitest, MSW, jest-axe (#1)
+- **Infrastructure** [infra] Test tag conventions: `@Tag("unit")`, `@Tag("integration")`, `@Tag("slow")` documented per package (#1)
+- **Infrastructure** [infra] `make test`, `make test-unit`, `make test-int` wired via Turborepo (#1)
+- **Infrastructure** [infra] Coverage reporting for embed-sidecar, ingest-cli, and ui (80% floor) (#1)
 - **Infrastructure** [ci] GitHub Actions CI — build + test on every PR and push to main (#1b)
+- **Infrastructure** [ci] CI caches npm, Maven, and pip dependencies (#1b)
 - **Infrastructure** [ci] CI status badge in README (#1b)
+- **Infrastructure** [embed-sidecar] Dockerfile with healthcheck on port 8001 (#2)
 
 ### Docs
-- **Docs** [adr] ADR-001 — Qdrant as vector database (before #0)
-- **Docs** [adr] ADR-002 — LaBSE as default embedding model (before #2)
-- **Docs** [adr] ADR-004 — Spring Boot / Java 21 for API gateway (before #0)
-- **Docs** [adr] ADR-005 — FastAPI sidecar over ONNX-in-JVM (before #2)
-- **Docs** [adr] ADR-009 — Testcontainers over mock Qdrant client (before #1)
-- **Docs** [adr] ADR-011 — Ingest orchestration in Spring Boot (before #0)
-- **Docs** [adr] ADR-012 — Turborepo over Nx (before #0)
+- **Docs** [adr] ADR-001 — Qdrant as vector database
+- **Docs** [adr] ADR-002 — LaBSE as default embedding model
+- **Docs** [adr] ADR-003 — Sliding window chunking with title prepending
+- **Docs** [adr] ADR-004 — Spring Boot / Java 21 for API gateway
+- **Docs** [adr] ADR-005 — FastAPI sidecar over ONNX-in-JVM
+- **Docs** [adr] ADR-006 — Ollama + Mistral 7B over vLLM / llama.cpp
+- **Docs** [adr] ADR-007 — Character-based over token-based chunking
+- **Docs** [adr] ADR-008 — Source document_id as upsert identity key
+- **Docs** [adr] ADR-009 — Testcontainers over mock Qdrant client
+- **Docs** [adr] ADR-010 — Module Federation over iframe / Web Components
+- **Docs** [adr] ADR-011 — Ingest orchestration in Spring Boot
+- **Docs** [adr] ADR-012 — Turborepo over Nx
 
 ---
 

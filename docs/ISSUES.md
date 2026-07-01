@@ -78,28 +78,28 @@ task below. See `docs/SPEC.md §19` for the full ADR index.
 ### Tasks
 
 **Before #0:**
-- [ ] `docs/adr/ADR-001-qdrant.md` — Qdrant over Weaviate, Milvus, pgvector, Chroma
-- [ ] `docs/adr/ADR-004-spring-boot.md` — Spring Boot / Java 21 over Go, FastAPI
-- [ ] `docs/adr/ADR-005-embed-sidecar.md` — FastAPI sidecar over ONNX-in-JVM
-- [ ] `docs/adr/ADR-011-ingest-in-api.md` — Ingest orchestration in Spring Boot
-- [ ] `docs/adr/ADR-012-turborepo.md` — Turborepo over Nx
+- [x] `docs/adr/ADR-001-qdrant.md` — Qdrant over Weaviate, Milvus, pgvector, Chroma
+- [x] `docs/adr/ADR-004-spring-boot.md` — Spring Boot / Java 21 over Go, FastAPI
+- [x] `docs/adr/ADR-005-embed-sidecar.md` — FastAPI sidecar over ONNX-in-JVM
+- [x] `docs/adr/ADR-011-ingest-in-api.md` — Ingest orchestration in Spring Boot
+- [x] `docs/adr/ADR-012-turborepo.md` — Turborepo over Nx
 
 **Before #1:**
-- [ ] `docs/adr/ADR-009-testcontainers.md` — Testcontainers over mock Qdrant client
+- [x] `docs/adr/ADR-009-testcontainers.md` — Testcontainers over mock Qdrant client
 
 **Before #2:**
-- [ ] `docs/adr/ADR-002-labse.md` — LaBSE as default embedding model
-- [ ] `docs/adr/ADR-006-ollama-mistral.md` — Ollama + Mistral 7B over vLLM / llama.cpp
+- [x] `docs/adr/ADR-002-labse.md` — LaBSE as default embedding model
+- [x] `docs/adr/ADR-006-ollama-mistral.md` — Ollama + Mistral 7B over vLLM / llama.cpp
 
 **Before #6:**
-- [ ] `docs/adr/ADR-003-chunking-strategy.md` — Sliding window with title prepending
-- [ ] `docs/adr/ADR-007-char-chunking.md` — Character-based over token-based chunking
+- [x] `docs/adr/ADR-003-chunking-strategy.md` — Sliding window with title prepending
+- [x] `docs/adr/ADR-007-char-chunking.md` — Character-based over token-based chunking
 
 **Before #7:**
-- [ ] `docs/adr/ADR-008-document-id.md` — Source document_id as upsert identity key
+- [x] `docs/adr/ADR-008-document-id.md` — Source document_id as upsert identity key
 
 **Before #25:**
-- [ ] `docs/adr/ADR-010-module-federation.md` — Module Federation over iframe / Web Components
+- [x] `docs/adr/ADR-010-module-federation.md` — Module Federation over iframe / Web Components
 
 ### Acceptance criteria
 
@@ -110,8 +110,8 @@ task below. See `docs/SPEC.md §19` for the full ADR index.
 
 ### Test plan
 
-- [ ] `ls docs/adr/ | wc -l` returns 12
-- [ ] Each file passes markdown lint (no broken headings or tables)
+- [x] `ls docs/adr/ | wc -l` returns 12
+- [x] Each file passes markdown lint (no broken headings or tables)
 
 ---
 
@@ -130,42 +130,42 @@ logic yet — only structure, tooling, and repo hygiene.
 ### Tasks
 
 **Monorepo structure:**
-- [ ] Root `package.json`, `turbo.json` per SPEC §5
-- [ ] `packages/api/` — Spring Boot 3.x / Java 21, Maven, `search/` and `ingest/` stubs
-- [ ] `packages/embed-sidecar/` — Python 3.11+, FastAPI skeleton
-- [ ] `packages/ingest-cli/` — Python 3.11+, CLI skeleton + `loaders/` dir
-- [ ] `packages/ui/` — React 18, Vite, TypeScript scaffold
-- [ ] Root `Makefile` with all required targets (see `queriva.mdc` Rule 11)
-- [ ] `.gitignore` covering: `.env`, `target/`, `dist/`, `__pycache__/`, `node_modules/`, `*.pyc`, `*.jar`, model weights
+- [x] Root `package.json`, `turbo.json` per SPEC §5
+- [x] `packages/api/` — Spring Boot 3.x / Java 21, Maven, `search/` and `ingest/` stubs
+- [x] `packages/embed-sidecar/` — Python 3.11+, FastAPI skeleton
+- [x] `packages/ingest-cli/` — Python 3.11+, CLI skeleton + `loaders/` dir
+- [x] `packages/ui/` — React 18, Vite, TypeScript scaffold
+- [x] Root `Makefile` with all required targets (see `queriva.mdc` Rule 11)
+- [x] `.gitignore` covering: `.env`, `target/`, `dist/`, `__pycache__/`, `node_modules/`, `*.pyc`, `*.jar`, model weights
 
 **Repo foundation files:**
-- [ ] `LICENSE` — MIT
-- [ ] `README.md` stub — one paragraph + link to SPEC + "implementation in progress" note
-- [ ] `CONTRIBUTING.md` — sole developer workflow (branch naming, commit format, what not to commit)
-- [ ] `SECURITY.md` — scope, private reporting link, known limitations by design
-- [ ] `JOURNAL.md` — daily log template (first entry: today's date + "Scaffolded monorepo")
-- [ ] `README-TEMPLATE.md` — full README template Cursor will use for issue #29
-- [ ] `CHANGELOG.md` — initial structure with all version sections pre-populated (v0.1.0 → v1.0.0)
+- [x] `LICENSE` — MIT
+- [x] `README.md` stub — one paragraph + link to SPEC + "implementation in progress" note
+- [x] `CONTRIBUTING.md` — sole developer workflow (branch naming, commit format, what not to commit)
+- [x] `SECURITY.md` — scope, private reporting link, known limitations by design
+- [x] `JOURNAL.md` — daily log template (first entry: today's date + "Scaffolded monorepo")
+- [x] `README-TEMPLATE.md` — full README template Cursor will use for issue #29
+- [x] `CHANGELOG.md` — initial structure with all version sections pre-populated (v0.1.0 → v1.0.0)
 
 **Cursor rules:**
-- [ ] `.cursor/rules/queriva.mdc` — workflow rules (20 rules)
-- [ ] `.cursor/rules/code-quality.mdc` — code quality rules (Java, Python, TypeScript, security)
-- [ ] `.cursor/rules/test-quality.mdc` — test quality rules (Java, Python, TypeScript, E2E)
+- [x] `.cursor/rules/queriva.mdc` — workflow rules (20 rules)
+- [x] `.cursor/rules/code-quality.mdc` — code quality rules (Java, Python, TypeScript, security)
+- [x] `.cursor/rules/test-quality.mdc` — test quality rules (Java, Python, TypeScript, E2E)
 
 **Fixture and seed:**
-- [ ] `fixtures/news_radar_dhaka_floods.json` — 8 articles (4 BN + 4 EN), full SPEC §14 payload fields
-- [ ] `scripts/seed-demo.sh` — idempotent curl-based seed script
+- [x] `fixtures/news_radar_dhaka_floods.json` — 8 articles (4 BN + 4 EN), full SPEC §14 payload fields
+- [x] `scripts/seed-demo.sh` — idempotent curl-based seed script
 
 **Mock UI and brand assets:**
-- [ ] `mock-ui/queriva_mock_ui_v2.html` — interactive design reference (open in browser)
-- [ ] `mock-ui/queriva-icon-files/` — all 8 SVG brand assets
-- [ ] `mock-ui/README.md` — one paragraph explaining these are design references,
+- [x] `mock-ui/queriva_mock_ui_v2.html` — interactive design reference (open in browser)
+- [x] `mock-ui/queriva-icon-files/` — all 8 SVG brand assets
+- [x] `mock-ui/README.md` — one paragraph explaining these are design references,
       not production assets; production assets move to packages/ui in issue #19
 
 **SPEC and docs:**
-- [ ] `docs/SPEC.md` — current version (v3 with §18 version guide, §19 ADR index)
-- [ ] `docs/ISSUES.md` — this file
-- [ ] `docs/adr/` directory — empty, ready for ADR files from #meta
+- [x] `docs/SPEC.md` — current version (v3 with §18 version guide, §19 ADR index)
+- [x] `docs/ISSUES.md` — this file
+- [x] `docs/adr/` directory — empty, ready for ADR files from #meta
 
 ### Acceptance criteria
 
@@ -179,11 +179,11 @@ logic yet — only structure, tooling, and repo hygiene.
 
 ### Test plan
 
-- [ ] `turbo run build` exits 0
-- [ ] `ls .cursor/rules/` shows three `.mdc` files
-- [ ] `python -c "import json; data=json.load(open('fixtures/news_radar_dhaka_floods.json')); assert len(data)==8"`
-- [ ] `git status` after `make build` shows no untracked artifacts
-- [ ] CHANGELOG.md entry added for this issue
+- [x] `turbo run build` exits 0
+- [x] `ls .cursor/rules/` shows three `.mdc` files
+- [x] `python -c "import json; data=json.load(open('fixtures/news_radar_dhaka_floods.json')); assert len(data)==8"`
+- [x] `git status` after `make build` shows no untracked artifacts
+- [x] CHANGELOG.md entry added for this issue
 
 ---
 
@@ -200,16 +200,16 @@ issue depends on this being solid. See `test-quality.mdc` for conventions.
 
 ### Tasks
 
-- [ ] **API:** JUnit 5 + Spring Boot Test + Testcontainers (Qdrant) config — see ADR-009
-- [ ] **API:** AssertJ dependency added to `pom.xml`
-- [ ] **API:** WireMock dependency added for HTTP client unit tests
-- [ ] **Embed sidecar:** pytest + httpx AsyncClient + pytest-cov + respx
-- [ ] **Ingest CLI:** pytest + pytest-httpx + subprocess test pattern
-- [ ] **UI:** Vitest + React Testing Library + MSW + jest-axe
-- [ ] Test tag conventions documented in each package: `@Tag("unit")`, `@Tag("integration")`, `@Tag("slow")`
-- [ ] `turbo run test` pipeline configured
-- [ ] All Makefile test targets working: `make test`, `make test-unit`, `make test-int`, `make test-api`, `make test-embed`, `make test-ingest`, `make test-ui`
-- [ ] Each package has at least one passing placeholder test
+- [x] **API:** JUnit 5 + Spring Boot Test + Testcontainers (Qdrant) config — see ADR-009
+- [x] **API:** AssertJ dependency added to `pom.xml`
+- [x] **API:** WireMock dependency added for HTTP client unit tests
+- [x] **Embed sidecar:** pytest + httpx AsyncClient + pytest-cov + respx
+- [x] **Ingest CLI:** pytest + pytest-httpx + subprocess test pattern
+- [x] **UI:** Vitest + React Testing Library + MSW + jest-axe
+- [x] Test tag conventions documented in each package: `@Tag("unit")`, `@Tag("integration")`, `@Tag("slow")`
+- [x] `turbo run test` pipeline configured
+- [x] All Makefile test targets working: `make test`, `make test-unit`, `make test-int`, `make test-api`, `make test-embed`, `make test-ingest`, `make test-ui`
+- [x] Each package has at least one passing placeholder test
 
 ### Acceptance criteria
 
@@ -220,9 +220,9 @@ issue depends on this being solid. See `test-quality.mdc` for conventions.
 
 ### Test plan
 
-- [ ] `make test` from root exits 0
-- [ ] `make test-unit` runs without Docker daemon
-- [ ] Coverage report generated for Python packages
+- [x] `make test` from root exits 0
+- [x] `make test-unit` runs without Docker daemon
+- [x] Coverage report generated for Python packages
 
 ---
 
@@ -238,13 +238,13 @@ CI on every PR and push to `main`. Uses Makefile targets exclusively.
 
 ### Tasks
 
-- [ ] `.github/workflows/ci.yml` — trigger on `pull_request` and `push` to `main`
-- [ ] Matrix: Node 20, Java 21, Python 3.11 on `ubuntu-latest`
-- [ ] Steps: `make install` → `make build` → `make test`
-- [ ] Docker available for Testcontainers (`ubuntu-latest` supports this natively)
-- [ ] Cache: `~/.npm`, `~/.m2`, pip cache
-- [ ] CI badge in `README.md` stub
-- [ ] Branch protection: require CI green before merge to main (configure in GitHub settings)
+- [x] `.github/workflows/ci.yml` — trigger on `pull_request` and `push` to `main`
+- [x] Matrix: Node 20, Java 21, Python 3.11 on `ubuntu-latest`
+- [x] Steps: `make install` → `make build` → `make test`
+- [x] Docker available for Testcontainers (`ubuntu-latest` supports this natively)
+- [x] Cache: `~/.npm`, `~/.m2`, pip cache
+- [x] CI badge in `README.md` stub
+- [x] Branch protection: require CI green before merge to main (configure in GitHub settings)
 
 ### Acceptance criteria
 
@@ -254,9 +254,9 @@ CI on every PR and push to `main`. Uses Makefile targets exclusively.
 
 ### Test plan
 
-- [ ] Push to a branch → CI runs and passes
-- [ ] Break a test → CI fails with clear error
-- [ ] Check Actions log confirms Docker + Testcontainers step
+- [x] Push to a branch → CI runs and passes
+- [x] Break a test → CI fails with clear error
+- [x] Check Actions log confirms Docker + Testcontainers step
 
 ---
 
@@ -272,18 +272,18 @@ FastAPI embedding service shared by ingest and search paths (SPEC §9, ADR-005).
 
 ### Tasks
 
-- [ ] `POST /api/embed` — `{ text, model }` → `{ vector, dimensions }`
-- [ ] `GET /api/health` — `{ status: "ok" }`
-- [ ] Lazy model loading with in-memory cache per model name
-- [ ] Supported models: `LaBSE` (768-dim, default), `all-MiniLM-L6-v2` (384-dim), `paraphrase-multilingual-mpnet-base-v2` (768-dim)
-- [ ] Pydantic request/response models (code-quality.mdc C2)
-- [ ] Type hints on all functions (code-quality.mdc C1)
-- [ ] `logging` module only — no `print()` (code-quality.mdc C5)
-- [ ] All constants at module top (code-quality.mdc C3)
-- [ ] `requirements.txt` pinned exact versions (code-quality.mdc E6)
-- [ ] `Dockerfile`
-- [ ] Config via `os.getenv` with defaults: `DEFAULT_MODEL`, `PORT=8001`
-- [ ] Invalid model name → 503 with actionable error message (code-quality.mdc A7)
+- [x] `POST /api/embed` — `{ text, model }` → `{ vector, dimensions }`
+- [x] `GET /api/health` — `{ status: "ok" }`
+- [x] Lazy model loading with in-memory cache per model name
+- [x] Supported models: `LaBSE` (768-dim, default), `all-MiniLM-L6-v2` (384-dim), `paraphrase-multilingual-mpnet-base-v2` (768-dim)
+- [x] Pydantic request/response models (code-quality.mdc C2)
+- [x] Type hints on all functions (code-quality.mdc C1)
+- [x] `logging` module only — no `print()` (code-quality.mdc C5)
+- [x] All constants at module top (code-quality.mdc C3)
+- [x] `requirements.txt` pinned exact versions (code-quality.mdc E6)
+- [x] `Dockerfile`
+- [x] Config via `os.getenv` with defaults: `DEFAULT_MODEL`, `PORT=8001`
+- [x] Invalid model name → 503 with actionable error message (code-quality.mdc A7)
 
 ### Acceptance criteria
 
@@ -294,11 +294,11 @@ FastAPI embedding service shared by ingest and search paths (SPEC §9, ADR-005).
 
 ### Test plan
 
-- [ ] Unit: all three models return correct dimension counts
-- [ ] Unit: empty text handling
-- [ ] Unit: invalid model name returns 503
-- [ ] Contract test: request/response JSON matches SPEC §6
-- [ ] Manual: `curl -X POST localhost:8001/api/embed -d '{"text":"test","model":"LaBSE"}'`
+- [x] Unit: all three models return correct dimension counts
+- [x] Unit: empty text handling
+- [x] Unit: invalid model name returns 503
+- [x] Contract test: request/response JSON matches SPEC §6
+- [x] Manual: `curl -X POST localhost:8001/api/embed -d '{"text":"test","model":"LaBSE"}'`
 
 ---
 

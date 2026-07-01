@@ -33,6 +33,7 @@ One entry per working day. Most recent entry at the top.
 - Nothing
 
 ### Decided
+- Released **v0.1.0** — issues #0–#3 complete; CHANGELOG entries moved from `[Unreleased]` (#meta–#3)
 - Qdrant Java client gRPC port derived from `QDRANT_URL` host + `QDRANT_GRPC_PORT` (6334) — REST URL stays 6333 (#5)
 - Health `status=ok` requires Qdrant + embed-sidecar; Ollama reported but does not block ok (#5)
 - Surefire `-Dnet.bytebuddy.experimental=true` for local Java 25 + Mockito compatibility (#5)
