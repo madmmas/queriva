@@ -8,6 +8,10 @@ Versions follow [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+- **Added** [api] `GET /api/health` — live Qdrant, Ollama, and embed-sidecar connectivity (#5)
+- **Added** [api] `POST /api/ingest/collection`, `GET /api/ingest/collections`, `DELETE /api/ingest/collection/{name}` (#5)
+- **Added** [api] `CollectionManager`, `GlobalExceptionHandler`, CORS config, Qdrant gRPC client (#5)
+- **Infrastructure** [api] `Dockerfile` for API package with curl healthcheck (#5)
 - **Infrastructure** [infra] `docker-compose.yml` Qdrant service — ports 6333/6334, persistent volume, curl healthcheck (#4)
 - **Infrastructure** [infra] `infra/docker/qdrant.Dockerfile` — extends official image with curl for healthchecks (#4)
 - **Infrastructure** [api] `QdrantTestcontainersSupport` — shared Testcontainers config aligned with compose (#4)

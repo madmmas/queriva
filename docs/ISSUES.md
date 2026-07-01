@@ -375,20 +375,20 @@ Spring Boot gateway skeleton with health and collection management (SPEC §6 hea
 
 ### Tasks
 
-- [ ] Spring Boot 3.x app: `dev.queriva.QuerivaApplication` + `search/` + `ingest/` packages
-- [ ] `GlobalExceptionHandler` via `@ControllerAdvice` (code-quality.mdc B8)
-- [ ] `GET /api/health` — actively checks Qdrant, Ollama, embed-sidecar (code-quality.mdc F4)
-- [ ] `POST /api/ingest/collection` — create collection (`vector_size`, `distance`, `recreate_if_exists`)
-- [ ] `GET /api/ingest/collections` — list with stats
-- [ ] `DELETE /api/ingest/collection/{name}` — returns 204
-- [ ] `CollectionManager.java` — Qdrant collection CRUD using typed client filter builder (code-quality.mdc E5)
-- [ ] Bean Validation on all request DTOs (code-quality.mdc B6)
-- [ ] Collection name validated: `^[a-zA-Z0-9_]{1,64}$` (code-quality.mdc E2)
-- [ ] Constructor injection only (code-quality.mdc B3)
-- [ ] Config via `@Value` with defaults matching `.env.example` (code-quality.mdc F5)
-- [ ] CORS: `localhost:3000`, `localhost:5173`, `CORS_ALLOWED_ORIGINS` env (queriva.mdc Rule 12)
-- [ ] `Dockerfile` for API package
-- [ ] All config keys reference SPEC §13 in comments
+- [x] Spring Boot 3.x app: `dev.queriva.QuerivaApplication` + `search/` + `ingest/` packages
+- [x] `GlobalExceptionHandler` via `@ControllerAdvice` (code-quality.mdc B8)
+- [x] `GET /api/health` — actively checks Qdrant, Ollama, embed-sidecar (code-quality.mdc F4)
+- [x] `POST /api/ingest/collection` — create collection (`vector_size`, `distance`, `recreate_if_exists`)
+- [x] `GET /api/ingest/collections` — list with stats
+- [x] `DELETE /api/ingest/collection/{name}` — returns 204
+- [x] `CollectionManager.java` — Qdrant collection CRUD using typed client filter builder (code-quality.mdc E5)
+- [x] Bean Validation on all request DTOs (code-quality.mdc B6)
+- [x] Collection name validated: `^[a-zA-Z0-9_]{1,64}$` (code-quality.mdc E2)
+- [x] Constructor injection only (code-quality.mdc B3)
+- [x] Config via `@Value` with defaults matching `.env.example` (code-quality.mdc F5)
+- [x] CORS: `localhost:3000`, `localhost:5173`, `CORS_ALLOWED_ORIGINS` env (queriva.mdc Rule 12)
+- [x] `Dockerfile` for API package
+- [x] All config keys reference SPEC §13 in comments
 
 ### Acceptance criteria
 
@@ -398,11 +398,11 @@ Spring Boot gateway skeleton with health and collection management (SPEC §6 hea
 
 ### Test plan
 
-- [ ] `@WebMvcTest` for health endpoint — mock dependency checks
-- [ ] `@WebMvcTest` for collection endpoints — validate request/response shapes
-- [ ] Integration test (Testcontainers Qdrant): create → list → delete
-- [ ] Integration test: health reflects real Qdrant status
-- [ ] CHANGELOG.md entry added
+- [x] `@WebMvcTest` for health endpoint — mock dependency checks
+- [x] `@WebMvcTest` for collection endpoints — validate request/response shapes
+- [x] Integration test (Testcontainers Qdrant): create → list → delete
+- [x] Integration test: health reflects real Qdrant status
+- [x] CHANGELOG.md entry added
 
 ---
 
