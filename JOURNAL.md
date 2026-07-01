@@ -8,12 +8,17 @@ One entry per working day. Most recent entry at the top.
 ## 2026-06-30
 
 ### Built
+- **Issue #8** — Ingest API integration tests (`issue-8/ingest-api-integration-tests`)
+  - `IngestPipelineIT` — 6 tests against Testcontainers Qdrant + WireMock embed sidecar
+  - Shared `NewsRadarFixtureSupport` loads `fixtures/news_radar_dhaka_floods.json` (8 articles, 13 chunks)
+  - Covers: point count, chunking on/off, SPEC §14 payload fields, bn/en languages, `skip_existing` idempotency, <30s baseline
+  - `QdrantRestTestSupport` for Qdrant REST scroll assertions; removed ad-hoc `IngestServiceIT`
 - **Issue #7** — Ingest API (`issue-7/ingest-api`)
   - `POST /api/ingest/documents` — chunk → embed → upsert pipeline (SPEC §7.1–§7.2, §7.5, ADR-008)
   - Upsert modes: `skip_existing`, `overwrite`, `error_on_conflict`; batched embed calls (`INGEST_BATCH_SIZE=32`)
   - `EmbedSidecarClient`, `QdrantIngestRepository`, `CollectionEmbeddingModelService` for model validation
   - Qdrant payload per SPEC §14; overwrite deletes by `document_id` filter before re-upsert
-  - Unit tests (`IngestServiceTest`, `IngestDocumentsControllerTest`); Testcontainers IT (`IngestServiceIT`)
+  - Unit tests (`IngestServiceTest`, `IngestDocumentsControllerTest`); Testcontainers IT (`IngestPipelineIT` in #8)
 - **Issue #6** — ChunkingService (`issue-6/chunking-service`)
   - Character-based sliding window: 512 chars / 64 overlap (ADR-003, ADR-007)
   - Title prepended to embed input; `body_snippet` capped at 500 chars without title
@@ -25,20 +30,20 @@ One entry per working day. Most recent entry at the top.
   - `CollectionManager` via `io.qdrant:client` 1.14.1; `GlobalExceptionHandler`, CORS, config beans
   - `@WebMvcTest` unit tests (health + collection endpoints); Testcontainers ITs for create/list/delete
   - `packages/api/Dockerfile` with curl healthcheck
-- **Issue #2** — embed sidecar (`issue-2/embed-sidecar`, PR #35)
-  - `POST /api/embed` and `GET /api/health` per SPEC §6 and §9
-  - `model_loader.py` — lazy cache for LaBSE (768), MiniLM (384), multilingual-mpnet (768)
-  - `config.py`, `Dockerfile`, pinned sentence-transformers + torch
-  - Unit tests with mocked `SentenceTransformer` — 12 passed, 96% coverage
+- **Issue #4** — Qdrant Docker service (`issue-4/qdrant-docker-service`)
+  - `docker-compose.yml` with qdrant on 6333/6334, `qdrant_data` volume, curl healthcheck
+  - `infra/docker/qdrant.Dockerfile` — curl added to official image for `/healthz` probe
+  - `QdrantTestcontainersSupport` + expanded `QdrantContainerIT` (healthz, collections)
 - **Issue #3** — embed sidecar full test coverage (`issue-3/embed-sidecar-test-coverage`)
   - Concurrent embed requests — model loaded only once (thread-safe loader)
   - Parametrized invalid model name → 422; dimension mismatch → 500
   - Health endpoint SPEC contract test; `model_loader` unit tests
   - Coverage floor raised to 90% in `pytest.ini`
-- **Issue #4** — Qdrant Docker service (`issue-4/qdrant-docker-service`)
-  - `docker-compose.yml` with qdrant on 6333/6334, `qdrant_data` volume, curl healthcheck
-  - `infra/docker/qdrant.Dockerfile` — curl added to official image for `/healthz` probe
-  - `QdrantTestcontainersSupport` + expanded `QdrantContainerIT` (healthz, collections)
+- **Issue #2** — embed sidecar (`issue-2/embed-sidecar`, PR #35)
+  - `POST /api/embed` and `GET /api/health` per SPEC §6 and §9
+  - `model_loader.py` — lazy cache for LaBSE (768), MiniLM (384), multilingual-mpnet (768)
+  - `config.py`, `Dockerfile`, pinned sentence-transformers + torch
+  - Unit tests with mocked `SentenceTransformer` — 12 passed, 96% coverage
 
 ### Blocked
 - Nothing
