@@ -8,6 +8,12 @@ One entry per working day. Most recent entry at the top.
 ## 2026-06-30
 
 ### Built
+- **Issue #5** — API skeleton + health + collection management
+  - `GET /api/health` — probes Qdrant (gRPC), Ollama, embed-sidecar; returns `ok` or `degraded`
+  - `POST /api/ingest/collection`, `GET /api/ingest/collections`, `DELETE /api/ingest/collection/{name}`
+  - `CollectionManager` via `io.qdrant:client` 1.14.1; `GlobalExceptionHandler`, CORS, config beans
+  - `@WebMvcTest` unit tests (health + collection endpoints); Testcontainers ITs for create/list/delete
+  - `packages/api/Dockerfile` with curl healthcheck
 - **Issue #2** — embed sidecar (`issue-2/embed-sidecar`, PR #35)
   - `POST /api/embed` and `GET /api/health` per SPEC §6 and §9
   - `model_loader.py` — lazy cache for LaBSE (768), MiniLM (384), multilingual-mpnet (768)
@@ -27,6 +33,9 @@ One entry per working day. Most recent entry at the top.
 - Nothing
 
 ### Decided
+- Qdrant Java client gRPC port derived from `QDRANT_URL` host + `QDRANT_GRPC_PORT` (6334) — REST URL stays 6333 (#5)
+- Health `status=ok` requires Qdrant + embed-sidecar; Ollama reported but does not block ok (#5)
+- Surefire `-Dnet.bytebuddy.experimental=true` for local Java 25 + Mockito compatibility (#5)
 - Unit tests mock `SentenceTransformer` — real model download deferred to issue #3 (#2)
 - Sync `def` routes for blocking `encode()` — FastAPI thread pool (#2)
 - Model names validated with `MODEL_NAME_PATTERN` — spaces and slashes return 422 before 503 (#3)
@@ -35,7 +44,6 @@ One entry per working day. Most recent entry at the top.
 - Compose file scoped to qdrant only; full stack deferred to issue #27
 
 ### Tomorrow
-- Issue #5 — API skeleton + health + collection management
 - Issue #6 — ChunkingService
 - Issue #7 — Ingest API
 - Issue #8 — Ingest API integration tests
