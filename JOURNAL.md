@@ -53,6 +53,16 @@ One entry per working day. Most recent entry at the top.
 ### Tomorrow
 - Issue #7 — Ingest API
 - Issue #8 — Ingest API integration tests
+- Issue #9 — Completion API
+- Issue #10 — Completion streaming (SSE)
+- Issue #11 — Hybrid search endpoint
+- Issue #12 — Result ranking and relevance
+- Issue #13 — Document chunking config support
+- Issue #14 — Embedding cache invalidation
+- Issue #15 — Collection metadata endpoint(s)
+- Issue #16 — Delete document(s) API
+- Issue #17 — Per-collection statistics endpoint
+- Issue #18 — Tracing and request logging
 
 ---
 
