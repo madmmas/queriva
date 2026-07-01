@@ -8,12 +8,17 @@ One entry per working day. Most recent entry at the top.
 ## 2026-06-30
 
 ### Built
+- **Issue #8** — Ingest API integration tests (`issue-8/ingest-api-integration-tests`)
+  - `IngestPipelineIT` — 6 tests against Testcontainers Qdrant + WireMock embed sidecar
+  - Shared `NewsRadarFixtureSupport` loads `fixtures/news_radar_dhaka_floods.json` (8 articles, 13 chunks)
+  - Covers: point count, chunking on/off, SPEC §14 payload fields, bn/en languages, `skip_existing` idempotency, <30s baseline
+  - `QdrantRestTestSupport` for Qdrant REST scroll assertions; removed ad-hoc `IngestServiceIT`
 - **Issue #7** — Ingest API (`issue-7/ingest-api`)
   - `POST /api/ingest/documents` — chunk → embed → upsert pipeline (SPEC §7.1–§7.2, §7.5, ADR-008)
   - Upsert modes: `skip_existing`, `overwrite`, `error_on_conflict`; batched embed calls (`INGEST_BATCH_SIZE=32`)
   - `EmbedSidecarClient`, `QdrantIngestRepository`, `CollectionEmbeddingModelService` for model validation
   - Qdrant payload per SPEC §14; overwrite deletes by `document_id` filter before re-upsert
-  - Unit tests (`IngestServiceTest`, `IngestDocumentsControllerTest`); Testcontainers IT (`IngestServiceIT`)
+  - Unit tests (`IngestServiceTest`, `IngestDocumentsControllerTest`); Testcontainers IT (`IngestPipelineIT` in #8)
 - **Issue #6** — ChunkingService (`issue-6/chunking-service`)
   - Character-based sliding window: 512 chars / 64 overlap (ADR-003, ADR-007)
   - Title prepended to embed input; `body_snippet` capped at 500 chars without title

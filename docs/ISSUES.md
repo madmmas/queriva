@@ -508,13 +508,13 @@ Full integration test suite for the ingest pipeline using
 
 ### Tasks
 
-- [ ] Shared fixture: load `fixtures/news_radar_dhaka_floods.json` in `@BeforeAll`
-- [ ] Test: create collection → ingest all 8 articles → `GET /collections` shows correct point count
-- [ ] Test: chunking enabled vs disabled — point count differs
-- [ ] Test: News Radar shape (SPEC §7.6) — `id=cluster_id`, all payload fields present
-- [ ] Test: Bangla articles (language=bn) and English (language=en) both ingest correctly
-- [ ] Performance baseline: ingest 8 articles < 30s (excluding cold model load)
-- [ ] All tests use `fixtures/news_radar_dhaka_floods.json` — no ad-hoc inline data
+- [x] Shared fixture: load `fixtures/news_radar_dhaka_floods.json` in `@BeforeAll`
+- [x] Test: create collection → ingest all 8 articles → `GET /collections` shows correct point count
+- [x] Test: chunking enabled vs disabled — point count differs
+- [x] Test: News Radar shape (SPEC §7.6) — `id=cluster_id`, all payload fields present
+- [x] Test: Bangla articles (language=bn) and English (language=en) both ingest correctly
+- [x] Performance baseline: ingest 8 articles < 30s (excluding cold model load)
+- [x] All tests use `fixtures/news_radar_dhaka_floods.json` — no ad-hoc inline data
 
 ### Acceptance criteria
 
@@ -523,8 +523,8 @@ Full integration test suite for the ingest pipeline using
 
 ### Test plan
 
-- [ ] `make test-int` runs these tests
-- [ ] Performance assertion present (< 30s)
+- [x] `make test-int` runs these tests
+- [x] Performance assertion present (< 30s)
 
 ---
 

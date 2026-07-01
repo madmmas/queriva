@@ -8,6 +8,8 @@ Versions follow [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+- **Added** [api] `IngestPipelineIT` — full ingest integration suite using `fixtures/news_radar_dhaka_floods.json` (#8)
+- **Fixed** [api] Map logical point ids to deterministic Qdrant UUIDs (`QuerivaPointIdMapper`) (#42)
 - **Added** [api] `POST /api/ingest/documents` — chunk → embed → upsert pipeline with upsert modes (#7)
 - **Added** [api] `IngestService`, `EmbedSidecarClient`, `QdrantIngestRepository`, `CollectionEmbeddingModelService` (#7)
 - **Added** [api] `ChunkingService` — sliding window 512 chars / 64 overlap with title prepending (#6)
