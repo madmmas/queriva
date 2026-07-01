@@ -30,20 +30,20 @@ One entry per working day. Most recent entry at the top.
   - `CollectionManager` via `io.qdrant:client` 1.14.1; `GlobalExceptionHandler`, CORS, config beans
   - `@WebMvcTest` unit tests (health + collection endpoints); Testcontainers ITs for create/list/delete
   - `packages/api/Dockerfile` with curl healthcheck
-- **Issue #2** — embed sidecar (`issue-2/embed-sidecar`, PR #35)
-  - `POST /api/embed` and `GET /api/health` per SPEC §6 and §9
-  - `model_loader.py` — lazy cache for LaBSE (768), MiniLM (384), multilingual-mpnet (768)
-  - `config.py`, `Dockerfile`, pinned sentence-transformers + torch
-  - Unit tests with mocked `SentenceTransformer` — 12 passed, 96% coverage
+- **Issue #4** — Qdrant Docker service (`issue-4/qdrant-docker-service`)
+  - `docker-compose.yml` with qdrant on 6333/6334, `qdrant_data` volume, curl healthcheck
+  - `infra/docker/qdrant.Dockerfile` — curl added to official image for `/healthz` probe
+  - `QdrantTestcontainersSupport` + expanded `QdrantContainerIT` (healthz, collections)
 - **Issue #3** — embed sidecar full test coverage (`issue-3/embed-sidecar-test-coverage`)
   - Concurrent embed requests — model loaded only once (thread-safe loader)
   - Parametrized invalid model name → 422; dimension mismatch → 500
   - Health endpoint SPEC contract test; `model_loader` unit tests
   - Coverage floor raised to 90% in `pytest.ini`
-- **Issue #4** — Qdrant Docker service (`issue-4/qdrant-docker-service`)
-  - `docker-compose.yml` with qdrant on 6333/6334, `qdrant_data` volume, curl healthcheck
-  - `infra/docker/qdrant.Dockerfile` — curl added to official image for `/healthz` probe
-  - `QdrantTestcontainersSupport` + expanded `QdrantContainerIT` (healthz, collections)
+- **Issue #2** — embed sidecar (`issue-2/embed-sidecar`, PR #35)
+  - `POST /api/embed` and `GET /api/health` per SPEC §6 and §9
+  - `model_loader.py` — lazy cache for LaBSE (768), MiniLM (384), multilingual-mpnet (768)
+  - `config.py`, `Dockerfile`, pinned sentence-transformers + torch
+  - Unit tests with mocked `SentenceTransformer` — 12 passed, 96% coverage
 
 ### Blocked
 - Nothing
