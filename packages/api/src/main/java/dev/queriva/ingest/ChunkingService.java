@@ -69,6 +69,26 @@ public class ChunkingService {
         return chunks;
     }
 
+    /**
+     * Produces a single chunk for the full document body when chunking is disabled.
+     */
+    public List<Chunk> chunkWithoutSplitting(Document document) {
+        String body = document.body();
+        if (body == null || body.isEmpty()) {
+            return List.of();
+        }
+
+        String embedInput = document.title() + TITLE_BODY_SEPARATOR + body;
+        String bodySnippet = truncateBodySnippet(body);
+
+        return List.of(new Chunk(
+                document.id(),
+                document.id() + "-chunk-1",
+                1,
+                embedInput,
+                bodySnippet));
+    }
+
     private static String truncateBodySnippet(String bodySlice) {
         if (bodySlice.length() <= MAX_BODY_SNIPPET_CHARS) {
             return bodySlice;

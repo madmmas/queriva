@@ -40,3 +40,9 @@ http:
 ingest:
   default-chunk-size: ${INGEST_DEFAULT_CHUNK_SIZE:512}
   default-overlap: ${INGEST_DEFAULT_OVERLAP:64}
+  default-upsert-mode: ${INGEST_DEFAULT_UPSERT_MODE:skip_existing}
+  batch-size: ${INGEST_BATCH_SIZE:32}
+
+# SPEC §13: EMBED_DEFAULT_MODEL — default LaBSE
+embed:
+  default-model: ${EMBED_DEFAULT_MODEL:LaBSE}
