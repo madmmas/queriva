@@ -8,6 +8,8 @@ Versions follow [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+- **Added** [api] `ChunkingService` — sliding window 512 chars / 64 overlap with title prepending (#6)
+- **Added** [api] `Document` and `Chunk` records for ingest pipeline (#6)
 - **Added** [api] `GET /api/health` — live Qdrant, Ollama, and embed-sidecar connectivity (#5)
 - **Added** [api] `POST /api/ingest/collection`, `GET /api/ingest/collections`, `DELETE /api/ingest/collection/{name}` (#5)
 - **Added** [api] `CollectionManager`, `GlobalExceptionHandler`, CORS config, Qdrant gRPC client (#5)

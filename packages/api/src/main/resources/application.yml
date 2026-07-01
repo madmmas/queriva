@@ -35,3 +35,8 @@ cors:
 http:
   connect-timeout-seconds: ${HTTP_CONNECT_TIMEOUT_SECONDS:5}
   read-timeout-seconds: ${HTTP_READ_TIMEOUT_SECONDS:30}
+
+# SPEC §13: INGEST_DEFAULT_CHUNK_SIZE — default 512; INGEST_DEFAULT_OVERLAP — default 64
+ingest:
+  default-chunk-size: ${INGEST_DEFAULT_CHUNK_SIZE:512}
+  default-overlap: ${INGEST_DEFAULT_OVERLAP:64}

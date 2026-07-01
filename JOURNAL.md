@@ -8,6 +8,11 @@ One entry per working day. Most recent entry at the top.
 ## 2026-06-30
 
 ### Built
+- **Issue #6** — ChunkingService (`issue-6/chunking-service`)
+  - Character-based sliding window: 512 chars / 64 overlap (ADR-003, ADR-007)
+  - Title prepended to embed input; `body_snippet` capped at 500 chars without title
+  - `Document` and `Chunk` records; point IDs `{document_id}-chunk-{N}`
+  - 10 unit tests including golden-file coverage of `fixtures/news_radar_dhaka_floods.json` article #1
 - **Issue #5** — API skeleton + health + collection management
   - `GET /api/health` — probes Qdrant (gRPC), Ollama, embed-sidecar; returns `ok` or `degraded`
   - `POST /api/ingest/collection`, `GET /api/ingest/collections`, `DELETE /api/ingest/collection/{name}`
@@ -33,6 +38,7 @@ One entry per working day. Most recent entry at the top.
 - Nothing
 
 ### Decided
+- Empty document body produces **0 chunks** — nothing to embed or upsert (#6)
 - Released **v0.1.0** — issues #0–#3 complete; CHANGELOG entries moved from `[Unreleased]` (#meta–#3)
 - Qdrant Java client gRPC port derived from `QDRANT_URL` host + `QDRANT_GRPC_PORT` (6334) — REST URL stays 6333 (#5)
 - Health `status=ok` requires Qdrant + embed-sidecar; Ollama reported but does not block ok (#5)
@@ -45,9 +51,18 @@ One entry per working day. Most recent entry at the top.
 - Compose file scoped to qdrant only; full stack deferred to issue #27
 
 ### Tomorrow
-- Issue #6 — ChunkingService
 - Issue #7 — Ingest API
 - Issue #8 — Ingest API integration tests
+- Issue #9 — Completion API
+- Issue #10 — Completion streaming (SSE)
+- Issue #11 — Hybrid search endpoint
+- Issue #12 — Result ranking and relevance
+- Issue #13 — Document chunking config support
+- Issue #14 — Embedding cache invalidation
+- Issue #15 — Collection metadata endpoint(s)
+- Issue #16 — Delete document(s) API
+- Issue #17 — Per-collection statistics endpoint
+- Issue #18 — Tracing and request logging
 
 ---
 
