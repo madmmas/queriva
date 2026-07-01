@@ -419,16 +419,16 @@ ADR-003, ADR-007). Character-based (not token-based) — this is decided in ADR-
 
 ### Tasks
 
-- [ ] `ChunkingService.chunk(Document doc, int chunkSize, int overlap)` → `List<Chunk>`
-- [ ] **Character-based** sliding window — no tokenizer (ADR-007)
-- [ ] Default: `chunk_size=512` chars, `overlap=64` chars
-- [ ] Title prepended to every chunk embed input: `"{title}. {body_slice}"` (ADR-003)
-- [ ] Each chunk carries `document_id` shared with source document
-- [ ] Chunk Qdrant point ID: `{document_id}-chunk-{N}`
-- [ ] `body_snippet` in payload: first 500 chars of chunk body, no title prefix (SPEC §14)
-- [ ] Config via `@Value`: `INGEST_DEFAULT_CHUNK_SIZE=512`, `INGEST_DEFAULT_OVERLAP=64`
-- [ ] `Chunk` Java record (code-quality.mdc B2)
-- [ ] No ML dependencies in `ChunkingService` (pure string operations)
+- [x] `ChunkingService.chunk(Document doc, int chunkSize, int overlap)` → `List<Chunk>`
+- [x] **Character-based** sliding window — no tokenizer (ADR-007)
+- [x] Default: `chunk_size=512` chars, `overlap=64` chars
+- [x] Title prepended to every chunk embed input: `"{title}. {body_slice}"` (ADR-003)
+- [x] Each chunk carries `document_id` shared with source document
+- [x] Chunk Qdrant point ID: `{document_id}-chunk-{N}`
+- [x] `body_snippet` in payload: first 500 chars of chunk body, no title prefix (SPEC §14)
+- [x] Config via `@Value`: `INGEST_DEFAULT_CHUNK_SIZE=512`, `INGEST_DEFAULT_OVERLAP=64`
+- [x] `Chunk` Java record (code-quality.mdc B2)
+- [x] No ML dependencies in `ChunkingService` (pure string operations)
 
 ### Acceptance criteria
 
@@ -439,13 +439,13 @@ ADR-003, ADR-007). Character-based (not token-based) — this is decided in ADR-
 
 ### Test plan
 
-- [ ] Unit: chunk count for 2000-char body
-- [ ] Unit: overlap verified (chunk N+1 starts 448 chars after chunk N)
-- [ ] Unit: title prepending verified via `embedInput` field
-- [ ] Unit: body_snippet excludes title prefix
-- [ ] Unit: empty body → 0 chunks (or 1 empty chunk — document the choice)
-- [ ] Unit: body shorter than chunk_size → 1 chunk
-- [ ] Golden-file test: use article #1 from `fixtures/news_radar_dhaka_floods.json`
+- [x] Unit: chunk count for 2000-char body
+- [x] Unit: overlap verified (chunk N+1 starts 448 chars after chunk N)
+- [x] Unit: title prepending verified via `embedInput` field
+- [x] Unit: body_snippet excludes title prefix
+- [x] Unit: empty body → 0 chunks (or 1 empty chunk — document the choice)
+- [x] Unit: body shorter than chunk_size → 1 chunk
+- [x] Golden-file test: use article #1 from `fixtures/news_radar_dhaka_floods.json`
 
 ---
 
