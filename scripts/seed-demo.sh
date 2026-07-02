@@ -11,6 +11,29 @@ COLLECTION="news_radar"
 MODEL="LaBSE"
 FIXTURE="fixtures/news_radar_dhaka_floods.json"
 MIN_POINT_COUNT=8
+HEALTH_WAIT_MAX_SECONDS=120
+HEALTH_WAIT_INTERVAL_SECONDS=2
+
+wait_for_api_health() {
+  local elapsed_seconds=0
+
+  while [ "$elapsed_seconds" -lt "$HEALTH_WAIT_MAX_SECONDS" ]; do
+    HEALTH=$(curl -sf "$API_URL/api/health" || echo "UNREACHABLE")
+    if echo "$HEALTH" | grep -q '"qdrant":"connected"'; then
+      echo "   API healthy. Qdrant connected."
+      return 0
+    fi
+
+    echo "   Waiting for API at $API_URL (${elapsed_seconds}s/${HEALTH_WAIT_MAX_SECONDS}s)..."
+    sleep "$HEALTH_WAIT_INTERVAL_SECONDS"
+    elapsed_seconds=$((elapsed_seconds + HEALTH_WAIT_INTERVAL_SECONDS))
+  done
+
+  echo "ERROR: API not reachable or Qdrant not connected at $API_URL after ${HEALTH_WAIT_MAX_SECONDS}s"
+  echo "Run: docker compose up -d --build"
+  echo "Last health response: $HEALTH"
+  exit 1
+}
 
 echo "=== Queriva demo seed ==="
 echo "API:        $API_URL"
@@ -23,16 +46,9 @@ echo ""
 echo "0. Validating fixture..."
 python3 scripts/validate_fixture.py "$FIXTURE"
 
-# Check API is reachable
+# Check API is reachable (Spring Boot may still be starting after compose up)
 echo "1. Checking API health..."
-HEALTH=$(curl -sf "$API_URL/api/health" || echo "UNREACHABLE")
-if echo "$HEALTH" | grep -q '"qdrant":"connected"'; then
-  echo "   API healthy. Qdrant connected."
-else
-  echo "ERROR: API not reachable or Qdrant not connected at $API_URL"
-  echo "Run: docker compose up -d --build && sleep 30"
-  exit 1
-fi
+wait_for_api_health
 
 # Create collection (skip if exists)
 echo "2. Creating collection '$COLLECTION' (skip if exists)..."
