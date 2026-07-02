@@ -762,15 +762,15 @@ Full integration coverage for search mode before RAG complexity is added.
 
 ### Tasks
 
-- [ ] Fixture loaded from `fixtures/news_radar_dhaka_floods.json` in `@BeforeAll`
-- [ ] Test: expected top result title matches article #1 from fixture
-- [ ] Test: `top_k=3` returns exactly 3 results
-- [ ] Test: `min_score=0.99` returns 0 results
-- [ ] Test: `language=bn` returns only Bangla articles
-- [ ] Test: `language=en` returns only English articles
-- [ ] Test: date range filter narrows results
-- [ ] Performance baseline: search mode < 500ms (code-quality.mdc E5 equivalent)
-- [ ] Full response shape asserted (test-quality.mdc E2)
+- [x] Fixture loaded from `fixtures/news_radar_dhaka_floods.json` in `@BeforeAll`
+- [x] Test: expected top result title matches article #1 from fixture
+- [x] Test: `top_k=3` returns exactly 3 results
+- [x] Test: `min_score=0.99` returns 0 results
+- [x] Test: `language=bn` returns only Bangla articles
+- [x] Test: `language=en` returns only English articles
+- [x] Test: date range filter narrows results
+- [x] Performance baseline: search mode < 500ms (code-quality.mdc E5 equivalent)
+- [x] Full response shape asserted (test-quality.mdc E2)
 
 ### Acceptance criteria
 
@@ -779,8 +779,8 @@ Full integration coverage for search mode before RAG complexity is added.
 
 ### Test plan
 
-- [ ] `make test-int` includes these tests
-- [ ] No ad-hoc fixture data — all from `fixtures/news_radar_dhaka_floods.json`
+- [x] `make test-int` includes these tests
+- [x] No ad-hoc fixture data — all from `fixtures/news_radar_dhaka_floods.json`
 
 ---
 

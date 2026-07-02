@@ -15,6 +15,7 @@ import dev.queriva.ingest.IngestResponse;
 import dev.queriva.ingest.UpsertMode;
 import dev.queriva.support.NewsRadarFixtureSupport;
 import dev.queriva.support.QdrantTestcontainersSupport;
+import dev.queriva.support.SearchIntegrationTestSupport;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -35,9 +36,8 @@ import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.post;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
+import static dev.queriva.support.SearchIntegrationTestSupport.DHAKA_FLOODS_QUERY;
+import static dev.queriva.support.SearchIntegrationTestSupport.INTEGRATION_VECTOR_SIZE;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -52,9 +52,9 @@ class SearchPipelineIT {
 
     private static final String COLLECTION = "news_radar_search_pipeline_it";
     private static final String MODEL = "LaBSE";
-    private static final int VECTOR_SIZE = 2;
+    private static final int VECTOR_SIZE = INTEGRATION_VECTOR_SIZE;
     private static final String DISTANCE = "Cosine";
-    private static final String QUERY = "floods in Dhaka last week";
+    private static final String QUERY = DHAKA_FLOODS_QUERY;
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     @RegisterExtension
@@ -92,7 +92,7 @@ class SearchPipelineIT {
     @BeforeEach
     void setUp() {
         embedSidecar.resetAll();
-        stubEmbedResponse();
+        SearchIntegrationTestSupport.stubUniformEmbedResponses(embedSidecar);
         recreateCollection();
         ingestFixture();
     }
@@ -217,13 +217,5 @@ class SearchPipelineIT {
 
         collectionManager.createCollection(
                 new CreateCollectionRequest(COLLECTION, VECTOR_SIZE, DISTANCE, true));
-    }
-
-    private static void stubEmbedResponse() {
-        embedSidecar.stubFor(post(urlEqualTo("/api/embed"))
-                .willReturn(aResponse()
-                        .withStatus(200)
-                        .withHeader("Content-Type", "application/json")
-                        .withBody("{\"vector\":[0.1,0.2],\"dimensions\":2}")));
     }
 }
