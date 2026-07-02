@@ -5,6 +5,34 @@ One entry per working day. Most recent entry at the top.
 
 ---
 
+## 2026-07-01
+
+### Built
+- **Issue #9** — Ingest CLI (`issue-9/ingest-cli`)
+  - `queriva_ingest.py` — argparse CLI posting to `POST /api/ingest/documents` (SPEC §7.3)
+  - Loaders: JSON, CSV (`--map`), recursive files (`.txt`/`.md`/`.pdf`), URLs, JSONL stdin
+  - `api_client.py` via httpx; path traversal + SSRF protections in file/url loaders
+  - 21 unit tests (83% coverage); integration test against running API when available
+
+### Blocked
+- Nothing
+
+### Decided
+- Nothing new
+
+### Tomorrow
+- Issue #10 — Ingest CLI tests
+- Issue #11 — Seed demo data
+- Issue #12 — QdrantSearchService
+- Issue #13 — QueryEmbeddingService
+- Issue #14 — POST /api/search (search mode)
+- Issue #15 — Search mode integration tests
+- Issue #16 — Ollama Docker setup
+- Issue #17 — RAG mode (LLMSynthesisService)
+- Issue #18 — RAG mode integration tests
+
+---
+
 ## 2026-06-30
 
 ### Built
