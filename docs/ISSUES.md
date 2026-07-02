@@ -583,12 +583,12 @@ Full coverage before seed data depends on the CLI.
 
 ### Tasks
 
-- [ ] Parametrized tests across all loader formats (test-quality.mdc C3)
-- [ ] CLI argument parsing: missing args, invalid format, unknown flags
-- [ ] HTTP error handling: API down, 400, 409, 500
-- [ ] SSRF test: private IPs rejected
-- [ ] Path traversal test: `../../../etc/passwd` rejected
-- [ ] ≥ 80% coverage on loaders + CLI entry point
+- [x] Parametrized tests across all loader formats (test-quality.mdc C3)
+- [x] CLI argument parsing: missing args, invalid format, unknown flags
+- [x] HTTP error handling: API down, 400, 409, 500
+- [x] SSRF test: private IPs rejected
+- [x] Path traversal test: `../../../etc/passwd` rejected
+- [x] ≥ 80% coverage on loaders + CLI entry point
 
 ### Acceptance criteria
 
@@ -598,8 +598,8 @@ Full coverage before seed data depends on the CLI.
 
 ### Test plan
 
-- [ ] `make test-ingest` passes
-- [ ] Tests run without network (mock httpx)
+- [x] `make test-ingest` passes
+- [x] Tests run without network (mock httpx)
 
 ---
 

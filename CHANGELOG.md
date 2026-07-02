@@ -8,7 +8,7 @@ Versions follow [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
-- **Added** [ingest-cli] Batch ingest CLI — JSON, CSV, files, URLs, JSONL loaders + API client (#9)
+- **Added** [ingest-cli] Full test suite — parametrized loaders, CLI parsing, HTTP errors, SSRF, path traversal (#10)
 - **Added** [api] `IngestPipelineIT` — full ingest integration suite using `fixtures/news_radar_dhaka_floods.json` (#8)
 - **Fixed** [api] Map logical point ids to deterministic Qdrant UUIDs (`QuerivaPointIdMapper`) (#42)
 - **Added** [api] `POST /api/ingest/documents` — chunk → embed → upsert pipeline with upsert modes (#7)
