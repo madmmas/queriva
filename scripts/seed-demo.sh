@@ -10,6 +10,7 @@ API_URL="${1:-http://localhost:8080}"
 COLLECTION="news_radar"
 MODEL="LaBSE"
 FIXTURE="fixtures/news_radar_dhaka_floods.json"
+MIN_POINT_COUNT=8
 
 echo "=== Queriva demo seed ==="
 echo "API:        $API_URL"
@@ -18,12 +19,9 @@ echo "Model:      $MODEL"
 echo "Fixture:    $FIXTURE"
 echo ""
 
-# Check fixture exists
-if [ ! -f "$FIXTURE" ]; then
-  echo "ERROR: fixture file not found: $FIXTURE"
-  echo "Run from repo root: ./scripts/seed-demo.sh"
-  exit 1
-fi
+# Validate fixture before touching the API
+echo "0. Validating fixture..."
+python3 scripts/validate_fixture.py "$FIXTURE"
 
 # Check API is reachable
 echo "1. Checking API health..."
@@ -32,7 +30,7 @@ if echo "$HEALTH" | grep -q '"qdrant":"connected"'; then
   echo "   API healthy. Qdrant connected."
 else
   echo "ERROR: API not reachable or Qdrant not connected at $API_URL"
-  echo "Run: docker compose up -d && sleep 10"
+  echo "Run: docker compose up -d --build && sleep 30"
   exit 1
 fi
 
@@ -72,16 +70,79 @@ CHUNKS=$(echo "$RESPONSE"   | grep -o '"chunks_created":[0-9]*' | cut -d: -f2 ||
 
 echo ""
 echo "4. Verifying collection..."
-curl -sf "$API_URL/api/ingest/collections" | grep -o "\"$COLLECTION\"" > /dev/null \
+COLLECTIONS=$(curl -sf "$API_URL/api/ingest/collections")
+echo "$COLLECTIONS" | grep -o "\"$COLLECTION\"" > /dev/null \
   && echo "   Collection '$COLLECTION' confirmed."
+
+POINT_COUNT=$(echo "$COLLECTIONS" | python3 -c "
+import json, sys
+payload = json.load(sys.stdin)
+for collection in payload.get('collections', []):
+    if collection.get('name') == '$COLLECTION':
+        print(collection.get('points_count', 0))
+        break
+else:
+    print(0)
+")
+
+if [ -z "$POINT_COUNT" ] || [ "$POINT_COUNT" -lt "$MIN_POINT_COUNT" ]; then
+  echo "ERROR: collection '$COLLECTION' has $POINT_COUNT points; expected at least $MIN_POINT_COUNT"
+  exit 1
+fi
+echo "   Point count: $POINT_COUNT (minimum $MIN_POINT_COUNT)"
+
+echo ""
+echo "5. Verifying idempotency (second ingest should skip existing documents)..."
+SECOND_RESPONSE=$(curl -sf -X POST "$API_URL/api/ingest/documents" \
+  -H "Content-Type: application/json" \
+  -d "{
+    \"collection\": \"$COLLECTION\",
+    \"model\": \"$MODEL\",
+    \"documents\": $DOCUMENTS,
+    \"chunking\": {
+      \"enabled\": true,
+      \"chunk_size\": 512,
+      \"overlap\": 64
+    },
+    \"upsert_mode\": \"skip_existing\"
+  }")
+
+SECOND_INGESTED=$(echo "$SECOND_RESPONSE" | grep -o '"ingested":[0-9]*' | cut -d: -f2 || echo "?")
+SECOND_SKIPPED=$(echo "$SECOND_RESPONSE" | grep -o '"skipped":[0-9]*' | cut -d: -f2 || echo "?")
+SECOND_CHUNKS=$(echo "$SECOND_RESPONSE" | grep -o '"chunks_created":[0-9]*' | cut -d: -f2 || echo "?")
+
+if [ "$SECOND_INGESTED" != "0" ] || [ "$SECOND_CHUNKS" != "0" ]; then
+  echo "ERROR: idempotent re-ingest expected ingested=0 and chunks_created=0"
+  echo "       got ingested=$SECOND_INGESTED chunks_created=$SECOND_CHUNKS"
+  exit 1
+fi
+
+COLLECTIONS_AFTER=$(curl -sf "$API_URL/api/ingest/collections")
+POINT_COUNT_AFTER=$(echo "$COLLECTIONS_AFTER" | python3 -c "
+import json, sys
+payload = json.load(sys.stdin)
+for collection in payload.get('collections', []):
+    if collection.get('name') == '$COLLECTION':
+        print(collection.get('points_count', 0))
+        break
+else:
+    print(0)
+")
+
+if [ "$POINT_COUNT_AFTER" != "$POINT_COUNT" ]; then
+  echo "ERROR: point count changed after idempotent re-ingest ($POINT_COUNT -> $POINT_COUNT_AFTER)"
+  exit 1
+fi
+echo "   Idempotent re-ingest skipped $SECOND_SKIPPED documents; point count unchanged ($POINT_COUNT_AFTER)."
 
 echo ""
 echo "=== Seed complete ==="
 echo "   Ingested: $INGESTED documents"
 echo "   Skipped:  $SKIPPED (already existed)"
 echo "   Chunks:   $CHUNKS Qdrant points"
+echo "   Languages: 4 Bangla (bn) + 4 English (en) articles in fixture"
 echo ""
-echo "Try a search:"
+echo "Try a search (after issue #14):"
 echo "  curl -X POST $API_URL/api/search \\"
 echo "    -H 'Content-Type: application/json' \\"
 echo "    -d '{\"query\":\"floods in Dhaka last week\",\"collection\":\"$COLLECTION\",\"mode\":\"search\"}'"

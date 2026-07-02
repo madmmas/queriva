@@ -1,5 +1,5 @@
 .PHONY: help install install-node install-python build test test-unit test-int \
-        test-api test-embed test-ingest test-ui smoke seed clean
+        test-api test-embed test-ingest test-ui smoke seed validate-fixture clean
 
 help: ## Show available targets
 	@grep -E '^[a-zA-Z0-9_-]+:.*?##' $(MAKEFILE_LIST) | sort | \
@@ -45,7 +45,10 @@ smoke: ## Run E2E smoke test against full stack (requires docker compose)
 	@bash scripts/e2e-smoke.sh 2>/dev/null || \
 		echo "scripts/e2e-smoke.sh not yet implemented (issue #28)"
 
-seed: ## Seed demo data into news_radar collection
+validate-fixture: ## Validate demo fixture against SPEC §14 source fields
+	python3 scripts/validate_fixture.py
+
+seed: validate-fixture ## Seed demo data into news_radar collection
 	bash scripts/seed-demo.sh
 
 clean: ## Remove build artifacts from all packages

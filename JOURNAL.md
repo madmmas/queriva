@@ -8,6 +8,12 @@ One entry per working day. Most recent entry at the top.
 ## 2026-07-01
 
 ### Built
+- **Issue #11** — Seed demo data (`issue-11/seed-demo-data`)
+  - `scripts/validate_fixture.py` — validates 8 articles (4 bn + 4 en) with SPEC §14 source fields
+  - `scripts/seed-demo.sh` — point-count check (≥8), idempotent re-ingest verification
+  - `docker-compose.yml` extended with embed-sidecar + api for ingest stack
+  - API multi-stage Dockerfile; README quick start (`docker compose up` → `make seed`)
+  - Released **v0.2.0** — issues #4–#11 complete
 - **Issue #9** — Ingest CLI (`issue-9/ingest-cli`)
   - `queriva_ingest.py` — argparse CLI posting to `POST /api/ingest/documents` (SPEC §7.3)
   - Loaders: JSON, CSV (`--map`), recursive files (`.txt`/`.md`/`.pdf`), URLs, JSONL stdin
@@ -24,10 +30,10 @@ One entry per working day. Most recent entry at the top.
 - Nothing
 
 ### Decided
-- Nothing new
+- Docker compose scoped to ingest stack (qdrant + embed-sidecar + api); Ollama/ui deferred to #16/#27
+- Seed script validates fixture locally before any API calls
 
 ### Tomorrow
-- Issue #11 — Seed demo data
 - Issue #12 — QdrantSearchService
 - Issue #13 — QueryEmbeddingService
 - Issue #14 — POST /api/search (search mode)
