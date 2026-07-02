@@ -8,6 +8,11 @@ One entry per working day. Most recent entry at the top.
 ## 2026-06-30
 
 ### Built
+- **Issue #9** — Ingest CLI (`issue-9/ingest-cli`)
+  - `queriva_ingest.py` — argparse CLI posting to `POST /api/ingest/documents` (SPEC §7.3)
+  - Loaders: JSON, CSV (`--map`), recursive files (`.txt`/`.md`/`.pdf`), URLs, JSONL stdin
+  - `api_client.py` via httpx; path traversal + SSRF protections in file/url loaders
+  - 21 unit tests (83% coverage); integration test against running API when available
 - **Issue #8** — Ingest API integration tests (`issue-8/ingest-api-integration-tests`)
   - `IngestPipelineIT` — 6 tests against Testcontainers Qdrant + WireMock embed sidecar
   - Shared `NewsRadarFixtureSupport` loads `fixtures/news_radar_dhaka_floods.json` (8 articles, 13 chunks)
@@ -62,7 +67,6 @@ One entry per working day. Most recent entry at the top.
 - Compose file scoped to qdrant only; full stack deferred to issue #27
 
 ### Tomorrow
-- Issue #9 — Ingest CLI
 - Issue #10 — Ingest CLI tests
 - Issue #11 — Seed demo data
 - Issue #12 — QdrantSearchService

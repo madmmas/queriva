@@ -541,16 +541,16 @@ prevention in file loader, SSRF prevention in URL loader (code-quality.mdc E3, E
 
 ### Tasks
 
-- [ ] `queriva_ingest.py` CLI entry point with `argparse` — all flags have `help=` strings
-- [ ] `json_loader.py` — loads array of document objects
-- [ ] `csv_loader.py` — tabular data with `--map` column mapping
-- [ ] `file_loader.py` — recursive `.txt`, `.md`, `.pdf`; path traversal check (code-quality.mdc E3)
-- [ ] `url_loader.py` — fetch + extract text; SSRF prevention (code-quality.mdc E4)
-- [ ] Stdin/JSONL support (`--format jsonl`)
-- [ ] `requirements.txt` pinned: `httpx`, `pypdf`, `trafilatura`
-- [ ] CLI exits non-zero with clear `stderr` on failure
-- [ ] No ML library imports — calls embed-sidecar via API only (code-quality.mdc E7)
-- [ ] `packages/ingest-cli/README.md` with CLI usage examples from SPEC §7.3
+- [x] `queriva_ingest.py` CLI entry point with `argparse` — all flags have `help=` strings
+- [x] `json_loader.py` — loads array of document objects
+- [x] `csv_loader.py` — tabular data with `--map` column mapping
+- [x] `file_loader.py` — recursive `.txt`, `.md`, `.pdf`; path traversal check (code-quality.mdc E3)
+- [x] `url_loader.py` — fetch + extract text; SSRF prevention (code-quality.mdc E4)
+- [x] Stdin/JSONL support (`--format jsonl`)
+- [x] `requirements.txt` pinned: `httpx`, `pypdf`, `trafilatura`
+- [x] CLI exits non-zero with clear `stderr` on failure
+- [x] No ML library imports — calls embed-sidecar via API only (code-quality.mdc E7)
+- [x] `packages/ingest-cli/README.md` with CLI usage examples from SPEC §7.3
 
 ### Acceptance criteria
 
@@ -562,12 +562,12 @@ prevention in file loader, SSRF prevention in URL loader (code-quality.mdc E3, E
 
 ### Test plan
 
-- [ ] Unit per loader with `tmp_path` fixture
-- [ ] Unit: URL loader blocks private IPs
-- [ ] Unit: file loader rejects path traversal
-- [ ] CLI black-box tests via `subprocess.run`
-- [ ] CLI exits non-zero on missing required args
-- [ ] Integration: CLI against running API with fixture file
+- [x] Unit per loader with `tmp_path` fixture
+- [x] Unit: URL loader blocks private IPs
+- [x] Unit: file loader rejects path traversal
+- [x] CLI black-box tests via `subprocess.run`
+- [x] CLI exits non-zero on missing required args
+- [x] Integration: CLI against running API with fixture file
 
 ---
 
