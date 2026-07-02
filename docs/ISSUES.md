@@ -650,11 +650,11 @@ No string-concatenated filter DSL — typed builder only (code-quality.mdc E5).
 
 ### Tasks
 
-- [ ] `QdrantSearchService.search(collection, vector, topK, minScore, filters)` → `List<SearchHit>`
-- [ ] Typed Qdrant filter builder for: `language`, `date_from`, `date_to`, `category`
-- [ ] Filter results below `min_score` threshold
-- [ ] Group/deduplicate chunks by `document_id` — max one result per source document
-- [ ] `SearchHit` Java record mapping Qdrant payload → SPEC §6 response fields
+- [x] `QdrantSearchService.search(collection, vector, topK, minScore, filters)` → `List<SearchHit>`
+- [x] Typed Qdrant filter builder for: `language`, `date_from`, `date_to`, `category`
+- [x] Filter results below `min_score` threshold
+- [x] Group/deduplicate chunks by `document_id` — max one result per source document
+- [x] `SearchHit` Java record mapping Qdrant payload → SPEC §6 response fields
 
 ### Acceptance criteria
 
@@ -665,12 +665,12 @@ No string-concatenated filter DSL — typed builder only (code-quality.mdc E5).
 
 ### Test plan
 
-- [ ] Unit: mocked Qdrant client, verify filter builder called correctly
-- [ ] Integration (Testcontainers + seeded data from fixture): language filter
-- [ ] Integration: date range filter
-- [ ] Integration: `min_score=0.99` → empty results
-- [ ] Integration: chunk deduplication — only one result per `document_id`
-- [ ] Parameterized test for filter combinations (test-quality.mdc B9)
+- [x] Unit: mocked Qdrant client, verify filter builder called correctly
+- [x] Integration (Testcontainers + seeded data from fixture): language filter
+- [x] Integration: date range filter
+- [x] Integration: `min_score=0.99` → empty results
+- [x] Integration: chunk deduplication — only one result per `document_id`
+- [x] Parameterized test for filter combinations (test-quality.mdc B9)
 
 ---
 

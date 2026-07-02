@@ -8,6 +8,9 @@ Versions follow [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Added
+- **Added** [api] `QdrantSearchService` — typed Qdrant filters, min-score filtering, document-level chunk deduplication, and `SearchHit` record (#12)
+
 ---
 
 ## Release roadmap
