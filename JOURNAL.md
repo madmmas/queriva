@@ -13,6 +13,12 @@ One entry per working day. Most recent entry at the top.
   - Loaders: JSON, CSV (`--map`), recursive files (`.txt`/`.md`/`.pdf`), URLs, JSONL stdin
   - `api_client.py` via httpx; path traversal + SSRF protections in file/url loaders
   - 21 unit tests (83% coverage); integration test against running API when available
+- **Issue #10** — Ingest CLI tests (`issue-10/ingest-cli-tests`)
+  - Parametrized loader tests for json, csv, jsonl, files; shared fixtures in `conftest.py`
+  - CLI subprocess tests: missing args, invalid format, unknown flags, API unreachable
+  - HTTP error coverage: 400/409/500 + connection refused via pytest-httpx
+  - Security: SSRF (10.x, 172.16, 192.168, loopback), path traversal `../../../etc/passwd`
+  - 67 unit tests, 99% coverage; `make test-ingest` passes with no network
 
 ### Blocked
 - Nothing
@@ -21,7 +27,6 @@ One entry per working day. Most recent entry at the top.
 - Nothing new
 
 ### Tomorrow
-- Issue #10 — Ingest CLI tests
 - Issue #11 — Seed demo data
 - Issue #12 — QdrantSearchService
 - Issue #13 — QueryEmbeddingService
