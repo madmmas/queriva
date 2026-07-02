@@ -46,3 +46,8 @@ ingest:
 # SPEC §13: EMBED_DEFAULT_MODEL — default LaBSE
 embed:
   default-model: ${EMBED_DEFAULT_MODEL:LaBSE}
+
+# SPEC §13: SEARCH_DEFAULT_TOP_K — default 10; SEARCH_MIN_SCORE — default 0.60
+search:
+  default-top-k: ${SEARCH_DEFAULT_TOP_K:10}
+  min-score: ${SEARCH_MIN_SCORE:0.60}

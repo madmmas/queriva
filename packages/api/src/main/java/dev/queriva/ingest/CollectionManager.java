@@ -100,12 +100,7 @@ public class CollectionManager {
      */
     public void deleteCollection(String collectionName) {
         try {
-            boolean exists = qdrantClient.collectionExistsAsync(collectionName, OPERATION_TIMEOUT)
-                    .get(OPERATION_TIMEOUT.toMillis(), TimeUnit.MILLISECONDS);
-
-            if (!exists) {
-                throw new CollectionNotFoundException(collectionName);
-            }
+            requireCollectionExists(collectionName);
 
             qdrantClient.deleteCollectionAsync(collectionName, OPERATION_TIMEOUT)
                     .get(OPERATION_TIMEOUT.toMillis(), TimeUnit.MILLISECONDS);
@@ -119,6 +114,32 @@ public class CollectionManager {
         } catch (ExecutionException | TimeoutException exception) {
             throw new QdrantOperationException(
                     "Qdrant delete collection failed for '" + collectionName + "'. "
+                            + "Verify Qdrant is running at QDRANT_URL.",
+                    exception);
+        }
+    }
+
+    /**
+     * Verifies that a Qdrant collection exists before search or delete operations.
+     */
+    public void requireCollectionExists(String collectionName) {
+        try {
+            boolean exists = qdrantClient.collectionExistsAsync(collectionName, OPERATION_TIMEOUT)
+                    .get(OPERATION_TIMEOUT.toMillis(), TimeUnit.MILLISECONDS);
+
+            if (!exists) {
+                throw new CollectionNotFoundException(collectionName);
+            }
+        } catch (CollectionNotFoundException exception) {
+            throw exception;
+        } catch (InterruptedException exception) {
+            Thread.currentThread().interrupt();
+            throw new QdrantOperationException(
+                    "Qdrant collection lookup interrupted for '" + collectionName + "'. Retry the request.",
+                    exception);
+        } catch (ExecutionException | TimeoutException exception) {
+            throw new QdrantOperationException(
+                    "Qdrant collection lookup failed for '" + collectionName + "'. "
                             + "Verify Qdrant is running at QDRANT_URL.",
                     exception);
         }
