@@ -10,7 +10,7 @@ One entry per working day. Most recent entry at the top.
 ### Plan
 Today's scope — issues **#12–#18** (phase 4 search + phase 5 RAG):
 - [x] #12 — QdrantSearchService
-- [ ] #13 — QueryEmbeddingService
+- [x] #13 — QueryEmbeddingService
 - [ ] #14 — POST /api/search (search mode)
 - [ ] #15 — Search mode integration tests
 - [ ] #16 — Ollama Docker setup
@@ -24,6 +24,11 @@ Today's scope — issues **#12–#18** (phase 4 search + phase 5 RAG):
   - `SearchHit`, `SearchFilters`, `SearchConstants` records/constants per SPEC §6
   - Over-fetch `topK × 5` chunk points; keep highest-scoring chunk per `document_id`
   - Unit tests (mocked Qdrant client) + integration tests (Testcontainers + fixture ingest via API)
+- **Issue #13** — QueryEmbeddingService (`issue-13/query-embedding-service`)
+  - `QueryEmbeddingService.embed()` — POST embed-sidecar `/api/embed` with 5s/30s timeouts and one retry on 5xx/I/O
+  - `validateEmbeddingModel()` delegates to `CollectionEmbeddingModelService.validateModelForSearch()` (400 on mismatch)
+  - Default model from `EMBED_DEFAULT_MODEL`; WireMock unit tests for 200/503 retry/400/timeout paths
+  - Optional integration test against running embed-sidecar (LaBSE 768-dim)
 
 ### Blocked
 - Nothing

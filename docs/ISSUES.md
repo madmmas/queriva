@@ -686,12 +686,12 @@ HTTP client from Spring Boot to embed-sidecar for query vectorisation (SPEC §8 
 
 ### Tasks
 
-- [ ] `QueryEmbeddingService.embed(text, model)` → `float[]`
-- [ ] Configurable via `EMBED_DEFAULT_MODEL` env
-- [ ] Connect timeout: 5s, read timeout: 30s
-- [ ] One retry on 5xx or IOException — no retry on 4xx (code-quality.mdc B5)
-- [ ] Model mismatch stored in collection metadata — validate before search, return 400 if mismatch
-- [ ] WireMock for unit tests (test-quality.mdc B6)
+- [x] `QueryEmbeddingService.embed(text, model)` → `float[]`
+- [x] Configurable via `EMBED_DEFAULT_MODEL` env
+- [x] Connect timeout: 5s, read timeout: 30s
+- [x] One retry on 5xx or IOException — no retry on 4xx (code-quality.mdc B5)
+- [x] Model mismatch stored in collection metadata — validate before search, return 400 if mismatch
+- [x] WireMock for unit tests (test-quality.mdc B6)
 
 ### Acceptance criteria
 
@@ -701,12 +701,12 @@ HTTP client from Spring Boot to embed-sidecar for query vectorisation (SPEC §8 
 
 ### Test plan
 
-- [ ] Unit (WireMock): 200 → correct vector returned
-- [ ] Unit (WireMock): 503 → one retry → success
-- [ ] Unit (WireMock): 503 → one retry → 503 → exception thrown with message
-- [ ] Unit (WireMock): 400 → no retry, exception immediately
-- [ ] Unit: timeout fires after 30s (use WireMock delay)
-- [ ] Integration: real embed sidecar, LaBSE model
+- [x] Unit (WireMock): 200 → correct vector returned
+- [x] Unit (WireMock): 503 → one retry → success
+- [x] Unit (WireMock): 503 → one retry → 503 → exception thrown with message
+- [x] Unit (WireMock): 400 → no retry, exception immediately
+- [x] Unit: timeout fires after 30s (use WireMock delay)
+- [x] Integration: real embed sidecar, LaBSE model
 
 ---
 

@@ -44,4 +44,15 @@ public class CollectionEmbeddingModelService {
         qdrantIngestRepository.writeStoredEmbeddingModel(
                 collectionName, requestedModel, summary.vectorSize());
     }
+
+    /**
+     * Validates query-time model against collection metadata without recording a new model (SPEC §8 step 2).
+     */
+    public void validateModelForSearch(String collectionName, String requestedModel) {
+        Optional<String> storedModel = qdrantIngestRepository.readStoredEmbeddingModel(collectionName);
+
+        if (storedModel.isPresent() && !storedModel.get().equals(requestedModel)) {
+            throw new EmbeddingModelMismatchException(collectionName, requestedModel, storedModel.get());
+        }
+    }
 }

@@ -10,6 +10,7 @@ Versions follow [Semantic Versioning](https://semver.org/).
 
 ### Added
 - **Added** [api] `QdrantSearchService` — typed Qdrant filters, min-score filtering, document-level chunk deduplication, and `SearchHit` record (#12)
+- **Added** [api] `QueryEmbeddingService` — embed-sidecar HTTP client with retry, default model config, and collection model validation (#13)
 
 ---
 
