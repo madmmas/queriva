@@ -1,4 +1,4 @@
-# SPEC §12 — Docker Compose (Qdrant service; full stack added in issue #27)
+# SPEC §12 — Docker Compose (ingest stack: qdrant + embed-sidecar + api; full stack in issue #27)
 #
 # Qdrant ports (host → container):
 #   6333 — REST API  (curl http://localhost:6333/collections)
@@ -6,6 +6,10 @@
 #
 # Local access: set QDRANT_URL=http://localhost:6333 in .env (see .env.example)
 # In-stack access: http://qdrant:6333 when other services join this compose file
+#
+# Quick start:
+#   docker compose up -d --build
+#   make seed
 
 services:
   qdrant:
@@ -24,6 +28,46 @@ services:
       timeout: 5s
       retries: 5
       start_period: 10s
+
+  embed-sidecar:
+    build:
+      context: ./packages/embed-sidecar
+      dockerfile: Dockerfile
+    image: queriva/embed-sidecar:local
+    ports:
+      - "8001:8001"
+    environment:
+      - DEFAULT_MODEL=LaBSE
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/api/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+
+  api:
+    build:
+      context: ./packages/api
+      dockerfile: Dockerfile
+    image: queriva/api:local
+    ports:
+      - "8080:8080"
+    environment:
+      - QDRANT_URL=http://qdrant:6333
+      - QDRANT_GRPC_PORT=6334
+      - EMBED_SIDECAR_URL=http://embed-sidecar:8001
+      - OLLAMA_URL=http://host.docker.internal:11434
+    depends_on:
+      qdrant:
+        condition: service_healthy
+      embed-sidecar:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/api/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
 
 volumes:
   qdrant_data:

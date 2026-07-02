@@ -122,7 +122,7 @@ def test_cli_ingests_fixture_when_api_is_running() -> None:
         "--api",
         "http://localhost:8080",
         "--collection",
-        "news_radar_cli_it",
+        "news_radar",
         "--format",
         "json",
         "--source",
@@ -133,6 +133,8 @@ def test_cli_ingests_fixture_when_api_is_running() -> None:
 
     if result.returncode != 0 and "Failed to reach Queriva API" in result.stderr:
         pytest.skip("Queriva API is not running on localhost:8080")
+
+    assert result.returncode == 0
 
     assert result.returncode == 0
     assert "Ingest complete" in result.stderr or "Ingest complete" in result.stdout

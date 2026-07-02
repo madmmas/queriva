@@ -8,21 +8,6 @@ Versions follow [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
-- **Added** [ingest-cli] Full test suite — parametrized loaders, CLI parsing, HTTP errors, SSRF, path traversal (#10)
-- **Added** [api] `IngestPipelineIT` — full ingest integration suite using `fixtures/news_radar_dhaka_floods.json` (#8)
-- **Fixed** [api] Map logical point ids to deterministic Qdrant UUIDs (`QuerivaPointIdMapper`) (#42)
-- **Added** [api] `POST /api/ingest/documents` — chunk → embed → upsert pipeline with upsert modes (#7)
-- **Added** [api] `IngestService`, `EmbedSidecarClient`, `QdrantIngestRepository`, `CollectionEmbeddingModelService` (#7)
-- **Added** [api] `ChunkingService` — sliding window 512 chars / 64 overlap with title prepending (#6)
-- **Added** [api] `Document` and `Chunk` records for ingest pipeline (#6)
-- **Added** [api] `GET /api/health` — live Qdrant, Ollama, and embed-sidecar connectivity (#5)
-- **Added** [api] `POST /api/ingest/collection`, `GET /api/ingest/collections`, `DELETE /api/ingest/collection/{name}` (#5)
-- **Added** [api] `CollectionManager`, `GlobalExceptionHandler`, CORS config, Qdrant gRPC client (#5)
-- **Infrastructure** [api] `Dockerfile` for API package with curl healthcheck (#5)
-- **Infrastructure** [infra] `docker-compose.yml` Qdrant service — ports 6333/6334, persistent volume, curl healthcheck (#4)
-- **Infrastructure** [infra] `infra/docker/qdrant.Dockerfile` — extends official image with curl for healthchecks (#4)
-- **Infrastructure** [api] `QdrantTestcontainersSupport` — shared Testcontainers config aligned with compose (#4)
-
 ---
 
 ## Release roadmap
@@ -99,7 +84,7 @@ Packages: `[api]`, `[embed-sidecar]`, `[ingest-cli]`, `[ui]`, `[infra]`, `[ci]`,
 
 ---
 
-## [0.2.0] — TBD
+## [0.2.0] — 2026-07-01
 > Ingest pipeline: documents flow from any source into Qdrant
 
 ### Added
@@ -107,23 +92,38 @@ Packages: `[api]`, `[embed-sidecar]`, `[ingest-cli]`, `[ui]`, `[infra]`, `[ci]`,
 - **Added** [api] `GET /api/ingest/collections` — list collections with stats (#5)
 - **Added** [api] `DELETE /api/ingest/collection/{name}` — drop collection (#5)
 - **Added** [api] `GET /api/health` — live status of qdrant, ollama, embed-sidecar (#5)
+- **Added** [api] `CollectionManager`, `GlobalExceptionHandler`, CORS config, Qdrant gRPC client (#5)
 - **Added** [api] `ChunkingService` — sliding window 512 chars / 64 overlap with title prepending (#6)
+- **Added** [api] `Document` and `Chunk` records for ingest pipeline (#6)
 - **Added** [api] `POST /api/ingest/documents` — chunk → embed → upsert pipeline (#7)
+- **Added** [api] `IngestService`, `EmbedSidecarClient`, `QdrantIngestRepository`, `CollectionEmbeddingModelService` (#7)
 - **Added** [api] Three upsert modes: `skip_existing`, `overwrite`, `error_on_conflict` (#7)
 - **Added** [api] Batched embedding via `INGEST_BATCH_SIZE` env config (#7)
+- **Added** [api] `IngestPipelineIT` — full ingest integration suite using `fixtures/news_radar_dhaka_floods.json` (#8)
 - **Added** [ingest-cli] `queriva_ingest.py` CLI entry point (#9)
 - **Added** [ingest-cli] JSON loader (`--format json`) (#9)
 - **Added** [ingest-cli] CSV loader with column mapping (`--format csv --map ...`) (#9)
 - **Added** [ingest-cli] File loader — recursive `.txt`, `.md`, `.pdf` (`--format files`) (#9)
 - **Added** [ingest-cli] URL loader — fetch + extract text (`--format urls`) (#9)
 - **Added** [ingest-cli] Stdin JSONL loader (`--format jsonl`) (#9)
+- **Added** [ingest-cli] Full test suite — parametrized loaders, CLI parsing, HTTP errors, SSRF, path traversal (#10)
 - **Added** [infra] Demo seed fixture: `fixtures/news_radar_dhaka_floods.json` — 8 articles BN+EN (#11)
-- **Added** [infra] `scripts/seed-demo.sh` — idempotent seed via ingest CLI (#11)
+- **Added** [infra] `scripts/seed-demo.sh` — idempotent seed with point-count and idempotency verification (#11)
+- **Added** [infra] `scripts/validate_fixture.py` — validates fixture against SPEC §14 source fields (#11)
+
+### Fixed
+- **Fixed** [api] Map logical point ids to deterministic Qdrant UUIDs (`QuerivaPointIdMapper`) (#42)
 
 ### Infrastructure
 - **Infrastructure** [infra] Qdrant Docker service with persistent volume and healthcheck (#4)
+- **Infrastructure** [infra] `infra/docker/qdrant.Dockerfile` — extends official image with curl for healthchecks (#4)
+- **Infrastructure** [api] `QdrantTestcontainersSupport` — shared Testcontainers config aligned with compose (#4)
+- **Infrastructure** [api] Multi-stage `Dockerfile` for API package with curl healthcheck (#5, #11)
+- **Infrastructure** [infra] `docker-compose.yml` ingest stack — qdrant, embed-sidecar, api (#11)
+- **Infrastructure** [infra] `make validate-fixture` and `make seed` targets (#11)
 
 ### Docs
+- **Docs** [docs] README quick start — `docker compose up` then `make seed` (#11)
 - **Docs** [adr] ADR-003 — Sliding window chunking with title prepending (before #6)
 - **Docs** [adr] ADR-007 — Character-based over token-based chunking (before #6)
 - **Docs** [adr] ADR-008 — Source document_id as upsert identity key (before #7)

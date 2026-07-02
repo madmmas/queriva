@@ -20,8 +20,19 @@ search in natural language, get AI-synthesized answers — zero external API cal
   <img src="mock-ui/queriva-icon-files/ui.png" alt="Queriva search UI mock — floods in Dhaka query with RAG summary" width="900">
 </p>
 
-> **Status:** Implementation in progress. See [`docs/SPEC.md`](docs/SPEC.md)
+> **Status:** v0.2.0 — ingest pipeline working end-to-end. See [`docs/SPEC.md`](docs/SPEC.md)
 > for architecture and [`docs/ISSUES.md`](docs/ISSUES.md) for the backlog.
+
+## Quick start
+
+```bash
+docker compose up -d --build
+make seed
+```
+
+`make seed` validates `fixtures/news_radar_dhaka_floods.json`, ingests 8 articles
+(4 Bangla + 4 English) into the `news_radar` collection, and verifies idempotency.
+Requires the API, embed-sidecar, and Qdrant services from `docker compose`.
 
 ## Docs
 

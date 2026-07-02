@@ -617,11 +617,11 @@ and `scripts/seed-demo.sh` work correctly against a running stack.
 
 ### Tasks
 
-- [ ] Verify `fixtures/news_radar_dhaka_floods.json` — all 8 articles have all SPEC §14 payload fields
-- [ ] Verify `scripts/seed-demo.sh` runs end-to-end against docker compose stack
-- [ ] Add `make seed` Makefile target (if not already present)
-- [ ] Document seed step in README stub: "run `make seed` after `docker compose up`"
-- [ ] Verify both Bangla (BN) and English (EN) articles are present after seed
+- [x] Verify `fixtures/news_radar_dhaka_floods.json` — all 8 articles have all SPEC §14 payload fields
+- [x] Verify `scripts/seed-demo.sh` runs end-to-end against docker compose stack
+- [x] Add `make seed` Makefile target (if not already present)
+- [x] Document seed step in README stub: "run `make seed` after `docker compose up`"
+- [x] Verify both Bangla (BN) and English (EN) articles are present after seed
 
 ### Acceptance criteria
 
@@ -631,9 +631,9 @@ and `scripts/seed-demo.sh` work correctly against a running stack.
 
 ### Test plan
 
-- [ ] `make seed` exits 0
-- [ ] `curl localhost:8080/api/ingest/collections` shows `news_radar` point count ≥ 8
-- [ ] Run `make seed` twice → same point count both times
+- [x] `make seed` exits 0
+- [x] `curl localhost:8080/api/ingest/collections` shows `news_radar` point count ≥ 8
+- [x] Run `make seed` twice → same point count both times
 
 ---
 
