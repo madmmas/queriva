@@ -5,6 +5,30 @@ One entry per working day. Most recent entry at the top.
 
 ---
 
+## 2026-07-02
+
+### Built
+- **Issue #12** — QdrantSearchService (`issue-12/qdrant-search-service`)
+  - `QdrantSearchService.search()` — vector search with typed filters, min-score cutoff, and document-level dedup
+  - `QdrantSearchFilterBuilder` — language, category, `published_at` date range; excludes `queriva_internal` metadata points
+  - `SearchHit`, `SearchFilters`, `SearchConstants` records/constants per SPEC §6
+  - Over-fetch `topK × 5` chunk points; keep highest-scoring chunk per `document_id`
+  - Unit tests (mocked Qdrant client) + integration tests (Testcontainers + fixture ingest via API)
+
+### Blocked
+- Nothing
+
+### Decided
+- `SearchHit.id` maps from Qdrant payload `document_id`, not chunk point ID
+- Date filters accept `YYYY-MM-DD` (expanded to start/end of day) or full ISO timestamps
+
+### Tomorrow
+- Issue #13 — QueryEmbeddingService
+- Issue #14 — POST /api/search (search mode)
+- Issue #15 — Search mode integration tests
+
+---
+
 ## 2026-07-01
 
 ### Built
