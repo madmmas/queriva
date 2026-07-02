@@ -7,6 +7,16 @@ One entry per working day. Most recent entry at the top.
 
 ## 2026-07-02
 
+### Plan
+Today's scope — issues **#12–#18** (phase 4 search + phase 5 RAG):
+- [x] #12 — QdrantSearchService
+- [ ] #13 — QueryEmbeddingService
+- [ ] #14 — POST /api/search (search mode)
+- [ ] #15 — Search mode integration tests
+- [ ] #16 — Ollama Docker setup
+- [ ] #17 — RAG mode (LLMSynthesisService)
+- [ ] #18 — RAG mode integration tests
+
 ### Built
 - **Issue #12** — QdrantSearchService (`issue-12/qdrant-search-service`)
   - `QdrantSearchService.search()` — vector search with typed filters, min-score cutoff, and document-level dedup
@@ -23,9 +33,10 @@ One entry per working day. Most recent entry at the top.
 - Date filters accept `YYYY-MM-DD` (expanded to start/end of day) or full ISO timestamps
 
 ### Tomorrow
-- Issue #13 — QueryEmbeddingService
-- Issue #14 — POST /api/search (search mode)
-- Issue #15 — Search mode integration tests
+- Issue #19 — UI scaffold + design tokens + brand assets
+- Issue #20 — Search zone components
+- Issue #21 — Results list + stats components
+- Issue #22 — AI summary panel
 
 ---
 
