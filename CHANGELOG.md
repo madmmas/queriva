@@ -11,6 +11,7 @@ Versions follow [Semantic Versioning](https://semver.org/).
 ### Added
 - **Added** [api] `QdrantSearchService` — typed Qdrant filters, min-score filtering, document-level chunk deduplication, and `SearchHit` record (#12)
 - **Added** [api] `QueryEmbeddingService` — embed-sidecar HTTP client with retry, default model config, and collection model validation (#13)
+- **Added** [api] `POST /api/search` search mode — `SearchController`, `SearchService`, `SearchRequest`/`SearchResponse`, latency breakdown (#14)
 
 ---
 

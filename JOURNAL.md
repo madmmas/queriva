@@ -11,7 +11,7 @@ One entry per working day. Most recent entry at the top.
 Today's scope — issues **#12–#18** (phase 4 search + phase 5 RAG):
 - [x] #12 — QdrantSearchService
 - [x] #13 — QueryEmbeddingService
-- [ ] #14 — POST /api/search (search mode)
+- [x] #14 — POST /api/search (search mode)
 - [ ] #15 — Search mode integration tests
 - [ ] #16 — Ollama Docker setup
 - [ ] #17 — RAG mode (LLMSynthesisService)
@@ -29,6 +29,11 @@ Today's scope — issues **#12–#18** (phase 4 search + phase 5 RAG):
   - `validateEmbeddingModel()` delegates to `CollectionEmbeddingModelService.validateModelForSearch()` (400 on mismatch)
   - Default model from `EMBED_DEFAULT_MODEL`; WireMock unit tests for 200/503 retry/400/timeout paths
   - Optional integration test against running embed-sidecar (LaBSE 768-dim)
+- **Issue #14** — POST /api/search search mode (`issue-14/search-api`)
+  - `SearchController` + `SearchService` — embed → search → map pipeline per SPEC §8
+  - `SearchRequest`/`SearchResponse`/`SearchLatencyMs` records with SPEC §6 defaults and validation
+  - `summary=null`, `latency_ms.synthesis` omitted in search mode; query logged at DEBUG only
+  - `@WebMvcTest` validation tests + `SearchPipelineIT` (Testcontainers + fixture corpus)
 
 ### Blocked
 - Nothing

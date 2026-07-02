@@ -722,13 +722,13 @@ Full search-mode flow: embed → search → map response (SPEC §8, §6 contract
 
 ### Tasks
 
-- [ ] `SearchController` — `POST /api/search` in `dev.queriva.search`
-- [ ] `SearchRequest` record: `query` (@NotBlank, @Size max=1000), `collection` (pattern), `topK`, `minScore`, `mode`, `filters`
-- [ ] Request defaults in compact constructor: `topK=10`, `minScore=0.60`, `mode="search"`
-- [ ] `SearchResultMapper` — map `List<SearchHit>` to `SearchResponse` per SPEC §6
-- [ ] `latency_ms` breakdown: `embed`, `search`, `total` in search mode; `synthesis=null`
-- [ ] `summary=null` in search mode
-- [ ] Query logged at DEBUG level only (code-quality.mdc E1)
+- [x] `SearchController` — `POST /api/search` in `dev.queriva.search`
+- [x] `SearchRequest` record: `query` (@NotBlank, @Size max=1000), `collection` (pattern), `topK`, `minScore`, `mode`, `filters`
+- [x] Request defaults in compact constructor: `topK=10`, `minScore=0.60`, `mode="search"`
+- [x] `SearchResultMapper` — map `List<SearchHit>` to `SearchResponse` per SPEC §6
+- [x] `latency_ms` breakdown: `embed`, `search`, `total` in search mode; `synthesis=null`
+- [x] `summary=null` in search mode
+- [x] Query logged at DEBUG level only (code-quality.mdc E1)
 
 ### Acceptance criteria
 
@@ -740,13 +740,13 @@ Full search-mode flow: embed → search → map response (SPEC §8, §6 contract
 
 ### Test plan
 
-- [ ] `@WebMvcTest`: blank query → 400
-- [ ] `@WebMvcTest`: query > 1000 chars → 400
-- [ ] `@WebMvcTest`: invalid collection name → 400
-- [ ] Integration: "floods in Dhaka" → ≥ 4 results with score > 0.60
-- [ ] Integration: all filter combinations (parametrized)
-- [ ] Contract test: response JSON schema matches SPEC §6
-- [ ] Latency test: `latency_ms` fields populated and positive
+- [x] `@WebMvcTest`: blank query → 400
+- [x] `@WebMvcTest`: query > 1000 chars → 400
+- [x] `@WebMvcTest`: invalid collection name → 400
+- [x] Integration: "floods in Dhaka" → ≥ 4 results with score > 0.60
+- [x] Integration: all filter combinations (parametrized)
+- [x] Contract test: response JSON schema matches SPEC §6
+- [x] Latency test: `latency_ms` fields populated and positive
 
 ---
 
