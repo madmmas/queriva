@@ -5,6 +5,34 @@ One entry per working day. Most recent entry at the top.
 
 ---
 
+## 2026-07-03
+
+### Plan
+Today's scope — finish phase 5 RAG from the **#12–#18** batch:
+- [x] #16 — Ollama Docker setup
+- [ ] #17 — RAG mode (LLMSynthesisService)
+- [ ] #18 — RAG mode integration tests
+
+### Built
+- **Issue #16** — Ollama Docker setup (`issue-16/ollama-docker-setup`, PR #52)
+  - `ollama` service in `docker-compose.yml` — `ollama/ollama:0.5.7`, port 11434, `ollama_data` volume, healthcheck on `/api/tags`
+  - `scripts/ollama-pull-model.sh` + `make ollama-pull` for first-run `mistral` model download (~4GB)
+  - API wired to `OLLAMA_URL=http://ollama:11434`; `OLLAMA_MODEL=mistral` in compose and `application.yml`
+  - `OllamaHealthIT` — health reports `connected` when `/api/tags` responds, `disconnected` on failure
+
+### Blocked
+- Nothing
+
+### Decided
+- Ollama does not block `status=ok` on `/api/health` — same as pre-Docker behaviour (#5)
+- Model pull is explicit (`make ollama-pull`), not automatic on `docker compose up` — avoids surprise 4GB download
+
+### Tomorrow
+- Issue #17 — RAG mode (LLMSynthesisService)
+- Issue #18 — RAG mode integration tests
+
+---
+
 ## 2026-07-02
 
 ### Plan
@@ -13,7 +41,7 @@ Today's scope — issues **#12–#18** (phase 4 search + phase 5 RAG):
 - [x] #13 — QueryEmbeddingService
 - [x] #14 — POST /api/search (search mode)
 - [x] #15 — Search mode integration tests
-- [x] #16 — Ollama Docker setup
+- [ ] #16 — Ollama Docker setup (completed 2026-07-03 — see that entry)
 - [ ] #17 — RAG mode (LLMSynthesisService)
 - [ ] #18 — RAG mode integration tests
 
@@ -37,10 +65,6 @@ Today's scope — issues **#12–#18** (phase 4 search + phase 5 RAG):
 - **Issue #15** — Search mode integration tests (`issue-15/search-mode-integration-tests`)
   - `SearchModeIT` — ranked top result, `top_k`, `min_score`, bn/en filters, date range, <500ms baseline
   - `SearchIntegrationTestSupport` — shared WireMock embed stubs; `SearchPipelineIT` refactored to reuse
-- **Issue #16** — Ollama Docker setup (`issue-16/ollama-docker-setup`)
-  - `ollama` service in `docker-compose.yml` — port 11434, `ollama_data` volume, healthcheck on `/api/tags`
-  - `scripts/ollama-pull-model.sh` + `make ollama-pull` for first-run `mistral` model download
-  - API `OLLAMA_URL=http://ollama:11434`; `OllamaHealthIT` probes connected/disconnected states
 
 ### Blocked
 - Nothing
