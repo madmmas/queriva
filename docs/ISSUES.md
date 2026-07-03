@@ -825,13 +825,13 @@ LLM synthesis from retrieved chunks via Ollama (SPEC §8 step 4b, §10 prompt, A
 
 ### Tasks
 
-- [ ] `LLMSynthesisService.synthesize(query, hits)` → `String summary`
-- [ ] Prompt template per SPEC §10: system + numbered articles + user question
-- [ ] `mode=rag` → `summary` non-null + `latency_ms.synthesis` populated
-- [ ] `SEARCH_MAX_SCORE_AUTO_ACCEPT=0.80` — skip LLM if top result score ≥ threshold
-- [ ] Graceful degradation: Ollama down → return search results without summary, `summary=null`
-- [ ] Query NOT logged at INFO level — DEBUG only (code-quality.mdc E1)
-- [ ] WireMock Ollama stub for unit tests
+- [x] `LLMSynthesisService.synthesize(query, hits)` → `String summary`
+- [x] Prompt template per SPEC §10: system + numbered articles + user question
+- [x] `mode=rag` → `summary` non-null + `latency_ms.synthesis` populated
+- [x] `SEARCH_MAX_SCORE_AUTO_ACCEPT=0.80` — skip LLM if top result score ≥ threshold
+- [x] Graceful degradation: Ollama down → return search results without summary, `summary=null`
+- [x] Query NOT logged at INFO level — DEBUG only (code-quality.mdc E1)
+- [x] WireMock Ollama stub for unit tests
 
 ### Acceptance criteria
 
@@ -842,11 +842,11 @@ LLM synthesis from retrieved chunks via Ollama (SPEC §8 step 4b, §10 prompt, A
 
 ### Test plan
 
-- [ ] Unit: prompt builder formats numbered articles correctly
-- [ ] Unit (WireMock): Ollama 200 → summary returned
-- [ ] Unit (WireMock): Ollama 503 → graceful degradation
-- [ ] Integration (`@Tag("slow")`): real Ollama, "floods in Dhaka" → non-empty summary
-- [ ] Test: search mode vs RAG mode same query → different response shapes
+- [x] Unit: prompt builder formats numbered articles correctly
+- [x] Unit (WireMock): Ollama 200 → summary returned
+- [x] Unit (WireMock): Ollama 503 → graceful degradation
+- [x] Integration (`@Tag("slow")`): real Ollama, "floods in Dhaka" → non-empty summary
+- [x] Test: search mode vs RAG mode same query → different response shapes
 
 ---
 

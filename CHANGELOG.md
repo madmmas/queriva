@@ -14,6 +14,7 @@ Versions follow [Semantic Versioning](https://semver.org/).
 - **Added** [api] `POST /api/search` search mode — `SearchController`, `SearchService`, `SearchRequest`/`SearchResponse`, latency breakdown (#14)
 - **Added** [api] `SearchModeIT` — full search-mode integration coverage with fixture corpus, filters, performance baseline (#15)
 - **Infrastructure** [infra] Ollama Docker service with Mistral model pull script and health integration tests (#16)
+- **Added** [api] RAG mode — `LLMSynthesisService`, `RagPromptBuilder`, Ollama synthesis, `SEARCH_MAX_SCORE_AUTO_ACCEPT` auto-skip, graceful degradation (#17)
 
 ---
 
