@@ -8,13 +8,23 @@ Versions follow [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+---
+
+## [0.3.0] — 2026-07-03
+> Search + RAG: natural language queries return ranked results and AI summaries
+
 ### Added
 - **Added** [api] `QdrantSearchService` — typed Qdrant filters, min-score filtering, document-level chunk deduplication, and `SearchHit` record (#12)
 - **Added** [api] `QueryEmbeddingService` — embed-sidecar HTTP client with retry, default model config, and collection model validation (#13)
 - **Added** [api] `POST /api/search` search mode — `SearchController`, `SearchService`, `SearchRequest`/`SearchResponse`, latency breakdown (#14)
+- **Added** [api] Filters: `language`, `date_from`, `date_to`, `category` (#14)
 - **Added** [api] `SearchModeIT` — full search-mode integration coverage with fixture corpus, filters, performance baseline (#15)
-- **Infrastructure** [infra] Ollama Docker service with Mistral model pull script and health integration tests (#16)
 - **Added** [api] RAG mode — `LLMSynthesisService`, `RagPromptBuilder`, Ollama synthesis, `SEARCH_MAX_SCORE_AUTO_ACCEPT` auto-skip, graceful degradation (#17)
+- **Added** [api] `POST /api/search` (rag mode) — synthesized answer with `latency_ms.synthesis` (#17)
+- **Added** [api] `RagModeIT` — full RAG pipeline integration with WireMock Ollama (#18)
+- **Added** [api] `RagModeSlowIT` — end-to-end RAG against live Ollama (`@Tag("slow")`) (#18)
+- **Infrastructure** [infra] Ollama Docker service with Mistral model pull script and health integration tests (#16)
+- **Infrastructure** [infra] `make test-slow` — run Ollama RAG integration tests manually (#18)
 
 ---
 
@@ -135,30 +145,6 @@ Packages: `[api]`, `[embed-sidecar]`, `[ingest-cli]`, `[ui]`, `[infra]`, `[ci]`,
 - **Docs** [adr] ADR-003 — Sliding window chunking with title prepending (before #6)
 - **Docs** [adr] ADR-007 — Character-based over token-based chunking (before #6)
 - **Docs** [adr] ADR-008 — Source document_id as upsert identity key (before #7)
-
----
-
-## [0.3.0] — TBD
-> Search + RAG: natural language queries return ranked results and AI summaries
-
-### Added
-- **Added** [api] `QdrantSearchService` — vector search with payload filters and min_score threshold (#12)
-- **Added** [api] Chunk deduplication by `document_id` — top-k shows one result per source article (#12)
-- **Added** [api] `QueryEmbeddingService` — HTTP client to embed-sidecar with 1-retry (#13)
-- **Added** [api] `POST /api/search` (search mode) — embed → search → ranked results (#14)
-- **Added** [api] Filters: `language`, `date_from`, `date_to`, `category` (#14)
-- **Added** [api] `latency_ms` breakdown: `embed`, `search`, `total` in search mode (#14)
-- **Added** [api] `LLMSynthesisService` — Ollama/Mistral RAG synthesis (#17)
-- **Added** [api] `POST /api/search` (rag mode) — synthesized answer with article citations (#17)
-- **Added** [api] `latency_ms.synthesis` in RAG mode response (#17)
-- **Added** [api] `SEARCH_MAX_SCORE_AUTO_ACCEPT` — skip LLM for high-confidence direct hits (#17)
-- **Added** [api] Graceful degradation when Ollama is unreachable (#17)
-
-### Infrastructure
-- **Infrastructure** [infra] Ollama Docker service with Mistral 7B model (#16)
-
-### Docs
-- **Docs** [adr] ADR-006 — Ollama + Mistral 7B over vLLM / llama.cpp (before #16)
 
 ---
 

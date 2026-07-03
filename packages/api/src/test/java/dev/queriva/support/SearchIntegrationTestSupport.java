@@ -1,6 +1,7 @@
 package dev.queriva.support;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
+import dev.queriva.search.RagSynthesisConstants;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.containing;
@@ -20,6 +21,16 @@ public final class SearchIntegrationTestSupport {
 
     /** Performance baseline for search mode (SPEC §15, test-quality.mdc E5). */
     public static final long SEARCH_MODE_BASELINE_MILLIS = 500L;
+
+    /** Performance ceiling for RAG mode on CPU (test-quality.mdc E5; SPEC §15 ~2–5s typical). */
+    public static final long RAG_MODE_BASELINE_MILLIS = 10_000L;
+
+    /** Ollama generate path used by RAG synthesis (SPEC §8 step 4b). */
+    public static final String OLLAMA_GENERATE_PATH = RagSynthesisConstants.OLLAMA_GENERATE_PATH;
+
+    /** Stub summary citing the primary fixture article for WireMock Ollama tests. */
+    public static final String STUB_RAG_SUMMARY =
+            "Buriganga river overflows caused flooding in low-lying Dhaka areas last week.";
 
     /** Primary article id in {@code fixtures/news_radar_dhaka_floods.json}. */
     public static final String FIRST_ARTICLE_ID = "cluster-001";
@@ -72,6 +83,18 @@ public final class SearchIntegrationTestSupport {
     public static void stubUniformEmbedResponses(WireMockExtension embedSidecar) {
         embedSidecar.stubFor(post(urlEqualTo(EMBED_API_PATH))
                 .willReturn(jsonVectorResponse("[0.1,0.2]")));
+    }
+
+    /**
+     * Stubs a successful Ollama generate response for RAG integration tests (issue #18).
+     */
+    public static void stubOllamaGenerateResponse(WireMockExtension ollama, String summaryText) {
+        String escapedSummary = summaryText.replace("\\", "\\\\").replace("\"", "\\\"");
+        ollama.stubFor(post(urlEqualTo(OLLAMA_GENERATE_PATH))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", JSON_CONTENT_TYPE)
+                        .withBody("{\"response\":\"" + escapedSummary + "\",\"done\":true}")));
     }
 
     private static com.github.tomakehurst.wiremock.client.ResponseDefinitionBuilder jsonVectorResponse(

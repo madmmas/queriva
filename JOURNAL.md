@@ -11,7 +11,7 @@ One entry per working day. Most recent entry at the top.
 Today's scope — finish phase 5 RAG from the **#12–#18** batch:
 - [x] #16 — Ollama Docker setup
 - [x] #17 — RAG mode (LLMSynthesisService)
-- [ ] #18 — RAG mode integration tests
+- [x] #18 — RAG mode integration tests
 
 ### Built
 - **Issue #16** — Ollama Docker setup (`issue-16/ollama-docker-setup`, PR #52)
@@ -19,12 +19,16 @@ Today's scope — finish phase 5 RAG from the **#12–#18** batch:
   - `scripts/ollama-pull-model.sh` + `make ollama-pull` for first-run `mistral` model download (~4GB)
   - API wired to `OLLAMA_URL=http://ollama:11434`; `OLLAMA_MODEL=mistral` in compose and `application.yml`
   - `OllamaHealthIT` — health reports `connected` when `/api/tags` responds, `disconnected` on failure
-- **Issue #17** — RAG mode (`issue-17/rag-mode`)
+- **Issue #17** — RAG mode (`issue-17/rag-mode`, PR #54)
   - `LLMSynthesisService` — Ollama `POST /api/generate` with SPEC §10 prompt; graceful degradation on 503/unreachable
   - `RagPromptBuilder` + `RagSynthesisConstants` — numbered articles, system instructions, user question
   - `SearchService` RAG path — `mode=rag` populates `summary` and `latency_ms.synthesis`; skips LLM when top score ≥ `SEARCH_MAX_SCORE_AUTO_ACCEPT` (0.80)
   - `SearchResultMapper.toRagResponse()` — RAG response shape per SPEC §6
   - WireMock unit tests (`LLMSynthesisServiceTest`, `RagPromptBuilderTest`); optional `LLMSynthesisServiceSidecarIT` (`@Tag("slow")`)
+- **Issue #18** — RAG integration tests (`issue-18/rag-integration-tests`)
+  - `RagModeIT` — full embed → search → synthesize pipeline via `POST /api/search` with WireMock Ollama (`make test-int`)
+  - `RagModeSlowIT` — live Ollama validation (`@Tag("slow")`, `make test-slow`); baseline ~2–5s per SPEC §15
+  - **Release v0.3.0** — search + RAG via API complete (#12–#18)
 
 ### Blocked
 - Nothing
@@ -33,9 +37,10 @@ Today's scope — finish phase 5 RAG from the **#12–#18** batch:
 - Ollama does not block `status=ok` on `/api/health` — same as pre-Docker behaviour (#5)
 - Model pull is explicit (`make ollama-pull`), not automatic on `docker compose up` — avoids surprise 4GB download
 - LLM request body serialized via injected `ObjectMapper` — bare `RestClient.builder()` lacks Jackson converters in unit tests
+- RAG integration tests raise `search.max-score-auto-accept` to 0.99 so ranked fixture hits still trigger synthesis
 
 ### Tomorrow
-- Issue #18 — RAG mode integration tests
+- Issue #19 — UI scaffold + design tokens + brand assets
 
 ---
 
