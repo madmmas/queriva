@@ -8,11 +8,12 @@ One entry per working day. Most recent entry at the top.
 ## 2026-07-03
 
 ### Plan
-Today's scope — finish phase 5 RAG (#12–#18) and start phase 6 UI (#19):
+Today's scope — finish phase 5 RAG (#12–#18) and phase 6 UI search zone (#19–#20):
 - [x] #16 — Ollama Docker setup
 - [x] #17 — RAG mode (LLMSynthesisService)
 - [x] #18 — RAG mode integration tests
 - [x] #19 — UI scaffold + design tokens + brand assets
+- [x] #20 — Search zone components
 
 ### Built
 - **Issue #16** — Ollama Docker setup (`issue-16/ollama-docker-setup`, PR #52)
@@ -36,6 +37,11 @@ Today's scope — finish phase 5 RAG (#12–#18) and start phase 6 UI (#19):
   - `src/types/api.ts` — SPEC §6 TypeScript contracts; `src/constants/ui.ts` — UI strings
   - `@tabler/icons-react` 3.44.0; `useTheme` hook; scaffold `App` with top bar and token swatches
   - `npm run typecheck` (`tsc -b --noEmit`); Vitest coverage for api types, tokens, theme
+- **Issue #20** — Search zone components (`issue-20/search-zone-components`)
+  - `TopBar` — health status pill via `useHealth` + MSW; settings/menu icons with `aria-label`
+  - `SearchBar` — labelled input, Enter/submit, embeds `ModeToggle`
+  - `FilterStrip` — language, last-7-days, category chips + amber collection badge; `ResultCount`
+  - Mock-aligned CSS at 1280px (`max-width: 80rem`); RTL + axe-core tests
 
 ### Blocked
 - Nothing
@@ -46,9 +52,10 @@ Today's scope — finish phase 5 RAG (#12–#18) and start phase 6 UI (#19):
 - LLM request body serialized via injected `ObjectMapper` — bare `RestClient.builder()` lacks Jackson converters in unit tests
 - RAG integration tests raise `search.max-score-auto-accept` to 0.99 so ranked fixture hits still trigger synthesis
 - Design token values verified in unit test by reading `tokens.css` — jsdom does not resolve CSS custom properties in `getComputedStyle`
+- Collection badge is display-only (not a filter chip); filter state maps to SPEC §6 via `toSearchFilters`
 
 ### Tomorrow
-- Issue #20 — Search zone components (TopBar, SearchBar, ModeToggle, FilterStrip)
+- Issue #21 — Results list + stats components
 
 ---
 

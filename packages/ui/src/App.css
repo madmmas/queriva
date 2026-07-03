@@ -4,6 +4,8 @@
   flex-direction: column;
   background: var(--surface-0);
   color: var(--text-primary);
+  max-width: 80rem;
+  margin: 0 auto;
 }
 
 .qv-bar {
@@ -52,69 +54,190 @@
   gap: 12px;
 }
 
-.qv-theme-btn {
+.qv-status-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 0.5px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 4px 10px;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.45);
+  letter-spacing: 0.3px;
+}
+
+.qv-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--qv-teal);
+  flex-shrink: 0;
+}
+
+.qv-status-dot-degraded {
+  background: var(--qv-amber);
+}
+
+.qv-status-service {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.qv-theme-btn,
+.qv-nav-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.35);
+  padding: 0;
+}
+
+.qv-theme-btn {
   width: 32px;
   height: 32px;
   border-radius: 8px;
   border: 0.5px solid rgba(255, 255, 255, 0.12);
   background: rgba(255, 255, 255, 0.06);
   color: var(--qv-teal);
-  cursor: pointer;
+}
+
+.qv-theme-btn:hover,
+.qv-nav-icon:hover {
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .qv-theme-btn:hover {
   background: rgba(255, 255, 255, 0.1);
 }
 
-.qv-main {
-  flex: 1;
-  padding: 2rem 1.5rem;
-  max-width: 48rem;
-  margin: 0 auto;
+.qv-nav-icon {
+  font-size: 18px;
 }
 
-.qv-scaffold-card {
-  background: var(--surface-1);
-  border: 0.5px solid var(--border);
-  border-radius: var(--radius);
-  padding: 1.5rem;
+.qv-search-zone {
+  padding: 20px 20px 12px;
+  border-bottom: 0.5px solid var(--border);
 }
 
-.qv-scaffold-card h1 {
-  margin: 0 0 0.5rem;
-  font-size: 1.25rem;
-  color: var(--text-primary);
-}
-
-.qv-scaffold-card p {
-  margin: 0 0 1rem;
-  color: var(--text-secondary);
-}
-
-.qv-token-swatch {
+.qv-search-box {
   display: flex;
-  gap: 0.75rem;
+  align-items: center;
+  gap: 10px;
+  background: var(--surface-2);
+  border: 0.5px solid var(--border-strong);
+  border-radius: 10px;
+  padding: 0 14px;
+}
+
+.qv-search-box:focus-within {
+  border-color: var(--qv-teal);
+}
+
+.qv-search-icon {
+  color: var(--qv-teal);
+  flex-shrink: 0;
+}
+
+.qv-search-box input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: 14px;
+  color: var(--text-primary);
+  padding: 11px 0;
+  outline: none;
+  font-family: inherit;
+}
+
+.qv-search-box input::placeholder {
+  color: var(--text-muted);
+}
+
+.qv-mode-seg {
+  display: flex;
+  gap: 4px;
+  border-left: 0.5px solid var(--border);
+  padding-left: 12px;
+}
+
+.qv-seg-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 4px 9px;
+  border-radius: 6px;
+  border: 0.5px solid transparent;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.1s;
+}
+
+.qv-seg-btn.on {
+  background: var(--qv-teal-dim);
+  color: var(--qv-teal);
+  border-color: var(--qv-teal-border);
+}
+
+.qv-filter-strip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
   flex-wrap: wrap;
 }
 
-.qv-swatch {
-  width: 3rem;
-  height: 3rem;
-  border-radius: 8px;
-  border: 0.5px solid var(--border-strong);
+.qv-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  padding: 3px 9px;
+  border-radius: 20px;
+  border: 0.5px solid var(--border);
+  color: var(--text-secondary);
+  background: var(--surface-1);
+  cursor: pointer;
+  font-family: inherit;
 }
 
-.qv-swatch-navy {
-  background: var(--qv-navy);
+.qv-chip.on {
+  border-color: var(--qv-teal-border);
+  color: var(--qv-teal);
+  background: var(--qv-teal-dim);
 }
 
-.qv-swatch-teal {
-  background: var(--qv-teal);
+.qv-chip.amber {
+  border-color: #854f0b;
+  color: #854f0b;
+  background: #faeeda;
+  cursor: default;
 }
 
-.qv-swatch-amber {
-  background: var(--qv-amber);
+.qv-count {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.qv-main {
+  flex: 1;
+  padding: 1.5rem 20px;
+}
+
+.qv-placeholder-message {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 14px;
 }

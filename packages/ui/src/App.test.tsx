@@ -2,7 +2,12 @@ import { cleanup, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { axe, toHaveNoViolations } from 'jest-axe';
 import { afterEach, describe, expect, it } from 'vitest';
-import { APP_NAME, THEME_TOGGLE_LABEL } from './constants/ui';
+import {
+  APP_NAME,
+  RAG_MODE_LABEL,
+  SEARCH_INPUT_LABEL,
+  THEME_TOGGLE_LABEL,
+} from './constants/ui';
 import App from './App';
 
 expect.extend(toHaveNoViolations);
@@ -14,11 +19,14 @@ afterEach(() => {
 });
 
 describe('App', () => {
-  it('should render brand bar with Queriva name when app mounts', () => {
+  it('should render search zone with brand bar when app mounts', async () => {
     render(<App />);
 
-    expect(screen.getByRole('heading', { name: APP_NAME })).toBeInTheDocument();
+    expect(screen.getByText(APP_NAME)).toBeInTheDocument();
     expect(screen.getByRole('banner')).toBeInTheDocument();
+    expect(screen.getByLabelText(SEARCH_INPUT_LABEL)).toBeInTheDocument();
+
+    await screen.findByText('qdrant');
   });
 
   it('should toggle data-theme when theme button is clicked', async () => {
@@ -31,12 +39,16 @@ describe('App', () => {
     expect(document.documentElement.getAttribute('data-theme')).toBe('dark');
   });
 
-  it('should render brand colour swatches for design token verification', () => {
+  it('should switch to rag mode when rag toggle is clicked', async () => {
+    const user = userEvent.setup();
     render(<App />);
 
-    expect(document.querySelector('.qv-swatch-navy')).toBeInTheDocument();
-    expect(document.querySelector('.qv-swatch-teal')).toBeInTheDocument();
-    expect(document.querySelector('.qv-swatch-amber')).toBeInTheDocument();
+    await user.click(screen.getByRole('radio', { name: RAG_MODE_LABEL }));
+
+    expect(screen.getByRole('radio', { name: RAG_MODE_LABEL })).toHaveAttribute(
+      'aria-checked',
+      'true',
+    );
   });
 
   it('should have no accessibility violations when app mounts', async () => {

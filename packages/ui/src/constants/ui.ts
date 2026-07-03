@@ -52,5 +52,23 @@ export const MENU_LABEL = 'Menu';
 
 export const SEARCH_INPUT_LABEL = 'Search query';
 
+export const SEARCH_SUBMIT_LABEL = 'Submit search';
+
+export const MODE_TOGGLE_GROUP_LABEL = 'Search mode';
+
+export const RESULT_COUNT_SUFFIX = 'results';
+
+export const HEALTH_LABEL_QDRANT = 'qdrant';
+
+export const HEALTH_LABEL_OLLAMA = 'ollama';
+
+export const HEALTH_LABEL_EMBED = 'labse';
+
+export const CATEGORY_FILTER_NATIONAL = 'National';
+
+export const CATEGORY_FILTER_WEATHER = 'Weather';
+
+export const FILTER_STRIP_LABEL = 'Search filters';
+
 export const SCAFFOLD_STATUS_MESSAGE =
-  'UI scaffold ready — search components ship in issues #20–#22.';
+  'Search zone ready — results and summary ship in issues #21–#22.';

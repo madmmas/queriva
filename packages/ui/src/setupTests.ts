@@ -36,7 +36,7 @@ Object.defineProperty(window, 'matchMedia', {
   }),
 });
 
-const server = setupServer(...handlers);
+export const server = setupServer(...handlers);
 
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
 afterEach(() => server.resetHandlers());

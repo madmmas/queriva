@@ -929,11 +929,11 @@ Header bar, search input, mode toggle, filter chips (mock UI `.qv-bar`, `.qv-sea
 
 ### Components
 
-- [ ] `TopBar` — logo, brand, status pill from `GET /api/health`, icons with `aria-label`
-- [ ] `SearchBar` — input with `aria-label`, submit on Enter or button click
-- [ ] `ModeToggle` — segmented Search / RAG, keyboard accessible
-- [ ] `FilterStrip` — language, date range, category, collection badge chips
-- [ ] `ResultCount` — "N results" text
+- [x] `TopBar` — logo, brand, status pill from `GET /api/health`, icons with `aria-label`
+- [x] `SearchBar` — input with `aria-label`, submit on Enter or button click
+- [x] `ModeToggle` — segmented Search / RAG, keyboard accessible
+- [x] `FilterStrip` — language, date range, category, collection badge chips
+- [x] `ResultCount` — "N results" text
 
 ### Acceptance criteria
 
@@ -943,11 +943,11 @@ Header bar, search input, mode toggle, filter chips (mock UI `.qv-bar`, `.qv-sea
 
 ### Test plan
 
-- [ ] RTL: `ModeToggle` click changes mode state
-- [ ] RTL: `FilterStrip` chip click emits filter change
-- [ ] RTL: `TopBar` status pill renders health state from MSW
-- [ ] axe-core: no critical violations (test-quality.mdc D6)
-- [ ] Loading state: status pill shows "checking..." before health response
+- [x] RTL: `ModeToggle` click changes mode state
+- [x] RTL: `FilterStrip` chip click emits filter change
+- [x] RTL: `TopBar` status pill renders health state from MSW
+- [x] axe-core: no critical violations (test-quality.mdc D6)
+- [x] Loading state: status pill shows "checking..." before health response
 
 ---
 
