@@ -19,9 +19,10 @@ qdrant:
   grpc-port: ${QDRANT_GRPC_PORT:6334}
   timeout-seconds: ${QDRANT_TIMEOUT_SECONDS:30}
 
-# SPEC §13: OLLAMA_URL — default http://localhost:11434
+# SPEC §13: OLLAMA_URL — default http://localhost:11434; OLLAMA_MODEL — default mistral (ADR-006)
 ollama:
   url: ${OLLAMA_URL:http://localhost:11434}
+  model: ${OLLAMA_MODEL:mistral}
 
 # SPEC §13: EMBED_SIDECAR_URL — default http://localhost:8001
 embed-sidecar:

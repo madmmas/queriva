@@ -1,14 +1,18 @@
-# SPEC §12 — Docker Compose (ingest stack: qdrant + embed-sidecar + api; full stack in issue #27)
+# SPEC §12 — Docker Compose (ingest + RAG stack: qdrant, ollama, embed-sidecar, api; ui in issue #27)
 #
 # Qdrant ports (host → container):
 #   6333 — REST API  (curl http://localhost:6333/collections)
 #   6334 — gRPC API  (used by io.qdrant Java client in packages/api)
+#
+# Ollama port:
+#   11434 — REST API (curl http://localhost:11434/api/tags)
 #
 # Local access: set QDRANT_URL=http://localhost:6333 in .env (see .env.example)
 # In-stack access: http://qdrant:6333 when other services join this compose file
 #
 # Quick start:
 #   docker compose up -d --build
+#   make ollama-pull    # first run only — downloads mistral (~4GB)
 #   make seed
 
 services:
@@ -28,6 +32,19 @@ services:
       timeout: 5s
       retries: 5
       start_period: 10s
+
+  ollama:
+    image: ollama/ollama:0.5.7
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
 
   embed-sidecar:
     build:
@@ -56,7 +73,8 @@ services:
       - QDRANT_URL=http://qdrant:6333
       - QDRANT_GRPC_PORT=6334
       - EMBED_SIDECAR_URL=http://embed-sidecar:8001
-      - OLLAMA_URL=http://host.docker.internal:11434
+      - OLLAMA_URL=http://ollama:11434
+      - OLLAMA_MODEL=mistral
     depends_on:
       qdrant:
         condition: service_healthy
@@ -71,3 +89,4 @@ services:
 
 volumes:
   qdrant_data:
+  ollama_data:

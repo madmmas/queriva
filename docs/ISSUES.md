@@ -796,10 +796,10 @@ Ollama service in Docker Compose with Mistral 7B (SPEC §12, ADR-006).
 
 ### Tasks
 
-- [ ] `ollama` service in `docker-compose.yml` — port 11434, volume, healthcheck
-- [ ] Model pull documented: `ollama pull mistral` (or init script on first start)
-- [ ] `OLLAMA_URL`, `OLLAMA_MODEL` in `.env.example`
-- [ ] `GET /api/health` shows `ollama: connected` when service is up
+- [x] `ollama` service in `docker-compose.yml` — port 11434, volume, healthcheck
+- [x] Model pull documented: `ollama pull mistral` (or init script on first start)
+- [x] `OLLAMA_URL`, `OLLAMA_MODEL` in `.env.example`
+- [x] `GET /api/health` shows `ollama: connected` when service is up
 
 ### Acceptance criteria
 
@@ -808,8 +808,8 @@ Ollama service in Docker Compose with Mistral 7B (SPEC §12, ADR-006).
 
 ### Test plan
 
-- [ ] Manual: `curl localhost:11434/api/generate` with sample prompt → response
-- [ ] Health integration test: Ollama up → health shows connected; down → shows disconnected
+- [x] Manual: `curl localhost:11434/api/generate` with sample prompt → response
+- [x] Health integration test: Ollama up → health shows connected; down → shows disconnected
 
 ---
 

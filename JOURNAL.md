@@ -13,7 +13,7 @@ Today's scope — issues **#12–#18** (phase 4 search + phase 5 RAG):
 - [x] #13 — QueryEmbeddingService
 - [x] #14 — POST /api/search (search mode)
 - [x] #15 — Search mode integration tests
-- [ ] #16 — Ollama Docker setup
+- [x] #16 — Ollama Docker setup
 - [ ] #17 — RAG mode (LLMSynthesisService)
 - [ ] #18 — RAG mode integration tests
 
@@ -37,6 +37,10 @@ Today's scope — issues **#12–#18** (phase 4 search + phase 5 RAG):
 - **Issue #15** — Search mode integration tests (`issue-15/search-mode-integration-tests`)
   - `SearchModeIT` — ranked top result, `top_k`, `min_score`, bn/en filters, date range, <500ms baseline
   - `SearchIntegrationTestSupport` — shared WireMock embed stubs; `SearchPipelineIT` refactored to reuse
+- **Issue #16** — Ollama Docker setup (`issue-16/ollama-docker-setup`)
+  - `ollama` service in `docker-compose.yml` — port 11434, `ollama_data` volume, healthcheck on `/api/tags`
+  - `scripts/ollama-pull-model.sh` + `make ollama-pull` for first-run `mistral` model download
+  - API `OLLAMA_URL=http://ollama:11434`; `OllamaHealthIT` probes connected/disconnected states
 
 ### Blocked
 - Nothing

@@ -1,5 +1,5 @@
 .PHONY: help install install-node install-python build test test-unit test-int \
-        test-api test-embed test-ingest test-ui smoke seed validate-fixture clean
+        test-api test-embed test-ingest test-ui smoke seed validate-fixture ollama-pull clean
 
 help: ## Show available targets
 	@grep -E '^[a-zA-Z0-9_-]+:.*?##' $(MAKEFILE_LIST) | sort | \
@@ -50,6 +50,9 @@ validate-fixture: ## Validate demo fixture against SPEC §14 source fields
 
 seed: validate-fixture ## Seed demo data into news_radar collection
 	bash scripts/seed-demo.sh
+
+ollama-pull: ## Pull default Ollama model (mistral) into docker compose ollama service
+	bash scripts/ollama-pull-model.sh
 
 clean: ## Remove build artifacts from all packages
 	npx turbo run clean
