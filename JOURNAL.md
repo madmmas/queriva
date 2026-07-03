@@ -12,7 +12,7 @@ Today's scope — issues **#12–#18** (phase 4 search + phase 5 RAG):
 - [x] #12 — QdrantSearchService
 - [x] #13 — QueryEmbeddingService
 - [x] #14 — POST /api/search (search mode)
-- [ ] #15 — Search mode integration tests
+- [x] #15 — Search mode integration tests
 - [ ] #16 — Ollama Docker setup
 - [ ] #17 — RAG mode (LLMSynthesisService)
 - [ ] #18 — RAG mode integration tests
@@ -34,6 +34,9 @@ Today's scope — issues **#12–#18** (phase 4 search + phase 5 RAG):
   - `SearchRequest`/`SearchResponse`/`SearchLatencyMs` records with SPEC §6 defaults and validation
   - `summary=null`, `latency_ms.synthesis` omitted in search mode; query logged at DEBUG only
   - `@WebMvcTest` validation tests + `SearchPipelineIT` (Testcontainers + fixture corpus)
+- **Issue #15** — Search mode integration tests (`issue-15/search-mode-integration-tests`)
+  - `SearchModeIT` — ranked top result, `top_k`, `min_score`, bn/en filters, date range, <500ms baseline
+  - `SearchIntegrationTestSupport` — shared WireMock embed stubs; `SearchPipelineIT` refactored to reuse
 
 ### Blocked
 - Nothing
