@@ -862,12 +862,12 @@ End-to-end RAG validation before UI is built on top of it.
 
 ### Tasks
 
-- [ ] Full stack: query → embed → search → synthesize against docker compose
-- [ ] Assert `summary` non-empty for "floods in Dhaka last week"
-- [ ] Assert `latency_ms.synthesis` > 0
-- [ ] Assert `latency_ms.total` > `latency_ms.synthesis`
-- [ ] Same query: `mode=search` → no summary; `mode=rag` → has summary
-- [ ] Record baseline latency range in test comment (~2–5s per SPEC §15)
+- [x] Full stack: query → embed → search → synthesize against docker compose
+- [x] Assert `summary` non-empty for "floods in Dhaka last week"
+- [x] Assert `latency_ms.synthesis` > 0
+- [x] Assert `latency_ms.total` > `latency_ms.synthesis`
+- [x] Same query: `mode=search` → no summary; `mode=rag` → has summary
+- [x] Record baseline latency range in test comment (~2–5s per SPEC §15)
 
 ### Acceptance criteria
 
@@ -876,8 +876,8 @@ End-to-end RAG validation before UI is built on top of it.
 
 ### Test plan
 
-- [ ] `make test-int` or manual against `docker compose up`
-- [ ] Test tagged `@Tag("slow")` to separate from fast CI
+- [x] `make test-int` or manual against `docker compose up`
+- [x] Test tagged `@Tag("slow")` to separate from fast CI
 
 ---
 

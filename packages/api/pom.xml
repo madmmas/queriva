@@ -121,5 +121,12 @@
                 <test.excludedGroups>slow</test.excludedGroups>
             </properties>
         </profile>
+        <profile>
+            <id>slow</id>
+            <properties>
+                <test.groups>slow</test.groups>
+                <test.excludedGroups>integration,unit</test.excludedGroups>
+            </properties>
+        </profile>
     </profiles>
 </project>

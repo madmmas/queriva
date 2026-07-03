@@ -1,4 +1,4 @@
-.PHONY: help install install-node install-python build test test-unit test-int \
+.PHONY: help install install-node install-python build test test-unit test-int test-slow \
         test-api test-embed test-ingest test-ui smoke seed validate-fixture ollama-pull clean
 
 help: ## Show available targets
@@ -27,6 +27,9 @@ test-unit: ## Run unit tests only (no Docker)
 
 test-int: ## Run integration tests (requires Docker)
 	npx turbo run test-int
+
+test-slow: ## Run slow tests (requires Docker + Ollama with mistral model)
+	cd packages/api && mvn test -q -Pslow
 
 test-api: ## Run API package tests only
 	cd packages/api && mvn test -q

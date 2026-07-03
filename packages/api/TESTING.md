@@ -8,7 +8,7 @@ See ADR-009 and `test-quality.mdc` Section B.
 |---|---|---|
 | `@Tag("unit")` | No Docker, fast, business logic only | `make test-unit` |
 | `@Tag("integration")` | Requires Docker (Testcontainers Qdrant) | `make test-int` |
-| `@Tag("slow")` | Ollama RAG tests — nightly or manual | excluded from `test-int` |
+| `@Tag("slow")` | Ollama RAG tests — nightly or manual | `make test-slow` |
 
 Every test class must have exactly one of `unit` or `integration` (or `slow`).
 
@@ -18,7 +18,9 @@ Every test class must have exactly one of `unit` or `integration` (or `slow`).
 make test-api          # all API tests
 make test-unit         # unit only (from repo root)
 make test-int          # integration only — Docker required
+make test-slow         # slow RAG tests — Docker + Ollama required
 cd packages/api && mvn test -Punit
+cd packages/api && mvn test -Pslow
 ```
 
 ## HTTP client unit tests
