@@ -19,7 +19,6 @@ export default defineConfig({
         'src/__tests__/*',
         'src/SearchWidget.tsx',
         'src/components/*',
-        'src/hooks/*',
       ],
       thresholds: {
         lines: 80,

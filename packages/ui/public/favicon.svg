@@ -1,0 +1,8 @@
+<svg width="20" height="20" viewBox="0 0 20 20" role="img" xmlns="http://www.w3.org/2000/svg">
+  <title>Queriva favicon</title>
+  <desc>Queriva favicon — simplified icon for small sizes</desc>
+  <rect width="20" height="20" rx="5" fill="#0D1B2A"/>
+  <circle cx="9" cy="9" r="4.5" fill="none" stroke="#00C9B8" stroke-width="1.5"/>
+  <line x1="12.5" y1="12.5" x2="15" y2="15" stroke="#00C9B8" stroke-width="1.5" stroke-linecap="round"/>
+  <circle cx="15" cy="15" r="1.2" fill="#F6AD55"/>
+</svg>

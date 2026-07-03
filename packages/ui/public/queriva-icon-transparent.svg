@@ -1,0 +1,8 @@
+<svg width="72" height="72" viewBox="0 0 72 72" role="img" xmlns="http://www.w3.org/2000/svg">
+  <title>Queriva icon</title>
+  <desc>Queriva icon mark — magnifying glass with a wave tail, transparent background</desc>
+  <circle cx="34" cy="33" r="14" fill="none" stroke="#00C9B8" stroke-width="4"/>
+  <line x1="44" y1="43" x2="52" y2="52" stroke="#00C9B8" stroke-width="4" stroke-linecap="round"/>
+  <path d="M44 46 Q50 43 56 48 Q60 52 57 57" fill="none" stroke="#00C9B8" stroke-width="2.5" stroke-linecap="round"/>
+  <circle cx="57" cy="57" r="3" fill="#F6AD55"/>
+</svg>
