@@ -27,6 +27,7 @@ search in natural language, get AI-synthesized answers — zero external API cal
 
 ```bash
 docker compose up -d --build
+make ollama-pull   # first run only — downloads mistral (~4GB) for RAG mode
 make seed
 ```
 
