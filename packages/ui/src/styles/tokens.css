@@ -1,0 +1,60 @@
+/**
+ * Queriva design tokens — brand colours from mock-ui/queriva_mock_ui_v2.html (issue #19).
+ */
+
+:root {
+  --qv-navy: #0d1b2a;
+  --qv-navy-lt: #162436;
+  --qv-teal: #00c9b8;
+  --qv-teal-dim: rgba(0, 201, 184, 0.12);
+  --qv-teal-border: rgba(0, 201, 184, 0.28);
+  --qv-amber: #f6ad55;
+
+  --font-sans: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-voice: Georgia, 'Times New Roman', serif;
+  --radius: 10px;
+}
+
+/* Light theme (default) */
+:root,
+[data-theme='light'] {
+  color-scheme: light;
+
+  --surface-0: #f8fafc;
+  --surface-1: #ffffff;
+  --surface-2: #f1f5f9;
+  --border: rgba(15, 23, 42, 0.08);
+  --border-strong: rgba(15, 23, 42, 0.16);
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+}
+
+/* Dark theme */
+[data-theme='dark'] {
+  color-scheme: dark;
+
+  --surface-0: var(--qv-navy);
+  --surface-1: var(--qv-navy-lt);
+  --surface-2: #1e2f45;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.14);
+  --text-primary: rgba(255, 255, 255, 0.92);
+  --text-secondary: rgba(255, 255, 255, 0.55);
+  --text-muted: rgba(255, 255, 255, 0.35);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+
+    --surface-0: var(--qv-navy);
+    --surface-1: var(--qv-navy-lt);
+    --surface-2: #1e2f45;
+    --border: rgba(255, 255, 255, 0.08);
+    --border-strong: rgba(255, 255, 255, 0.14);
+    --text-primary: rgba(255, 255, 255, 0.92);
+    --text-secondary: rgba(255, 255, 255, 0.55);
+    --text-muted: rgba(255, 255, 255, 0.35);
+  }
+}

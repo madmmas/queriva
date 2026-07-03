@@ -1,15 +1,120 @@
-.app {
+.qv-app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface-0);
+  color: var(--text-primary);
+}
+
+.qv-bar {
+  background: var(--qv-navy);
+  padding: 0 20px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.qv-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.qv-icon-wrap {
+  width: 30px;
+  height: 30px;
+  background: var(--qv-navy-lt);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0.5px solid var(--qv-teal-border);
+  overflow: hidden;
+}
+
+.qv-icon-wrap img {
+  width: 16px;
+  height: 16px;
+}
+
+.qv-brand {
+  font-family: var(--font-voice);
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--qv-teal);
+  letter-spacing: -0.3px;
+}
+
+.qv-bar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.qv-theme-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 0.5px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--qv-teal);
+  cursor: pointer;
+}
+
+.qv-theme-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.qv-main {
+  flex: 1;
+  padding: 2rem 1.5rem;
   max-width: 48rem;
-  margin: 4rem auto;
-  padding: 0 1.5rem;
-  text-align: center;
+  margin: 0 auto;
 }
 
-.app h1 {
-  color: #0d9488;
-  margin-bottom: 0.5rem;
+.qv-scaffold-card {
+  background: var(--surface-1);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
 }
 
-.app p {
-  color: #64748b;
+.qv-scaffold-card h1 {
+  margin: 0 0 0.5rem;
+  font-size: 1.25rem;
+  color: var(--text-primary);
+}
+
+.qv-scaffold-card p {
+  margin: 0 0 1rem;
+  color: var(--text-secondary);
+}
+
+.qv-token-swatch {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.qv-swatch {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 8px;
+  border: 0.5px solid var(--border-strong);
+}
+
+.qv-swatch-navy {
+  background: var(--qv-navy);
+}
+
+.qv-swatch-teal {
+  background: var(--qv-teal);
+}
+
+.qv-swatch-amber {
+  background: var(--qv-amber);
 }

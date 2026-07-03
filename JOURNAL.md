@@ -8,10 +8,11 @@ One entry per working day. Most recent entry at the top.
 ## 2026-07-03
 
 ### Plan
-Today's scope — finish phase 5 RAG from the **#12–#18** batch:
+Today's scope — finish phase 5 RAG (#12–#18) and start phase 6 UI (#19):
 - [x] #16 — Ollama Docker setup
 - [x] #17 — RAG mode (LLMSynthesisService)
 - [x] #18 — RAG mode integration tests
+- [x] #19 — UI scaffold + design tokens + brand assets
 
 ### Built
 - **Issue #16** — Ollama Docker setup (`issue-16/ollama-docker-setup`, PR #52)
@@ -29,6 +30,12 @@ Today's scope — finish phase 5 RAG from the **#12–#18** batch:
   - `RagModeIT` — full embed → search → synthesize pipeline via `POST /api/search` with WireMock Ollama (`make test-int`)
   - `RagModeSlowIT` — live Ollama validation (`@Tag("slow")`, `make test-slow`); baseline ~2–5s per SPEC §15
   - **Release v0.3.0** — search + RAG via API complete (#12–#18)
+- **Issue #19** — UI scaffold (`issue-19/ui-scaffold`)
+  - Brand SVG assets in `packages/ui/public/` + `favicon.svg`
+  - `src/styles/tokens.css` — `--qv-navy`, `--qv-teal`, `--qv-amber` + light/dark semantic surfaces
+  - `src/types/api.ts` — SPEC §6 TypeScript contracts; `src/constants/ui.ts` — UI strings
+  - `@tabler/icons-react` 3.44.0; `useTheme` hook; scaffold `App` with top bar and token swatches
+  - `npm run typecheck` (`tsc -b --noEmit`); Vitest coverage for api types, tokens, theme
 
 ### Blocked
 - Nothing
@@ -38,9 +45,10 @@ Today's scope — finish phase 5 RAG from the **#12–#18** batch:
 - Model pull is explicit (`make ollama-pull`), not automatic on `docker compose up` — avoids surprise 4GB download
 - LLM request body serialized via injected `ObjectMapper` — bare `RestClient.builder()` lacks Jackson converters in unit tests
 - RAG integration tests raise `search.max-score-auto-accept` to 0.99 so ranked fixture hits still trigger synthesis
+- Design token values verified in unit test by reading `tokens.css` — jsdom does not resolve CSS custom properties in `getComputedStyle`
 
 ### Tomorrow
-- Issue #19 — UI scaffold + design tokens + brand assets
+- Issue #20 — Search zone components (TopBar, SearchBar, ModeToggle, FilterStrip)
 
 ---
 

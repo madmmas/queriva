@@ -893,15 +893,15 @@ React/Vite package setup with design system and brand assets from `mock-ui/`.
 
 ### Tasks
 
-- [ ] Copy brand assets from `mock-ui/queriva-icon-files/` → `packages/ui/public/`
-- [ ] `favicon.svg` in `packages/ui/public/`
-- [ ] CSS variables matching mock UI: `--qv-navy: #0D1B2A`, `--qv-teal: #00C9B8`, `--qv-amber: #F6AD55`
-- [ ] Light + dark theme support
-- [ ] Tabler Icons installed
-- [ ] `src/types/api.ts` — TypeScript types derived from SPEC §6 (code-quality.mdc D2)
-- [ ] `src/constants/ui.ts` — all UI strings (code-quality.mdc D7)
-- [ ] `tsconfig.json`: `"strict": true` (code-quality.mdc D1)
-- [ ] All package versions pinned exactly in `package.json` (code-quality.mdc E6)
+- [x] Copy brand assets from `mock-ui/queriva-icon-files/` → `packages/ui/public/`
+- [x] `favicon.svg` in `packages/ui/public/`
+- [x] CSS variables matching mock UI: `--qv-navy: #0D1B2A`, `--qv-teal: #00C9B8`, `--qv-amber: #F6AD55`
+- [x] Light + dark theme support
+- [x] Tabler Icons installed
+- [x] `src/types/api.ts` — TypeScript types derived from SPEC §6 (code-quality.mdc D2)
+- [x] `src/constants/ui.ts` — all UI strings (code-quality.mdc D7)
+- [x] `tsconfig.json`: `"strict": true` (code-quality.mdc D1)
+- [x] All package versions pinned exactly in `package.json` (code-quality.mdc E6)
 
 ### Acceptance criteria
 
@@ -912,8 +912,8 @@ React/Vite package setup with design system and brand assets from `mock-ui/`.
 
 ### Test plan
 
-- [ ] Type compilation: `tsc --noEmit` exits 0
-- [ ] Visual check: CSS variables render correctly in browser
+- [x] Type compilation: `tsc --noEmit` exits 0
+- [x] Visual check: CSS variables render correctly in browser
 
 ---
 
