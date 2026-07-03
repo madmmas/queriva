@@ -26,4 +26,23 @@ public class SearchResultMapper {
                 hits,
                 new SearchLatencyMs(embedLatencyMs, searchLatencyMs, null, totalLatencyMs));
     }
+
+    /**
+     * Builds a RAG-mode response with optional summary and synthesis latency.
+     */
+    public SearchResponse toRagResponse(
+            SearchRequest request,
+            List<SearchHit> hits,
+            long embedLatencyMs,
+            long searchLatencyMs,
+            Long synthesisLatencyMs,
+            String summary,
+            long totalLatencyMs) {
+        return new SearchResponse(
+                request.query(),
+                request.mode(),
+                summary,
+                hits,
+                new SearchLatencyMs(embedLatencyMs, searchLatencyMs, synthesisLatencyMs, totalLatencyMs));
+    }
 }

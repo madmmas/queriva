@@ -10,7 +10,7 @@ One entry per working day. Most recent entry at the top.
 ### Plan
 Today's scope — finish phase 5 RAG from the **#12–#18** batch:
 - [x] #16 — Ollama Docker setup
-- [ ] #17 — RAG mode (LLMSynthesisService)
+- [x] #17 — RAG mode (LLMSynthesisService)
 - [ ] #18 — RAG mode integration tests
 
 ### Built
@@ -19,6 +19,12 @@ Today's scope — finish phase 5 RAG from the **#12–#18** batch:
   - `scripts/ollama-pull-model.sh` + `make ollama-pull` for first-run `mistral` model download (~4GB)
   - API wired to `OLLAMA_URL=http://ollama:11434`; `OLLAMA_MODEL=mistral` in compose and `application.yml`
   - `OllamaHealthIT` — health reports `connected` when `/api/tags` responds, `disconnected` on failure
+- **Issue #17** — RAG mode (`issue-17/rag-mode`)
+  - `LLMSynthesisService` — Ollama `POST /api/generate` with SPEC §10 prompt; graceful degradation on 503/unreachable
+  - `RagPromptBuilder` + `RagSynthesisConstants` — numbered articles, system instructions, user question
+  - `SearchService` RAG path — `mode=rag` populates `summary` and `latency_ms.synthesis`; skips LLM when top score ≥ `SEARCH_MAX_SCORE_AUTO_ACCEPT` (0.80)
+  - `SearchResultMapper.toRagResponse()` — RAG response shape per SPEC §6
+  - WireMock unit tests (`LLMSynthesisServiceTest`, `RagPromptBuilderTest`); optional `LLMSynthesisServiceSidecarIT` (`@Tag("slow")`)
 
 ### Blocked
 - Nothing
@@ -26,9 +32,9 @@ Today's scope — finish phase 5 RAG from the **#12–#18** batch:
 ### Decided
 - Ollama does not block `status=ok` on `/api/health` — same as pre-Docker behaviour (#5)
 - Model pull is explicit (`make ollama-pull`), not automatic on `docker compose up` — avoids surprise 4GB download
+- LLM request body serialized via injected `ObjectMapper` — bare `RestClient.builder()` lacks Jackson converters in unit tests
 
 ### Tomorrow
-- Issue #17 — RAG mode (LLMSynthesisService)
 - Issue #18 — RAG mode integration tests
 
 ---
