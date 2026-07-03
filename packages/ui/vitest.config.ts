@@ -18,7 +18,6 @@ export default defineConfig({
         'src/setupTests.ts',
         'src/__tests__/*',
         'src/SearchWidget.tsx',
-        'src/components/*',
       ],
       thresholds: {
         lines: 80,
