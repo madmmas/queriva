@@ -8,26 +8,34 @@ One entry per working day. Most recent entry at the top.
 ## 2026-07-04
 
 ### Plan
-Today's scope — phase 6 UI results column (#21):
+Today's scope — phase 6 UI results + RAG panel (#21–#22):
 - [x] #21 — Results list + stats components
+- [x] #22 — AI summary panel
 
 ### Built
-- **Issue #21** — Results list + stats (`issue-21/results-list-stats`)
+- **Issue #21** — Results list + stats (`issue-21/results-list-stats`, PR #58)
   - `ResultCard` — rank, title, score bar (dynamic `width` inline style), snippet, source, BN/EN badge, date; optional `onClick` for widget mode
   - `ResultsList` — "Matching articles" section, top-result highlight on first two cards, `EmptyState` and `SearchSkeleton` states
   - `LoadMoreButton` — increments visible `top_k` in App demo layout
   - `StatsPanel` — hits, best score, language count, total time metric cards
   - `formatters.ts` + `searchStats.ts` utilities; demo fixture in `src/fixtures/demoSearchResponse.ts`
   - RTL tests for `ResultCard`, `ResultsList`, formatters, searchStats; 90%+ UI coverage
+- **Issue #22** — AI summary panel (`issue-22/ai-summary-panel`)
+  - `AISummary` — RAG header, inline `[N]` reference badges, copy + refresh actions
+  - `LatencyFooter` — embed / search / llm breakdown with ms and seconds formatting
+  - `SuggestionsPanel` — three follow-up query buttons from mock UI
+  - `RagPanel` — hides in search mode or when `summary` is null; wired in App right column
+  - `demoRagSearchResponse` fixture; RTL tests for visibility, clipboard copy, refresh callback
 
 ### Decisions
 - Moved demo mock data from `__tests__/` to `src/fixtures/` so `App.tsx` does not import test-only paths
+- `StatsPanel` renders stats grid only; App owns the `qv-right` aside wrapper for stats + RAG panel
 
 ### Blockers
 None.
 
 ### Next
-- #22 — AI summary panel (`AISummary`, `LatencyFooter`, suggestions)
+- #23 — Standalone app + `useSearch` hook (wire search API end-to-end)
 
 ---
 

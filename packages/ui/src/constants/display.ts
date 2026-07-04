@@ -27,3 +27,9 @@ export const SCORE_DECIMAL_PLACES = 2;
 
 /** Decimal places when formatting seconds in stats panel. */
 export const LATENCY_SECONDS_DECIMAL_PLACES = 1;
+
+/** LLM model label shown in the AI summary header (mock UI). */
+export const DEFAULT_LLM_MODEL_LABEL = 'mistral 7b';
+
+/** Number of follow-up suggestion buttons in the RAG panel. */
+export const SUGGESTION_BUTTON_COUNT = 3;

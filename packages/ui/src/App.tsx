@@ -1,6 +1,8 @@
 import { useMemo, useState } from 'react';
+import { demoRagSearchResponse } from './fixtures/demoRagSearchResponse';
 import { demoSearchResponse } from './fixtures/demoSearchResponse';
 import { FilterStrip } from './components/FilterStrip';
+import { RagPanel } from './components/RagPanel';
 import { ResultsList } from './components/ResultsList';
 import { SearchBar } from './components/SearchBar';
 import { StatsPanel } from './components/StatsPanel';
@@ -29,9 +31,12 @@ function App() {
   const [results] = useState<SearchResult[]>(demoSearchResponse.results);
 
   const visibleResults = useMemo(() => results.slice(0, topK), [results, topK]);
+  const activeSummary = mode === 'rag' ? demoRagSearchResponse.summary : null;
+  const activeLatency =
+    mode === 'rag' ? demoRagSearchResponse.latency_ms : demoSearchResponse.latency_ms;
   const stats = useMemo(
-    () => computeSearchStats(visibleResults, demoSearchResponse.latency_ms.total),
-    [visibleResults],
+    () => computeSearchStats(visibleResults, activeLatency.total),
+    [visibleResults, activeLatency.total],
   );
 
   return (
@@ -60,7 +65,16 @@ function App() {
           remainingCount={DEMO_REMAINING_COUNT}
           onLoadMore={() => setTopK((current) => current + DEFAULT_TOP_K)}
         />
-        <StatsPanel stats={stats} />
+        <aside className="qv-right" aria-label="Search statistics and AI summary">
+          <StatsPanel stats={stats} />
+          <RagPanel
+            mode={mode}
+            summary={activeSummary}
+            latencyMs={activeLatency}
+            onRefresh={() => setQuery((current) => current)}
+            onSuggestionClick={setQuery}
+          />
+        </aside>
       </main>
     </div>
   );
