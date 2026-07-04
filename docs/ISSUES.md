@@ -963,10 +963,10 @@ Left column results and right column stats panel.
 
 ### Components
 
-- [ ] `ResultCard` — rank, title, score bar (dynamic width%), snippet, source, language badge, date
-- [ ] `ResultsList` — "Matching articles" label, top-result highlight border
-- [ ] `LoadMoreButton` — increments `top_k`
-- [ ] `StatsPanel` — hits, best score, languages, total time metric cards
+- [x] `ResultCard` — rank, title, score bar (dynamic width%), snippet, source, language badge, date
+- [x] `ResultsList` — "Matching articles" label, top-result highlight border
+- [x] `LoadMoreButton` — increments `top_k`
+- [x] `StatsPanel` — hits, best score, languages, total time metric cards
 
 ### Acceptance criteria
 
@@ -976,10 +976,10 @@ Left column results and right column stats panel.
 
 ### Test plan
 
-- [ ] RTL: `ResultCard` renders all fields from mock API response
-- [ ] RTL: score bar has correct width style
-- [ ] RTL: empty results → `EmptyState` component shown
-- [ ] RTL: loading → skeleton shown
+- [x] RTL: `ResultCard` renders all fields from mock API response
+- [x] RTL: score bar has correct width style
+- [x] RTL: empty results → `EmptyState` component shown
+- [x] RTL: loading → skeleton shown
 
 ---
 
