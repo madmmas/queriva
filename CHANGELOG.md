@@ -13,6 +13,7 @@ Versions follow [Semantic Versioning](https://semver.org/).
 - **Added** [ui] Search zone components — `TopBar`, `SearchBar`, `ModeToggle`, `FilterStrip`, `ResultCount`, `useHealth` (#20)
 - **Added** [ui] Results list + stats — `ResultCard`, `ResultsList`, `LoadMoreButton`, `StatsPanel`, `EmptyState`, `SearchSkeleton` (#21)
 - **Added** [ui] AI summary panel — `AISummary`, `LatencyFooter`, `SuggestionsPanel`, `RagPanel` with copy/refresh and reference badges (#22)
+- **Added** [ui] `useSearch` hook with `useReducer`, `POST /api/search` integration, `ErrorBanner`, App wired end-to-end (#23)
 
 ---
 

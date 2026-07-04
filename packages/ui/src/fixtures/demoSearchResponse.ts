@@ -1,6 +1,6 @@
 import type { SearchResponse } from '../types/api';
 
-/** Demo search response for standalone App layout before useSearch wiring (#23). */
+/** Demo search response for MSW handlers and component tests. */
 export const demoSearchResponse: SearchResponse = {
   query: 'floods in Dhaka last week',
   mode: 'search',

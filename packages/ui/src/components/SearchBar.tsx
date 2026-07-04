@@ -9,7 +9,7 @@ interface SearchBarProps {
   mode: SearchMode;
   onQueryChange: (query: string) => void;
   onModeChange: (mode: SearchMode) => void;
-  onSubmit: () => void;
+  onSubmit: (query: string) => void;
 }
 
 /**
@@ -24,7 +24,7 @@ export function SearchBar({
 }: SearchBarProps) {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    onSubmit();
+    onSubmit(query);
   };
 
   return (
