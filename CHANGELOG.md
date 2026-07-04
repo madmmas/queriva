@@ -11,6 +11,7 @@ Versions follow [Semantic Versioning](https://semver.org/).
 ### Added
 - **Added** [ui] Design tokens, brand assets, `src/types/api.ts`, `src/constants/ui.ts`, light/dark theme, Tabler Icons (#19)
 - **Added** [ui] Search zone components — `TopBar`, `SearchBar`, `ModeToggle`, `FilterStrip`, `ResultCount`, `useHealth` (#20)
+- **Added** [ui] Results list + stats — `ResultCard`, `ResultsList`, `LoadMoreButton`, `StatsPanel`, `EmptyState`, `SearchSkeleton` (#21)
 
 ---
 

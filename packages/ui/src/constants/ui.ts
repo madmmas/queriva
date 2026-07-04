@@ -34,6 +34,28 @@ export const ERROR_BANNER_PREFIX = 'Search failed:';
 
 export const LOAD_MORE_LABEL = 'Load more results';
 
+export const LOAD_MORE_SUFFIX = 'more results';
+
+export const NO_RESULTS_MESSAGE = 'No matching articles found. Try adjusting your filters.';
+
+export const SEARCH_SKELETON_LABEL = 'Loading search results';
+
+export const STAT_HITS_SUFFIX = 'hits';
+
+export const STAT_TOP_SUFFIX = 'top';
+
+export const STAT_LANG_SUFFIX = 'lang';
+
+export const STAT_SECONDS_SUFFIX = 's';
+
+export const STAT_RESULTS_LABEL = 'Results';
+
+export const STAT_BEST_SCORE_LABEL = 'Best score';
+
+export const STAT_LANGUAGES_LABEL = 'Languages';
+
+export const STAT_TOTAL_TIME_LABEL = 'Total time';
+
 export const COPY_SUMMARY_LABEL = 'Copy summary';
 
 export const REFRESH_SUMMARY_LABEL = 'Refresh summary';
@@ -71,4 +93,4 @@ export const CATEGORY_FILTER_WEATHER = 'Weather';
 export const FILTER_STRIP_LABEL = 'Search filters';
 
 export const SCAFFOLD_STATUS_MESSAGE =
-  'Search zone ready — results and summary ship in issues #21–#22.';
+  'Results panel ready — AI summary ships in issue #22; search wiring in #23.';
