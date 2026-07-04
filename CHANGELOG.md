@@ -8,6 +8,11 @@ Versions follow [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+---
+
+## [0.4.0] — 2026-07-04
+> Standalone UI: search + RAG in the browser at localhost:3000
+
 ### Added
 - **Added** [ui] Design tokens, brand assets, `src/types/api.ts`, `src/constants/ui.ts`, light/dark theme, Tabler Icons (#19)
 - **Added** [ui] Search zone components — `TopBar`, `SearchBar`, `ModeToggle`, `FilterStrip`, `ResultCount`, `useHealth` (#20)
@@ -153,28 +158,6 @@ Packages: `[api]`, `[embed-sidecar]`, `[ingest-cli]`, `[ui]`, `[infra]`, `[ci]`,
 - **Docs** [adr] ADR-003 — Sliding window chunking with title prepending (before #6)
 - **Docs** [adr] ADR-007 — Character-based over token-based chunking (before #6)
 - **Docs** [adr] ADR-008 — Source document_id as upsert identity key (before #7)
-
----
-
-## [0.4.0] — TBD
-> Standalone UI: full search experience in the browser
-
-### Added
-- **Added** [ui] Design tokens: navy `#0D1B2A`, teal `#00C9B8`, amber `#F6AD55` palette (#19)
-- **Added** [ui] Brand assets: icon, wordmark horizontal, wordmark stacked, favicon (#19)
-- **Added** [ui] Tabler Icons integration (#19)
-- **Added** [ui] Light + dark theme support via CSS variables (#19)
-- **Added** [ui] `TopBar` — logo, Queriva brand, status pill (qdrant/ollama/labse), icons (#20)
-- **Added** [ui] `SearchBar` — input with mode toggle (Search / RAG) (#20)
-- **Added** [ui] `FilterStrip` — language, date range, category chips, collection badge (#20)
-- **Added** [ui] `ResultCard` — rank, title, score bar, snippet, source, language badge, date (#21)
-- **Added** [ui] `ResultsList` — top-result highlight, load more (#21)
-- **Added** [ui] `StatsPanel` — hits, best score, languages, total time (#21)
-- **Added** [ui] `AISummary` — header, body with reference badges, copy + refresh actions (#22)
-- **Added** [ui] `LatencyFooter` — embed / search / llm breakdown (#22)
-- **Added** [ui] `SuggestionsPanel` — follow-up query buttons (#22)
-- **Added** [ui] `useSearch` hook — query, mode, filters, loading, error, response state (#23)
-- **Added** [ui] Standalone SPA at port 3000 wired to full backend (#23)
 
 ---
 

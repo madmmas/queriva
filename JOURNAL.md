@@ -5,6 +5,20 @@ One entry per working day. Most recent entry at the top.
 
 ---
 
+## 2026-07-04 — Release v0.4.0
+
+### Shipped
+- **Release v0.4.0** — Standalone UI (#19–#24)
+  - Phase 6 complete: design tokens, search zone, results/stats, AI summary panel, `useSearch` hook, full test suite
+  - Standalone SPA at `localhost:3000` wired to `POST /api/search` (search + RAG modes)
+  - Git tag `v0.4.0` + GitHub release
+  - Upwork milestone: UI demo + blog post (SPEC §18)
+
+### Next
+- #25 — Module Federation `SearchWidget` (ADR-010 first)
+
+---
+
 ## 2026-07-04 (continued — #24)
 
 ### Plan
