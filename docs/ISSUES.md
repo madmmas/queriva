@@ -995,11 +995,11 @@ RAG summary card, latency footer, copy/refresh actions, suggestions panel.
 
 ### Components
 
-- [ ] `AISummary` — header with dot + label, body with inline reference badges `[N]`
-- [ ] `LatencyFooter` — embed / search / llm breakdown
-- [ ] Copy button (`aria-label="Copy summary"`) — copies summary to clipboard
-- [ ] Refresh button (`aria-label="Refresh"`) — re-runs same query
-- [ ] `SuggestionsPanel` — three follow-up query buttons
+- [x] `AISummary` — header with dot + label, body with inline reference badges `[N]`
+- [x] `LatencyFooter` — embed / search / llm breakdown
+- [x] Copy button (`aria-label="Copy summary"`) — copies summary to clipboard
+- [x] Refresh button (`aria-label="Refresh"`) — re-runs same query
+- [x] `SuggestionsPanel` — three follow-up query buttons
 
 ### Acceptance criteria
 
@@ -1010,10 +1010,10 @@ RAG summary card, latency footer, copy/refresh actions, suggestions panel.
 
 ### Test plan
 
-- [ ] RTL: panel hidden when `mode=search`
-- [ ] RTL: panel visible when `mode=rag` and `summary` present
-- [ ] RTL: copy button fires clipboard write
-- [ ] RTL: refresh button re-triggers `useSearch`
+- [x] RTL: panel hidden when `mode=search`
+- [x] RTL: panel visible when `mode=rag` and `summary` present
+- [x] RTL: copy button fires clipboard write
+- [x] RTL: refresh button re-triggers `useSearch`
 
 ---
 

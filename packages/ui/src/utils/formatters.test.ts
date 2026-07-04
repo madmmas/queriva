@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { formatScore, scoreBarWidthPercent } from './formatters';
+import { formatScore, formatStageLatency, scoreBarWidthPercent } from './formatters';
 
 describe('formatters', () => {
   it('should format score bar width as score times one hundred percent', () => {
@@ -9,5 +9,16 @@ describe('formatters', () => {
 
   it('should format scores with two decimal places', () => {
     expect(formatScore(0.92)).toBe('0.92');
+  });
+});
+
+describe('formatStageLatency', () => {
+  it('should format sub-second latency in milliseconds', () => {
+    expect(formatStageLatency(43)).toBe('43ms');
+    expect(formatStageLatency(21)).toBe('21ms');
+  });
+
+  it('should format second-scale latency in seconds', () => {
+    expect(formatStageLatency(1800)).toBe('1.8s');
   });
 });

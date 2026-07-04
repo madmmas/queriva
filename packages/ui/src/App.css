@@ -496,3 +496,132 @@
   color: var(--text-secondary);
   font-size: 14px;
 }
+
+.qv-ai-card {
+  background: var(--surface-1);
+  border: 0.5px solid var(--qv-teal-border);
+  border-radius: 10px;
+  padding: 14px;
+  margin-bottom: 12px;
+}
+
+.qv-ai-head {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 10px;
+}
+
+.qv-ai-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--qv-teal);
+  flex-shrink: 0;
+}
+
+.qv-ai-label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  color: var(--qv-teal);
+}
+
+.qv-ai-model {
+  margin-left: auto;
+  font-size: 9px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.qv-ai-body {
+  font-size: 12px;
+  line-height: 1.65;
+  color: var(--text-secondary);
+}
+
+.qv-ref {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 15px;
+  height: 15px;
+  border-radius: 3px;
+  background: var(--qv-teal-dim);
+  color: var(--qv-teal);
+  font-size: 8px;
+  font-weight: 500;
+  vertical-align: middle;
+  margin: 0 1px;
+}
+
+.qv-ai-footer {
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 0.5px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.qv-latency {
+  font-size: 10px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+}
+
+.qv-latency b {
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.qv-ai-action {
+  font-size: 11px;
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-family: inherit;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+.qv-ai-action:hover {
+  background: var(--surface-2);
+  color: var(--text-secondary);
+}
+
+.qv-suggest-label {
+  margin-top: 14px;
+}
+
+.qv-suggest-btn {
+  width: 100%;
+  text-align: left;
+  font-size: 12px;
+  color: var(--text-secondary);
+  background: var(--surface-2);
+  border: 0.5px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 10px;
+  cursor: pointer;
+  font-family: inherit;
+  line-height: 1.4;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 5px;
+}
+
+.qv-suggest-btn:hover {
+  border-color: var(--border-strong);
+  background: var(--surface-1);
+}

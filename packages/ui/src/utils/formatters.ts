@@ -50,6 +50,17 @@ export function formatLatencySeconds(totalTimeMs: number): string {
 }
 
 /**
+ * Formats one pipeline stage latency for the AI summary footer (e.g. 43ms or 1.8s).
+ */
+export function formatStageLatency(stageTimeMs: number): string {
+  if (stageTimeMs >= MILLISECONDS_PER_SECOND) {
+    return `${formatLatencySeconds(stageTimeMs)}s`;
+  }
+
+  return `${stageTimeMs}ms`;
+}
+
+/**
  * Formats the load-more button label with a remaining result count.
  */
 export function formatLoadMoreLabel(remainingCount: number): string {

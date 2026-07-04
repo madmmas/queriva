@@ -24,9 +24,17 @@ export const RESULTS_SECTION_LABEL = 'Matching articles';
 
 export const AI_SUMMARY_LABEL = 'AI summary';
 
+export const AI_RAG_HEADER_LABEL = 'Queriva · RAG';
+
 export const LATENCY_LABEL = 'Latency';
 
-export const SUGGESTIONS_LABEL = 'Suggested follow-ups';
+export const LATENCY_EMBED_LABEL = 'embed';
+
+export const LATENCY_SEARCH_LABEL = 'search';
+
+export const LATENCY_LLM_LABEL = 'llm';
+
+export const SUGGESTIONS_LABEL = 'Try also';
 
 export const EMPTY_STATE_MESSAGE = 'Enter a query to search your collection.';
 
@@ -93,4 +101,4 @@ export const CATEGORY_FILTER_WEATHER = 'Weather';
 export const FILTER_STRIP_LABEL = 'Search filters';
 
 export const SCAFFOLD_STATUS_MESSAGE =
-  'Results panel ready — AI summary ships in issue #22; search wiring in #23.';
+  'Search zone ready — API wiring ships in issue #23.';
