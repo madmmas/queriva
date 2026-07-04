@@ -14,6 +14,7 @@ Versions follow [Semantic Versioning](https://semver.org/).
 - **Added** [ui] Results list + stats — `ResultCard`, `ResultsList`, `LoadMoreButton`, `StatsPanel`, `EmptyState`, `SearchSkeleton` (#21)
 - **Added** [ui] AI summary panel — `AISummary`, `LatencyFooter`, `SuggestionsPanel`, `RagPanel` with copy/refresh and reference badges (#22)
 - **Added** [ui] `useSearch` hook with `useReducer`, `POST /api/search` integration, `ErrorBanner`, App wired end-to-end (#23)
+- **Added** [ui] Standalone UI test suite — MSW search/health handlers, App E2E flows, filter wiring, axe audit, ≥80% coverage (#24)
 
 ---
 

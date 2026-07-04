@@ -5,6 +5,31 @@ One entry per working day. Most recent entry at the top.
 
 ---
 
+## 2026-07-04 (continued — #24)
+
+### Plan
+- [x] #24 — Standalone UI tests
+
+### Built
+- **Issue #24** — Standalone UI tests (`issue-24/standalone-ui-tests`)
+  - MSW handlers with search-mode/RAG response builder and request capture helper
+  - Vitest `env` override — `VITE_API_URL=''` so MSW intercepts regardless of local `.env`
+  - App E2E tests: search flow, RAG summary show/hide, filter chip → API params, loading, error, axe
+  - Component tests: `SearchBar`, `LoadMoreButton`, `SuggestionsPanel`, `StatsPanel`
+  - `useSearch` tests: filters, loadMore; handlers unit tests for both modes
+  - Coverage: components ~95%, hooks ~85%, overall ≥80%
+
+### Decisions
+- Test env forces empty API base URL — dev `.env` with `localhost:8080` must not leak into Vitest
+
+### Blockers
+None.
+
+### Next
+- #25 — Module Federation `SearchWidget` (ADR-010 first)
+
+---
+
 ## 2026-07-04 (continued)
 
 ### Plan

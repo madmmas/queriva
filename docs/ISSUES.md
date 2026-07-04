@@ -1065,13 +1065,13 @@ Full UI test coverage before Module Federation.
 
 ### Tasks
 
-- [ ] MSW handlers for `/api/search` (both modes) and `/api/health`
-- [ ] Test: search flow end-to-end with MSW
-- [ ] Test: RAG toggle — summary appears/disappears
-- [ ] Test: filter chips wired to request parameters
-- [ ] Test: `useSearch` hook via `renderHook` (test-quality.mdc D5)
-- [ ] axe-core audit on `App` component
-- [ ] ≥ 80% coverage on components and hooks
+- [x] MSW handlers for `/api/search` (both modes) and `/api/health`
+- [x] Test: search flow end-to-end with MSW
+- [x] Test: RAG toggle — summary appears/disappears
+- [x] Test: filter chips wired to request parameters
+- [x] Test: `useSearch` hook via `renderHook` (test-quality.mdc D5)
+- [x] axe-core audit on `App` component
+- [x] ≥ 80% coverage on components and hooks
 
 ### Acceptance criteria
 
@@ -1081,8 +1081,8 @@ Full UI test coverage before Module Federation.
 
 ### Test plan
 
-- [ ] `make test-ui` passes with coverage report
-- [ ] axe audit passes
+- [x] `make test-ui` passes with coverage report
+- [x] axe audit passes
 
 ---
 
