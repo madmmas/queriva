@@ -1,19 +1,22 @@
-import { http, HttpResponse } from 'msw';
 import { cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { axe, toHaveNoViolations } from 'jest-axe';
 import { afterEach, describe, expect, it } from 'vitest';
-import { server } from './setupTests';
+import { http, HttpResponse } from 'msw';
+import { capturedSearchRequests } from './__tests__/searchRequestCapture';
 import {
   AI_SUMMARY_LABEL,
   APP_NAME,
   ERROR_BANNER_PREFIX,
+  LANGUAGE_FILTER_BANGLA,
   RAG_MODE_LABEL,
   SEARCH_INPUT_LABEL,
+  SEARCH_MODE_LABEL,
   SEARCH_SKELETON_LABEL,
   THEME_TOGGLE_LABEL,
 } from './constants/ui';
 import { demoSearchResponse } from './fixtures/demoSearchResponse';
+import { server } from './setupTests';
 import App from './App';
 
 expect.extend(toHaveNoViolations);
@@ -93,6 +96,34 @@ describe('App', () => {
 
     await waitFor(() => expect(screen.getByText(AI_SUMMARY_LABEL)).toBeInTheDocument());
     expect(screen.getByText(/Three flood events hit Dhaka/)).toBeInTheDocument();
+  });
+
+  it('should hide ai summary when toggling from rag to search mode', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.click(screen.getByRole('radio', { name: RAG_MODE_LABEL }));
+    await submitSearch(user, DHAKA_FLOODS_QUERY);
+    await waitFor(() => expect(screen.getByText(AI_SUMMARY_LABEL)).toBeInTheDocument());
+
+    await user.click(screen.getByRole('radio', { name: SEARCH_MODE_LABEL }));
+
+    expect(screen.queryByText(AI_SUMMARY_LABEL)).not.toBeInTheDocument();
+  });
+
+  it('should send language filter in search request when chip is selected', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    await submitSearch(user, DHAKA_FLOODS_QUERY);
+    await waitFor(() => expect(capturedSearchRequests.length).toBeGreaterThan(0));
+
+    await user.click(screen.getByRole('button', { name: LANGUAGE_FILTER_BANGLA }));
+
+    await waitFor(() => {
+      const lastRequest = capturedSearchRequests[capturedSearchRequests.length - 1];
+      expect(lastRequest.filters?.language).toBe('bn');
+    });
   });
 
   it('should show skeleton while search request is pending', async () => {

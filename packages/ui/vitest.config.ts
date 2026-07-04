@@ -7,6 +7,10 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     setupFiles: ['./src/setupTests.ts'],
+    env: {
+      VITE_API_URL: '',
+      VITE_DEFAULT_COLLECTION: 'news_radar',
+    },
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json'],
