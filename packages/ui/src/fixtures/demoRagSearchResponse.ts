@@ -1,7 +1,7 @@
 import type { SearchResponse } from '../types/api';
 import { demoSearchResponse } from './demoSearchResponse';
 
-/** Demo RAG response for AI summary panel before useSearch wiring (#23). */
+/** Demo RAG response for MSW handlers and component tests. */
 export const demoRagSearchResponse: SearchResponse = {
   ...demoSearchResponse,
   mode: 'rag',

@@ -1029,12 +1029,12 @@ Wire all UI components into standalone SPA with data fetching hook (SPEC §5).
 
 ### Tasks
 
-- [ ] `useSearch` hook with `useReducer` (code-quality.mdc D6): states = idle, loading, success, error
-- [ ] `POST /api/search` integration
-- [ ] Two-column layout per mock UI
-- [ ] `App.tsx` at port 3000
-- [ ] Env: `VITE_API_URL`, `VITE_DEFAULT_COLLECTION`
-- [ ] Explicit loading, error, empty states (code-quality.mdc D9)
+- [x] `useSearch` hook with `useReducer` (code-quality.mdc D6): states = idle, loading, success, error
+- [x] `POST /api/search` integration
+- [x] Two-column layout per mock UI
+- [x] `App.tsx` at port 3000
+- [x] Env: `VITE_API_URL`, `VITE_DEFAULT_COLLECTION`
+- [x] Explicit loading, error, empty states (code-quality.mdc D9)
 
 ### Acceptance criteria
 
@@ -1045,10 +1045,10 @@ Wire all UI components into standalone SPA with data fetching hook (SPEC §5).
 
 ### Test plan
 
-- [ ] RTL + MSW: full search flow (search mode)
-- [ ] RTL + MSW: RAG mode shows AI summary
-- [ ] RTL + MSW: loading state shown during pending request
-- [ ] RTL + MSW: error state shown on 500
+- [x] RTL + MSW: full search flow (search mode)
+- [x] RTL + MSW: RAG mode shows AI summary
+- [x] RTL + MSW: loading state shown during pending request
+- [x] RTL + MSW: error state shown on 500
 - [ ] Manual: against docker compose backend
 
 ---

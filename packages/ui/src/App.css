@@ -124,6 +124,17 @@
   border-bottom: 0.5px solid var(--border);
 }
 
+.qv-error-banner {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 0.5px solid rgba(220, 53, 69, 0.35);
+  background: rgba(220, 53, 69, 0.08);
+  color: #b42318;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
 .qv-search-box {
   display: flex;
   align-items: center;

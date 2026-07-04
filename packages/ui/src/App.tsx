@@ -1,43 +1,58 @@
-import { useMemo, useState } from 'react';
-import { demoRagSearchResponse } from './fixtures/demoRagSearchResponse';
-import { demoSearchResponse } from './fixtures/demoSearchResponse';
+import { useMemo } from 'react';
+import { ErrorBanner } from './components/ErrorBanner';
 import { FilterStrip } from './components/FilterStrip';
 import { RagPanel } from './components/RagPanel';
 import { ResultsList } from './components/ResultsList';
 import { SearchBar } from './components/SearchBar';
 import { StatsPanel } from './components/StatsPanel';
 import { TopBar } from './components/TopBar';
+import { useSearch } from './hooks/useSearch';
 import { useTheme } from './hooks/useTheme';
-import type { SearchMode, SearchResult } from './types/api';
-import { EMPTY_ACTIVE_FILTERS } from './utils/filterState';
+import type { SearchResult } from './types/api';
 import { computeSearchStats } from './utils/searchStats';
 import './App.css';
 
 const DEFAULT_COLLECTION = import.meta.env.VITE_DEFAULT_COLLECTION ?? 'news_radar';
 const API_BASE_URL = import.meta.env.VITE_API_URL ?? '';
-const DEFAULT_TOP_K = 10;
-const DEMO_LOADING = false;
-const DEMO_REMAINING_COUNT = 4;
 
 /**
- * Root application component for the Queriva standalone SPA.
+ * Root application component for the Queriva standalone SPA (issue #23).
  */
 function App() {
   const { theme, toggleTheme } = useTheme();
-  const [query, setQuery] = useState(demoSearchResponse.query);
-  const [mode, setMode] = useState<SearchMode>('search');
-  const [filters, setFilters] = useState(EMPTY_ACTIVE_FILTERS);
-  const [topK, setTopK] = useState(DEFAULT_TOP_K);
-  const [results] = useState<SearchResult[]>(demoSearchResponse.results);
+  const {
+    query,
+    mode,
+    filters,
+    loading,
+    results,
+    summary,
+    latencyMs,
+    error,
+    remainingCount,
+    setQuery,
+    setMode,
+    setFilters,
+    search,
+    loadMore,
+    refresh,
+  } = useSearch({
+    apiBaseUrl: API_BASE_URL,
+    collection: DEFAULT_COLLECTION,
+  });
 
-  const visibleResults = useMemo(() => results.slice(0, topK), [results, topK]);
-  const activeSummary = mode === 'rag' ? demoRagSearchResponse.summary : null;
-  const activeLatency =
-    mode === 'rag' ? demoRagSearchResponse.latency_ms : demoSearchResponse.latency_ms;
   const stats = useMemo(
-    () => computeSearchStats(visibleResults, activeLatency.total),
-    [visibleResults, activeLatency.total],
+    () => computeSearchStats(results, latencyMs?.total ?? null),
+    [results, latencyMs],
   );
+
+  const handleResultClick = (result: SearchResult) => {
+    window.open(result.url, '_blank', 'noopener,noreferrer');
+  };
+
+  const handleSuggestionClick = (suggestedQuery: string) => {
+    search(suggestedQuery);
+  };
 
   return (
     <div className="qv-app">
@@ -48,32 +63,36 @@ function App() {
           mode={mode}
           onQueryChange={setQuery}
           onModeChange={setMode}
-          onSubmit={() => undefined}
+          onSubmit={search}
         />
         <FilterStrip
           collection={DEFAULT_COLLECTION}
           filters={filters}
-          resultCount={visibleResults.length}
+          resultCount={results.length}
           onFiltersChange={setFilters}
         />
+        {error ? <ErrorBanner message={error} /> : null}
       </section>
       <main className="qv-body">
         <ResultsList
           query={query}
-          results={visibleResults}
-          loading={DEMO_LOADING}
-          remainingCount={DEMO_REMAINING_COUNT}
-          onLoadMore={() => setTopK((current) => current + DEFAULT_TOP_K)}
+          results={results}
+          loading={loading}
+          remainingCount={remainingCount}
+          onLoadMore={loadMore}
+          onResultClick={handleResultClick}
         />
         <aside className="qv-right" aria-label="Search statistics and AI summary">
           <StatsPanel stats={stats} />
-          <RagPanel
-            mode={mode}
-            summary={activeSummary}
-            latencyMs={activeLatency}
-            onRefresh={() => setQuery((current) => current)}
-            onSuggestionClick={setQuery}
-          />
+          {latencyMs ? (
+            <RagPanel
+              mode={mode}
+              summary={summary}
+              latencyMs={latencyMs}
+              onRefresh={refresh}
+              onSuggestionClick={handleSuggestionClick}
+            />
+          ) : null}
         </aside>
       </main>
     </div>

@@ -99,6 +99,3 @@ export const CATEGORY_FILTER_NATIONAL = 'National';
 export const CATEGORY_FILTER_WEATHER = 'Weather';
 
 export const FILTER_STRIP_LABEL = 'Search filters';
-
-export const SCAFFOLD_STATUS_MESSAGE =
-  'Search zone ready — API wiring ships in issue #23.';

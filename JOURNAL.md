@@ -5,6 +5,31 @@ One entry per working day. Most recent entry at the top.
 
 ---
 
+## 2026-07-04 (continued)
+
+### Plan
+- [x] #23 — Standalone app + useSearch hook
+
+### Built
+- **Issue #23** — Standalone app + useSearch (`issue-23/use-search-hook`)
+  - `useSearch` — `useReducer` with idle/loading/success/error; `POST /api/search` via `searchApi.ts`
+  - Mode and filter changes re-run search; load-more increments `top_k`; refresh re-submits current query
+  - `ErrorBanner` for API failures; `App.tsx` wired to hook (no demo fixture state)
+  - MSW handlers for `/api/search` (search + RAG modes); Vite dev server port 3000 per SPEC §12
+  - RTL + MSW tests for search flow, RAG summary, loading skeleton, and 500 error banner
+
+### Decisions
+- Omit `AbortSignal` on fetch — jsdom + MSW reject non-native signals in Vitest
+- `SearchBar` passes current query string to `onSubmit` to avoid stale-state race on Enter
+
+### Blockers
+None.
+
+### Next
+- #24 — Standalone UI tests (full coverage + axe audit)
+
+---
+
 ## 2026-07-04
 
 ### Plan
