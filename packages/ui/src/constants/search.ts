@@ -4,8 +4,11 @@ export const SEARCH_API_PATH = '/api/search';
 /** Default result count per SPEC §6 / SEARCH_DEFAULT_TOP_K. */
 export const DEFAULT_TOP_K = 10;
 
-/** Default min_score per SPEC §6 / SEARCH_MIN_SCORE. */
-export const DEFAULT_MIN_SCORE = 0.60;
+/**
+ * Default min_score per SPEC §6 / SEARCH_MIN_SCORE / VITE_SEARCH_MIN_SCORE.
+ * 0.40 fits LaBSE cosine scores on the news_radar fixture; raise for stricter filtering.
+ */
+export const DEFAULT_MIN_SCORE = 0.40;
 
 /** top_k increment when loading more results. */
 export const TOP_K_INCREMENT = 10;
@@ -15,3 +18,19 @@ export const DEV_SERVER_PORT = 3000;
 
 /** JSON content type for search POST requests. */
 export const JSON_CONTENT_TYPE = 'application/json';
+
+/**
+ * Resolves min_score from VITE_SEARCH_MIN_SCORE, falling back to {@link DEFAULT_MIN_SCORE}.
+ */
+export function resolveMinScoreFromEnv(
+  envValue: string | undefined = import.meta.env.VITE_SEARCH_MIN_SCORE,
+): number {
+  if (envValue === undefined || envValue.trim() === '') {
+    return DEFAULT_MIN_SCORE;
+  }
+  const parsed = Number.parseFloat(envValue);
+  if (!Number.isFinite(parsed) || parsed < 0 || parsed > 1) {
+    return DEFAULT_MIN_SCORE;
+  }
+  return parsed;
+}

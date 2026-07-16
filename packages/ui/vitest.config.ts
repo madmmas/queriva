@@ -10,6 +10,7 @@ export default defineConfig({
     env: {
       VITE_API_URL: '',
       VITE_DEFAULT_COLLECTION: 'news_radar',
+      VITE_SEARCH_MIN_SCORE: '0.40',
     },
     coverage: {
       provider: 'v8',

@@ -216,7 +216,7 @@ queriva/
   "query": "floods in Dhaka last week",
   "collection": "news_radar",
   "top_k": 10,
-  "min_score": 0.60,
+  "min_score": 0.40,
   "mode": "rag",
   "filters": {
     "language": "bn",
@@ -234,7 +234,7 @@ queriva/
 | `query` | string | yes | — | Natural language query |
 | `collection` | string | yes | — | Qdrant collection name |
 | `top_k` | int | no | 10 | Number of results to retrieve |
-| `min_score` | float | no | 0.60 | Minimum cosine similarity threshold |
+| `min_score` | float | no | 0.40 | Minimum cosine similarity threshold (LaBSE-tuned; raise for stricter filtering) |
 | `mode` | enum | no | `search` | `search` (ranked results only) or `rag` (LLM synthesis) |
 | `filters` | object | no | null | Qdrant payload filters |
 
@@ -638,12 +638,13 @@ CORS_ALLOWED_ORIGINS=http://localhost:3000,http://localhost:5173
 
 # Search
 SEARCH_DEFAULT_TOP_K=10
-SEARCH_MIN_SCORE=0.60
+SEARCH_MIN_SCORE=0.40                   # LaBSE cosine on news corpora; raise toward 0.60 for stricter filtering
 SEARCH_MAX_SCORE_AUTO_ACCEPT=0.80       # skip LLM for high-confidence hits
 
 # UI
 VITE_API_URL=http://localhost:8080
 VITE_DEFAULT_COLLECTION=news_radar
+VITE_SEARCH_MIN_SCORE=0.40              # must match SEARCH_MIN_SCORE for standalone UI
 ```
 
 ---

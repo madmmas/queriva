@@ -5,7 +5,17 @@ One entry per working day. Most recent entry at the top.
 
 ---
 
-## 2026-07-04 — Release v0.4.0
+## 2026-07-16 — Fix SEARCH_MIN_SCORE / empty demo results (#63)
+
+### Shipped
+- GitHub issue [#63](https://github.com/madmmas/queriva/issues/63)
+- Wire `SEARCH_MIN_SCORE` into Compose `api` service; resolve omitted `min_score` from config
+- UI reads `VITE_SEARCH_MIN_SCORE`; default threshold 0.40 for LaBSE + seeded fixture
+
+### Next
+- #25 — Module Federation `SearchWidget`
+
+---
 
 ### Shipped
 - **Release v0.4.0** — Standalone UI (#19–#24)

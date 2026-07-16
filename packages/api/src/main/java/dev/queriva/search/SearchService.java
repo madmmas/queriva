@@ -23,6 +23,7 @@ public class SearchService {
     private final QdrantSearchService qdrantSearchService;
     private final LLMSynthesisService llmSynthesisService;
     private final SearchResultMapper searchResultMapper;
+    private final double defaultMinScore;
     private final double maxScoreAutoAccept;
 
     /**
@@ -34,12 +35,16 @@ public class SearchService {
             QdrantSearchService qdrantSearchService,
             LLMSynthesisService llmSynthesisService,
             SearchResultMapper searchResultMapper,
+            // SPEC §13: SEARCH_MIN_SCORE
+            @Value("${search.min-score}") double defaultMinScore,
+            // SPEC §13: SEARCH_MAX_SCORE_AUTO_ACCEPT
             @Value("${search.max-score-auto-accept}") double maxScoreAutoAccept) {
         this.collectionManager = collectionManager;
         this.queryEmbeddingService = queryEmbeddingService;
         this.qdrantSearchService = qdrantSearchService;
         this.llmSynthesisService = llmSynthesisService;
         this.searchResultMapper = searchResultMapper;
+        this.defaultMinScore = defaultMinScore;
         this.maxScoreAutoAccept = maxScoreAutoAccept;
     }
 
@@ -54,6 +59,8 @@ public class SearchService {
         String embeddingModel = queryEmbeddingService.resolveModel(null);
         queryEmbeddingService.validateEmbeddingModel(request.collection(), embeddingModel);
 
+        double minScore = resolveMinScore(request.minScore());
+
         long embedStartNanos = System.nanoTime();
         float[] queryVector = queryEmbeddingService.embed(request.query(), embeddingModel);
         long embedLatencyMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - embedStartNanos);
@@ -63,7 +70,7 @@ public class SearchService {
                 request.collection(),
                 queryVector,
                 request.topK(),
-                request.minScore(),
+                minScore,
                 request.filters());
         long searchLatencyMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - searchStartNanos);
 
@@ -133,5 +140,15 @@ public class SearchService {
             return false;
         }
         return hits.getFirst().score() < maxScoreAutoAccept;
+    }
+
+    /**
+     * Uses the request min_score when provided; otherwise SEARCH_MIN_SCORE from config.
+     */
+    private double resolveMinScore(Double requestMinScore) {
+        if (requestMinScore == null) {
+            return defaultMinScore;
+        }
+        return requestMinScore;
     }
 }

@@ -48,8 +48,8 @@ ingest:
 embed:
   default-model: ${EMBED_DEFAULT_MODEL:LaBSE}
 
-# SPEC §13: SEARCH_DEFAULT_TOP_K — default 10; SEARCH_MIN_SCORE — default 0.60; SEARCH_MAX_SCORE_AUTO_ACCEPT — default 0.80
+# SPEC §13: SEARCH_DEFAULT_TOP_K — default 10; SEARCH_MIN_SCORE — default 0.40; SEARCH_MAX_SCORE_AUTO_ACCEPT — default 0.80
 search:
   default-top-k: ${SEARCH_DEFAULT_TOP_K:10}
-  min-score: ${SEARCH_MIN_SCORE:0.60}
+  min-score: ${SEARCH_MIN_SCORE:0.40}
   max-score-auto-accept: ${SEARCH_MAX_SCORE_AUTO_ACCEPT:0.80}
