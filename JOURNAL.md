@@ -11,6 +11,7 @@ One entry per working day. Most recent entry at the top.
 - Issue #27 / GH #67 — five-service compose: qdrant, ollama, embed-sidecar, api, ui
 - `packages/ui/Dockerfile` + nginx on :3000; `docker-compose.dev.yml` hot reload
 - `make compose-up` / `compose-dev` / `compose-down`; README + SPEC §12/§13 updated
+- Fix: ollama healthcheck was `curl` (not in image) → `ollama list` so api/ui can start
 
 ### Next
 - #28 — E2E smoke tests (`make smoke`)
