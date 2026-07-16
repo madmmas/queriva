@@ -10,6 +10,7 @@ interface SearchBarProps {
   onQueryChange: (query: string) => void;
   onModeChange: (mode: SearchMode) => void;
   onSubmit: (query: string) => void;
+  placeholder?: string;
 }
 
 /**
@@ -21,6 +22,7 @@ export function SearchBar({
   onQueryChange,
   onModeChange,
   onSubmit,
+  placeholder = SEARCH_PLACEHOLDER,
 }: SearchBarProps) {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -37,7 +39,7 @@ export function SearchBar({
         id="qv-search-input"
         type="search"
         value={query}
-        placeholder={SEARCH_PLACEHOLDER}
+        placeholder={placeholder}
         onChange={(event) => onQueryChange(event.target.value)}
       />
       <button type="submit" className="sr-only">

@@ -7,7 +7,7 @@
 > until all tasks are complete, all tests pass, CHANGELOG.md is updated, and
 > JOURNAL.md has an entry for the day. See `.cursor/rules/queriva.mdc` Rule 3.
 >
-> **Last updated:** 2026-07-16 — #63 SEARCH_MIN_SCORE / demo empty results; #23 manual AC checked.
+> **Last updated:** 2026-07-16 — #25 SearchWidget MFE; #63 SEARCH_MIN_SCORE; #23 manual AC done.
 > Earlier: v3 — ADR issues, repo foundation files, security rules, fixture file, README
 > template, release issues. Aligned with SPEC v3 (§18 version guide, §19 ADR index).
 
@@ -1098,13 +1098,13 @@ Export embeddable `SearchWidget` via Vite Module Federation (SPEC §11, ADR-010)
 
 ### Tasks
 
-- [ ] Vite Module Federation config: `name: 'queriva'`, `exposes: {'./SearchWidget': './src/SearchWidget.tsx'}`
-- [ ] `SearchWidget.tsx` with all props from SPEC §11 `SearchWidgetProps` interface
-- [ ] Widget functional with only `apiUrl` + `collection` — all others optional with defaults (code-quality.mdc D10)
-- [ ] `react` and `react-dom` shared between host and remote
-- [ ] `SearchWidgetProps` TypeScript interface exported alongside component
-- [ ] Example host app at `packages/ui/examples/host/`
-- [ ] `remoteEntry.js` URL configurable via env var in host
+- [x] Vite Module Federation config: `name: 'queriva'`, `exposes: {'./SearchWidget': './src/SearchWidget.tsx'}`
+- [x] `SearchWidget.tsx` with all props from SPEC §11 `SearchWidgetProps` interface
+- [x] Widget functional with only `apiUrl` + `collection` — all others optional with defaults (code-quality.mdc D10)
+- [x] `react` and `react-dom` shared between host and remote
+- [x] `SearchWidgetProps` TypeScript interface exported alongside component
+- [x] Example host app at `packages/ui/examples/host/`
+- [x] `remoteEntry.js` URL configurable via env var in host
 
 ### Acceptance criteria
 
@@ -1115,9 +1115,9 @@ Export embeddable `SearchWidget` via Vite Module Federation (SPEC §11, ADR-010)
 
 ### Test plan
 
-- [ ] Build remote + host: both `turbo run build` without errors
+- [x] Build remote + host: both `turbo run build` without errors
 - [ ] Manual: host app renders `SearchWidget` and search works
-- [ ] Test: `SearchWidgetProps` contract — all props tested (test-quality.mdc D7)
+- [x] Test: `SearchWidgetProps` contract — all props tested (test-quality.mdc D7)
 
 ---
 

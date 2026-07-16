@@ -5,6 +5,21 @@ One entry per working day. Most recent entry at the top.
 
 ---
 
+## 2026-07-16 — Module Federation SearchWidget (#25)
+
+### Shipped
+- Issue #25 / GH #28 — Vite Module Federation remote `queriva` exposes `./SearchWidget`
+- `SearchWidgetProps` (SPEC §11): `apiUrl` + `collection` required; placeholder, mode, theme, filters, `onResultClick` optional
+- Example host at `packages/ui/examples/host/` with `VITE_QUERIVA_REMOTE_ENTRY`
+- `make build-mfe` builds remote + host; preview remote on port 5173
+- Docs #23 manual AC already closed (GH #26); confirmation comment added
+
+### Next
+- #26 — MFE integration tests
+- Manual: host + remote against docker compose API
+
+---
+
 ## 2026-07-16 — Fix SEARCH_MIN_SCORE / empty demo results (#63)
 
 ### Shipped

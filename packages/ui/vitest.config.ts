@@ -22,7 +22,6 @@ export default defineConfig({
         'src/**/*.test.{ts,tsx}',
         'src/setupTests.ts',
         'src/__tests__/*',
-        'src/SearchWidget.tsx',
       ],
       thresholds: {
         lines: 80,

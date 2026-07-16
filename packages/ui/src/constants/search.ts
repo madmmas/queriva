@@ -13,8 +13,17 @@ export const DEFAULT_MIN_SCORE = 0.40;
 /** top_k increment when loading more results. */
 export const TOP_K_INCREMENT = 10;
 
-/** Vite dev server port per SPEC §12 ui service. */
+/** Vite dev server port per SPEC §12 ui service (standalone SPA). */
 export const DEV_SERVER_PORT = 3000;
+
+/**
+ * Federation remote preview port (SPEC §11 / ADR-010).
+ * Host loads remoteEntry from http://localhost:5173/assets/remoteEntry.js
+ */
+export const REMOTE_PREVIEW_PORT = 5173;
+
+/** Default remoteEntry URL for example host apps (SPEC §11). */
+export const DEFAULT_REMOTE_ENTRY_URL = 'http://localhost:5173/assets/remoteEntry.js';
 
 /** JSON content type for search POST requests. */
 export const JSON_CONTENT_TYPE = 'application/json';

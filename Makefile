@@ -1,4 +1,4 @@
-.PHONY: help install install-node install-python build test test-unit test-int test-slow \
+.PHONY: help install install-node install-python install-host build build-mfe test test-unit test-int test-slow \
         test-api test-embed test-ingest test-ui smoke seed validate-fixture ollama-pull clean
 
 help: ## Show available targets
@@ -16,8 +16,15 @@ install-python: ## Install Python runtime + dev/test dependencies
 	python3 -m pip install -r packages/ingest-cli/requirements.txt -q
 	python3 -m pip install -r packages/ingest-cli/requirements-dev.txt -q
 
+install-host: ## Install Module Federation example host dependencies
+	cd packages/ui/examples/host && npm install
+
 build: ## Build all packages via Turborepo
 	npx turbo run build
+
+build-mfe: ## Build UI federation remote + example host (issue #25)
+	cd packages/ui && npm run build
+	cd packages/ui/examples/host && npm install && npm run build
 
 test: ## Run all tests (unit + integration)
 	npx turbo run test
