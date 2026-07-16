@@ -15,7 +15,7 @@ import './App.css';
 
 const DEFAULT_COLLECTION = import.meta.env.VITE_DEFAULT_COLLECTION ?? 'news_radar';
 const API_BASE_URL = import.meta.env.VITE_API_URL ?? '';
-const MIN_SCORE = resolveMinScoreFromEnv();
+const MIN_SCORE = resolveMinScoreFromEnv(import.meta.env.VITE_SEARCH_MIN_SCORE);
 
 /**
  * Root application component for the Queriva standalone SPA (issue #23).

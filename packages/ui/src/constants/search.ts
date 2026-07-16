@@ -20,11 +20,9 @@ export const DEV_SERVER_PORT = 3000;
 export const JSON_CONTENT_TYPE = 'application/json';
 
 /**
- * Resolves min_score from VITE_SEARCH_MIN_SCORE, falling back to {@link DEFAULT_MIN_SCORE}.
+ * Resolves min_score from a VITE_SEARCH_MIN_SCORE string, falling back to {@link DEFAULT_MIN_SCORE}.
  */
-export function resolveMinScoreFromEnv(
-  envValue: string | undefined = import.meta.env.VITE_SEARCH_MIN_SCORE,
-): number {
+export function resolveMinScoreFromEnv(envValue?: string): number {
   if (envValue === undefined || envValue.trim() === '') {
     return DEFAULT_MIN_SCORE;
   }
