@@ -36,6 +36,8 @@ interface UseSearchOptions {
   collection: string;
   defaultTopK?: number;
   defaultMinScore?: number;
+  defaultMode?: SearchMode;
+  initialFilters?: ActiveFilters;
 }
 
 export interface UseSearchResult {
@@ -112,10 +114,14 @@ export function useSearch({
   collection,
   defaultTopK = DEFAULT_TOP_K,
   defaultMinScore = DEFAULT_MIN_SCORE,
+  defaultMode = 'search',
+  initialFilters = EMPTY_ACTIVE_FILTERS,
 }: UseSearchOptions): UseSearchResult {
   const [state, dispatch] = useReducer(searchReducer, {
     ...initialState,
     topK: defaultTopK,
+    mode: defaultMode,
+    filters: initialFilters,
   });
   const hasSearchedRef = useRef(false);
 
