@@ -8,14 +8,26 @@ One entry per working day. Most recent entry at the top.
 ## 2026-07-16 — Fix SEARCH_MIN_SCORE / empty demo results (#63)
 
 ### Shipped
-- GitHub issue [#63](https://github.com/madmmas/queriva/issues/63)
+- GitHub issue [#63](https://github.com/madmmas/queriva/issues/63) + PR #64 (`issue-63/search-min-score-env`)
 - Wire `SEARCH_MIN_SCORE` into Compose `api` service; resolve omitted `min_score` from config
-- UI reads `VITE_SEARCH_MIN_SCORE`; default threshold 0.40 for LaBSE + seeded fixture
+- UI reads `VITE_SEARCH_MIN_SCORE`; default threshold **0.40** for LaBSE + seeded fixture
+- SPEC §6/§13 + `.env.example` aligned (0.60 → 0.40)
+- Manual #23 verification: docker compose backend + Vite UI — `floods in Dhaka last week` returns hits
+- README hero replaced with live standalone UI screenshot; status → v0.4.0
+- Ignore `coverage/` in `.gitignore`; untrack `packages/ui/coverage/`
+
+### Decisions
+- LaBSE cosine scores on `news_radar` peak ~0.3–0.55; default `min_score` 0.60 hid all demo results
+- `SEARCH_MIN_SCORE` alone is not enough for Vite — need `VITE_SEARCH_MIN_SCORE` (or code default)
+- API image must be rebuilt (`--build`), not only `--force-recreate`, after Java changes
 
 ### Next
-- #25 — Module Federation `SearchWidget`
+- Merge PR #64 / close #63
+- #25 — Module Federation `SearchWidget` (ADR-010 first)
 
 ---
+
+## 2026-07-04 — Release v0.4.0
 
 ### Shipped
 - **Release v0.4.0** — Standalone UI (#19–#24)

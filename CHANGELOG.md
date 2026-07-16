@@ -15,6 +15,10 @@ Versions follow [Semantic Versioning](https://semver.org/).
 
 ### Changed
 - **Changed** [docs] Default `SEARCH_MIN_SCORE` / `min_score` 0.60 → 0.40 for LaBSE + news fixture demo (#63)
+- **Changed** [docs] README hero screenshot — live standalone UI; status line → v0.4.0 (#63)
+
+### Infrastructure
+- **Infrastructure** [ci] Ignore `coverage/` directories; stop tracking UI coverage artifacts (#63)
 
 ---
 
