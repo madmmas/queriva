@@ -67,6 +67,27 @@ describe('SearchWidget', () => {
     );
   });
 
+  it('should pre-select category filter from filters prop', () => {
+    render(
+      <SearchWidget
+        apiUrl=""
+        collection="news_radar"
+        filters={{ category: 'weather' }}
+      />,
+    );
+
+    expect(screen.getByRole('button', { name: /Weather/i })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    );
+  });
+
+  it('should resolve theme=auto to light when system prefers light', () => {
+    render(<SearchWidget apiUrl="" collection="news_radar" theme="auto" />);
+
+    expect(screen.getByTestId('search-widget')).toHaveAttribute('data-theme', 'light');
+  });
+
   it('should call onResultClick with the clicked SearchResult', async () => {
     const user = userEvent.setup();
     const onResultClick = vi.fn();

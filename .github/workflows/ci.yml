@@ -60,5 +60,8 @@ jobs:
       - name: Build
         run: make build
 
+      - name: MFE federation + host typecheck
+        run: make test-mfe
+
       - name: Test
         run: make test

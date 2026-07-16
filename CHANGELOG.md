@@ -12,6 +12,9 @@ Versions follow [Semantic Versioning](https://semver.org/).
 - **Added** [ui] Module Federation `SearchWidget` remote (`remoteEntry.js`) with SPEC §11 props (#25)
 - **Added** [ui] Example host app at `packages/ui/examples/host/` (`VITE_QUERIVA_REMOTE_ENTRY`) (#25)
 - **Added** [infra] `make build-mfe` / `make install-host` for federation remote + host (#25)
+- **Added** [ui] `mfeExports` type surface + shared App/SearchWidget surface tests (#26)
+- **Added** [ui] Host SPEC §11 consumption sample + `npm run typecheck` (#26)
+- **Added** [ci] `make test-mfe` in CI (federation build, MFE tests, host typecheck) (#26)
 
 ### Fixed
 - **Fixed** [api] Honor `SEARCH_MIN_SCORE` when `min_score` is omitted; stop hardcoding 0.60 in `SearchRequest` (#63)

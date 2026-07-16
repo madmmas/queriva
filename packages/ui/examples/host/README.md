@@ -21,7 +21,11 @@ npm install
 npm run dev            # http://localhost:5174
 ```
 
-## Env
+## Typecheck
+
+```bash
+npm run typecheck   # includes SPEC §11 sample (src/specConsumptionSample.tsx)
+```
 
 | Variable | Default | Purpose |
 |---|---|---|
