@@ -557,7 +557,6 @@ import SearchWidget from 'queriva/SearchWidget'
 ## 12. Docker Compose
 
 ```yaml
-version: '3.9'
 services:
 
   qdrant:
@@ -573,8 +572,6 @@ services:
     image: ollama/ollama:latest
     ports: ["11434:11434"]
     volumes: ["ollama_data:/root/.ollama"]
-    environment:
-      - OLLAMA_MODELS=mistral
 
   embed-sidecar:
     build: ./packages/embed-sidecar
@@ -593,21 +590,31 @@ services:
       - QDRANT_URL=http://qdrant:6333
       - OLLAMA_URL=http://ollama:11434
       - EMBED_SIDECAR_URL=http://embed-sidecar:8001
+      - CORS_ALLOWED_ORIGINS=http://localhost:3000,http://localhost:5173,http://localhost:5174
     depends_on:
       qdrant: { condition: service_healthy }
       embed-sidecar: { condition: service_healthy }
+      ollama: { condition: service_healthy }
 
   ui:
-    build: ./packages/ui
+    build:
+      context: .
+      dockerfile: packages/ui/Dockerfile
     ports: ["3000:3000"]
     environment:
       - VITE_API_URL=http://localhost:8080
-    depends_on: [api]
+    depends_on:
+      api: { condition: service_healthy }
 
 volumes:
   qdrant_data:
   ollama_data:
 ```
+
+**Post-start:** `make ollama-pull` (first run) then `make seed`.
+
+**Dev overrides:** `docker-compose.dev.yml` — Vite HMR for UI and `mvn spring-boot:run` for API
+(`make compose-dev`).
 
 ---
 
@@ -634,7 +641,7 @@ EMBED_DEFAULT_MODEL=LaBSE
 
 # API
 API_PORT=8080
-CORS_ALLOWED_ORIGINS=http://localhost:3000,http://localhost:5173
+CORS_ALLOWED_ORIGINS=http://localhost:3000,http://localhost:5173,http://localhost:5174
 
 # Search
 SEARCH_DEFAULT_TOP_K=10
@@ -645,6 +652,9 @@ SEARCH_MAX_SCORE_AUTO_ACCEPT=0.80       # skip LLM for high-confidence hits
 VITE_API_URL=http://localhost:8080
 VITE_DEFAULT_COLLECTION=news_radar
 VITE_SEARCH_MIN_SCORE=0.40              # must match SEARCH_MIN_SCORE for standalone UI
+
+# MFE example host
+VITE_QUERIVA_REMOTE_ENTRY=http://localhost:5173/assets/remoteEntry.js
 ```
 
 ---

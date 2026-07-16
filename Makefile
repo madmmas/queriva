@@ -1,5 +1,6 @@
 .PHONY: help install install-node install-python install-host build build-mfe test test-unit test-int test-slow \
-        test-api test-embed test-ingest test-ui test-mfe smoke seed validate-fixture ollama-pull clean
+        test-api test-embed test-ingest test-ui test-mfe smoke seed validate-fixture ollama-pull \
+        compose-up compose-dev compose-down clean
 
 help: ## Show available targets
 	@grep -E '^[a-zA-Z0-9_-]+:.*?##' $(MAKEFILE_LIST) | sort | \
@@ -25,6 +26,15 @@ build: ## Build all packages via Turborepo
 build-mfe: ## Build UI federation remote + example host (issue #25)
 	cd packages/ui && npm run build
 	cd packages/ui/examples/host && npm install && npm run build
+
+compose-up: ## Start full stack (qdrant, ollama, embed-sidecar, api, ui)
+	docker compose up -d --build
+
+compose-dev: ## Start full stack with UI/API hot reload (docker-compose.dev.yml)
+	docker compose -f docker-compose.yml -f docker-compose.dev.yml up --build
+
+compose-down: ## Stop compose stack (keeps volumes)
+	docker compose down
 
 test-mfe: ## MFE federation build, UI MFE tests, host typecheck + build (issue #26)
 	cd packages/ui && npm run build
@@ -64,7 +74,7 @@ smoke: ## Run E2E smoke test against full stack (requires docker compose)
 validate-fixture: ## Validate demo fixture against SPEC §14 source fields
 	python3 scripts/validate_fixture.py
 
-seed: validate-fixture ## Seed demo data into news_radar collection
+seed: validate-fixture ## Seed demo data into news_radar (run after compose-up + ollama-pull)
 	bash scripts/seed-demo.sh
 
 ollama-pull: ## Pull default Ollama model (mistral) into docker compose ollama service

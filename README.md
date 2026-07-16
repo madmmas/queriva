@@ -20,21 +20,28 @@ search in natural language, get AI-synthesized answers — zero external API cal
   <img src="mock-ui/queriva-icon-files/ui.png" alt="Queriva standalone UI — floods in Dhaka search with RAG mode" width="900">
 </p>
 
-> **Status:** v0.4.0 — standalone UI: search + RAG in the browser at localhost:3000.
+> **Status:** v0.4.0+ — full Docker Compose stack (qdrant, ollama, embed-sidecar, api, ui).
 > See [`docs/SPEC.md`](docs/SPEC.md) for architecture and [`docs/ISSUES.md`](docs/ISSUES.md)
-> for the backlog (next: #25 MFE widget → v0.5.0).
+> for the backlog (next: #28 E2E smoke → v0.5.0).
 
 ## Quick start
 
 ```bash
-docker compose up -d --build
-make ollama-pull   # first run only — downloads mistral (~4GB) for RAG mode
-make seed
+docker compose up -d --build   # or: make compose-up
+make ollama-pull               # first run only — downloads mistral (~4GB) for RAG mode
+make seed                      # ingest fixtures/news_radar_dhaka_floods.json into news_radar
 ```
 
-`make seed` validates `fixtures/news_radar_dhaka_floods.json`, ingests 8 articles
-(4 Bangla + 4 English) into the `news_radar` collection, and verifies idempotency.
-Requires the API, embed-sidecar, and Qdrant services from `docker compose`.
+Then open **http://localhost:3000** and search `floods in Dhaka last week`.
+
+`make seed` validates the fixture, ingests 8 articles (4 Bangla + 4 English), and verifies
+idempotency. Requires API, embed-sidecar, and Qdrant from `docker compose`.
+
+### Dev compose (hot reload)
+
+```bash
+make compose-dev    # UI Vite HMR + API mvn spring-boot:run
+```
 
 ## Docs
 

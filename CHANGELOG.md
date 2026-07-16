@@ -15,6 +15,10 @@ Versions follow [Semantic Versioning](https://semver.org/).
 - **Added** [ui] `mfeExports` type surface + shared App/SearchWidget surface tests (#26)
 - **Added** [ui] Host SPEC §11 consumption sample + `npm run typecheck` (#26)
 - **Added** [ci] `make test-mfe` in CI (federation build, MFE tests, host typecheck) (#26)
+- **Added** [infra] Full Docker Compose stack with `ui` service (nginx) + healthchecks (#27)
+- **Added** [infra] `docker-compose.dev.yml` — Vite HMR UI + `mvn spring-boot:run` API (#27)
+- **Added** [infra] `make compose-up` / `compose-dev` / `compose-down` (#27)
+- **Added** [ui] Production `packages/ui/Dockerfile` (multi-stage Node build + nginx:3000) (#27)
 
 ### Fixed
 - **Fixed** [api] Honor `SEARCH_MIN_SCORE` when `min_score` is omitted; stop hardcoding 0.60 in `SearchRequest` (#63)

@@ -1,0 +1,19 @@
+# packages/api — development image with live source mount (issue #27)
+FROM maven:3.9.9-eclipse-temurin-21-alpine
+
+WORKDIR /app
+
+RUN apk add --no-cache curl
+
+COPY pom.xml .
+RUN mvn dependency:go-offline -q || true
+
+COPY src ./src
+
+ENV API_PORT=8080
+EXPOSE 8080
+
+HEALTHCHECK --interval=10s --timeout=5s --retries=5 --start-period=60s \
+    CMD curl -f http://localhost:${API_PORT}/api/health || exit 1
+
+CMD ["mvn", "spring-boot:run", "-q", "-Dspring-boot.run.jvmArguments=-Dserver.port=8080"]
