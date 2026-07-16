@@ -20,8 +20,9 @@ search in natural language, get AI-synthesized answers — zero external API cal
   <img src="mock-ui/queriva-icon-files/ui.png" alt="Queriva search UI mock — floods in Dhaka query with RAG summary" width="900">
 </p>
 
-> **Status:** v0.2.0 — ingest pipeline working end-to-end. See [`docs/SPEC.md`](docs/SPEC.md)
-> for architecture and [`docs/ISSUES.md`](docs/ISSUES.md) for the backlog.
+> **Status:** v0.4.0 — standalone UI: search + RAG in the browser at localhost:3000.
+> See [`docs/SPEC.md`](docs/SPEC.md) for architecture and [`docs/ISSUES.md`](docs/ISSUES.md)
+> for the backlog (next: #25 MFE widget → v0.5.0).
 
 ## Quick start
 
