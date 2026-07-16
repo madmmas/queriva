@@ -75,7 +75,8 @@ services:
       - EMBED_SIDECAR_URL=http://embed-sidecar:8001
       - OLLAMA_URL=http://ollama:11434
       - OLLAMA_MODEL=mistral
-      - SEARCH_MAX_SCORE_AUTO_ACCEPT=0.80
+      - SEARCH_MIN_SCORE=${SEARCH_MIN_SCORE:-0.40}
+      - SEARCH_MAX_SCORE_AUTO_ACCEPT=${SEARCH_MAX_SCORE_AUTO_ACCEPT:-0.80}
     depends_on:
       qdrant:
         condition: service_healthy

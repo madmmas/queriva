@@ -33,6 +33,7 @@ class SearchServiceTest {
     private static final String QUERY = "floods in Dhaka last week";
     private static final float[] QUERY_VECTOR = new float[] {0.1f, 0.2f};
     private static final double MAX_SCORE_AUTO_ACCEPT = 0.80;
+    private static final double DEFAULT_MIN_SCORE = 0.40;
 
     @Mock
     private CollectionManager collectionManager;
@@ -59,6 +60,7 @@ class SearchServiceTest {
                 qdrantSearchService,
                 llmSynthesisService,
                 searchResultMapper,
+                DEFAULT_MIN_SCORE,
                 MAX_SCORE_AUTO_ACCEPT);
     }
 
@@ -195,6 +197,25 @@ class SearchServiceTest {
 
         assertThatThrownBy(() -> searchService.search(request))
                 .isInstanceOf(CollectionNotFoundException.class);
+    }
+
+    @Test
+    void should_use_configured_min_score_when_request_omits_min_score() {
+        SearchRequest request = new SearchRequest(QUERY, COLLECTION, 10, null, SearchModes.SEARCH, null);
+        List<SearchHit> hits = sampleHits(0.45);
+        SearchResponse mappedResponse = new SearchResponse(
+                QUERY, SearchModes.SEARCH, null, hits, new SearchLatencyMs(1, 2, null, 4));
+
+        when(queryEmbeddingService.resolveModel(null)).thenReturn("LaBSE");
+        when(queryEmbeddingService.embed(QUERY, "LaBSE")).thenReturn(QUERY_VECTOR);
+        when(qdrantSearchService.search(COLLECTION, QUERY_VECTOR, 10, DEFAULT_MIN_SCORE, null)).thenReturn(hits);
+        when(searchResultMapper.toSearchResponse(eq(request), eq(hits), anyLong(), anyLong(), anyLong()))
+                .thenReturn(mappedResponse);
+
+        SearchResponse response = searchService.search(request);
+
+        assertThat(response.results()).hasSize(1);
+        verify(qdrantSearchService).search(COLLECTION, QUERY_VECTOR, 10, DEFAULT_MIN_SCORE, null);
     }
 
     private static List<SearchHit> sampleHits(double score) {

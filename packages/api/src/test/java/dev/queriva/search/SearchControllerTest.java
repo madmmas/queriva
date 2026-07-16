@@ -113,6 +113,30 @@ class SearchControllerTest {
     }
 
     @Test
+    void should_accept_request_when_min_score_is_omitted() throws Exception {
+        SearchLatencyMs latencyMs = new SearchLatencyMs(12, 8, null, 25);
+        SearchResponse response = new SearchResponse(
+                "floods in Dhaka last week",
+                SearchModes.SEARCH,
+                null,
+                List.of(),
+                latencyMs);
+
+        when(searchService.search(any(SearchRequest.class))).thenReturn(response);
+
+        mockMvc.perform(post("/api/search")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "query": "floods in Dhaka last week",
+                                  "collection": "news_radar",
+                                  "mode": "search"
+                                }
+                                """))
+                .andExpect(status().isOk());
+    }
+
+    @Test
     void should_return_400_when_collection_name_is_invalid() throws Exception {
         mockMvc.perform(post("/api/search")
                         .contentType(MediaType.APPLICATION_JSON)

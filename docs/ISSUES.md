@@ -7,9 +7,9 @@
 > until all tasks are complete, all tests pass, CHANGELOG.md is updated, and
 > JOURNAL.md has an entry for the day. See `.cursor/rules/queriva.mdc` Rule 3.
 >
-> **Last updated:** v3 — added ADR issues, repo foundation files, security rules,
-> fixture file, README template, release issues. Aligned with SPEC v3 (§18
-> version guide, §19 ADR index).
+> **Last updated:** 2026-07-16 — #63 SEARCH_MIN_SCORE / demo empty results; #23 manual AC checked.
+> Earlier: v3 — ADR issues, repo foundation files, security rules, fixture file, README
+> template, release issues. Aligned with SPEC v3 (§18 version guide, §19 ADR index).
 
 ---
 
@@ -724,7 +724,7 @@ Full search-mode flow: embed → search → map response (SPEC §8, §6 contract
 
 - [x] `SearchController` — `POST /api/search` in `dev.queriva.search`
 - [x] `SearchRequest` record: `query` (@NotBlank, @Size max=1000), `collection` (pattern), `topK`, `minScore`, `mode`, `filters`
-- [x] Request defaults in compact constructor: `topK=10`, `minScore=0.60`, `mode="search"`
+- [x] Request defaults: `topK=10`, `mode="search"`; omitted `min_score` resolved from `SEARCH_MIN_SCORE` (see #63 — default 0.40)
 - [x] `SearchResultMapper` — map `List<SearchHit>` to `SearchResponse` per SPEC §6
 - [x] `latency_ms` breakdown: `embed`, `search`, `total` in search mode; `synthesis=null`
 - [x] `summary=null` in search mode
@@ -1049,7 +1049,7 @@ Wire all UI components into standalone SPA with data fetching hook (SPEC §5).
 - [x] RTL + MSW: RAG mode shows AI summary
 - [x] RTL + MSW: loading state shown during pending request
 - [x] RTL + MSW: error state shown on 500
-- [ ] Manual: against docker compose backend
+- [x] Manual: against docker compose backend
 
 ---
 

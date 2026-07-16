@@ -8,6 +8,18 @@ Versions follow [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Fixed
+- **Fixed** [api] Honor `SEARCH_MIN_SCORE` when `min_score` is omitted; stop hardcoding 0.60 in `SearchRequest` (#63)
+- **Fixed** [infra] Pass `SEARCH_MIN_SCORE` into the `api` Compose service from `.env` (#63)
+- **Fixed** [ui] Read `VITE_SEARCH_MIN_SCORE` so standalone UI threshold matches `.env` (#63)
+
+### Changed
+- **Changed** [docs] Default `SEARCH_MIN_SCORE` / `min_score` 0.60 → 0.40 for LaBSE + news fixture demo (#63)
+- **Changed** [docs] README hero screenshot — live standalone UI; status line → v0.4.0 (#63)
+
+### Infrastructure
+- **Infrastructure** [ci] Ignore `coverage/` directories; stop tracking UI coverage artifacts (#63)
+
 ---
 
 ## [0.4.0] — 2026-07-04

@@ -11,24 +11,24 @@ import jakarta.validation.constraints.Size;
 
 /**
  * Request body for POST /api/search (SPEC §6).
+ *
+ * <p>{@code min_score} is optional. When omitted ({@code null}), {@link SearchService} applies
+ * the configured {@code SEARCH_MIN_SCORE} / {@code search.min-score} default.
  */
 public record SearchRequest(
         @NotBlank @Size(max = 1000) String query,
         @NotBlank @Pattern(regexp = ValidationPatterns.COLLECTION_NAME) String collection,
         @JsonProperty("top_k") @Min(1) @Max(100) int topK,
-        @JsonProperty("min_score") double minScore,
+        @JsonProperty("min_score") Double minScore,
         String mode,
         @Valid SearchFilters filters
 ) {
     /**
-     * Applies SPEC defaults for optional search request fields.
+     * Applies SPEC defaults for optional search request fields (except min_score — resolved in service).
      */
     public SearchRequest {
         if (topK == 0) {
             topK = 10;
-        }
-        if (minScore == 0.0) {
-            minScore = 0.60;
         }
         if (mode == null || mode.isBlank()) {
             mode = "search";
