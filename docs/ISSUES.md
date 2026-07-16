@@ -7,7 +7,7 @@
 > until all tasks are complete, all tests pass, CHANGELOG.md is updated, and
 > JOURNAL.md has an entry for the day. See `.cursor/rules/queriva.mdc` Rule 3.
 >
-> **Last updated:** 2026-07-16 — #26 MFE integration tests; #25 SearchWidget MFE; #63 min_score.
+> **Last updated:** 2026-07-16 — #27 full Docker Compose; #26 MFE tests; #25 SearchWidget; #63 min_score.
 > Earlier: v3 — ADR issues, repo foundation files, security rules, fixture file, README
 > template, release issues. Aligned with SPEC v3 (§18 version guide, §19 ADR index).
 
@@ -1163,13 +1163,13 @@ proper dependency ordering.
 
 ### Tasks
 
-- [ ] `docker-compose.yml` — all 5 services: qdrant, ollama, embed-sidecar, api, ui
-- [ ] Healthchecks on all services
-- [ ] `depends_on` with `condition: service_healthy` for api
-- [ ] `docker-compose.dev.yml` — hot reload for api and ui
-- [ ] `.env.example` complete with all config keys from SPEC §13
-- [ ] `make seed` documented as post-start step
-- [ ] CORS env var `CORS_ALLOWED_ORIGINS` included in `.env.example`
+- [x] `docker-compose.yml` — all 5 services: qdrant, ollama, embed-sidecar, api, ui
+- [x] Healthchecks on all services
+- [x] `depends_on` with `condition: service_healthy` for api
+- [x] `docker-compose.dev.yml` — hot reload for api and ui
+- [x] `.env.example` complete with all config keys from SPEC §13
+- [x] `make seed` documented as post-start step
+- [x] CORS env var `CORS_ALLOWED_ORIGINS` included in `.env.example`
 
 ### Acceptance criteria
 
