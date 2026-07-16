@@ -21,6 +21,7 @@ Versions follow [Semantic Versioning](https://semver.org/).
 - **Added** [ui] Production `packages/ui/Dockerfile` (multi-stage Node build + nginx:3000) (#27)
 
 ### Fixed
+- **Fixed** [infra] Ollama Compose healthcheck uses `ollama list` (image has no `curl`) (#27)
 - **Fixed** [api] Honor `SEARCH_MIN_SCORE` when `min_score` is omitted; stop hardcoding 0.60 in `SearchRequest` (#63)
 - **Fixed** [infra] Pass `SEARCH_MIN_SCORE` into the `api` Compose service from `.env` (#63)
 - **Fixed** [ui] Read `VITE_SEARCH_MIN_SCORE` so standalone UI threshold matches `.env` (#63)
