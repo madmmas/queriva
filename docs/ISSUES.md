@@ -7,7 +7,7 @@
 > until all tasks are complete, all tests pass, CHANGELOG.md is updated, and
 > JOURNAL.md has an entry for the day. See `.cursor/rules/queriva.mdc` Rule 3.
 >
-> **Last updated:** 2026-07-16 — #25 SearchWidget MFE; #63 SEARCH_MIN_SCORE; #23 manual AC done.
+> **Last updated:** 2026-07-16 — #26 MFE integration tests; #25 SearchWidget MFE; #63 min_score.
 > Earlier: v3 — ADR issues, repo foundation files, security rules, fixture file, README
 > template, release issues. Aligned with SPEC v3 (§18 version guide, §19 ADR index).
 
@@ -1133,10 +1133,10 @@ Verify MFE export stability and TypeScript props contract.
 
 ### Tasks
 
-- [ ] `SearchWidget` isolation tests — all props
-- [ ] Shared components between `App.tsx` and `SearchWidget.tsx` verified
-- [ ] TypeScript types exported: `SearchWidgetProps`, `SearchResult`, `SearchMode`
-- [ ] MFE integration guide verified: code sample from SPEC §11 compiles
+- [x] `SearchWidget` isolation tests — all props
+- [x] Shared components between `App.tsx` and `SearchWidget.tsx` verified
+- [x] TypeScript types exported: `SearchWidgetProps`, `SearchResult`, `SearchMode`
+- [x] MFE integration guide verified: code sample from SPEC §11 compiles
 
 ### Acceptance criteria
 
@@ -1145,8 +1145,8 @@ Verify MFE export stability and TypeScript props contract.
 
 ### Test plan
 
-- [ ] CI builds federation bundle without errors
-- [ ] Host app example compiles with exported types
+- [x] CI builds federation bundle without errors
+- [x] Host app example compiles with exported types
 
 ---
 

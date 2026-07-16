@@ -5,6 +5,18 @@ One entry per working day. Most recent entry at the top.
 
 ---
 
+## 2026-07-16 — MFE integration tests (#26)
+
+### Shipped
+- Issue #26 / GH #29 — `mfeExports` (`SearchWidgetProps`, `SearchResult`, `SearchMode`)
+- Shared App ↔ SearchWidget surface tests; expanded SearchWidget props coverage
+- Host `specConsumptionSample.tsx` (SPEC §11) + `typecheck`; `make test-mfe` in CI
+
+### Next
+- #27 — Full Docker Compose stack (ui service)
+
+---
+
 ## 2026-07-16 — Module Federation SearchWidget (#25)
 
 ### Shipped

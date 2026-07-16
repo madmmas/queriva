@@ -1,5 +1,5 @@
 .PHONY: help install install-node install-python install-host build build-mfe test test-unit test-int test-slow \
-        test-api test-embed test-ingest test-ui smoke seed validate-fixture ollama-pull clean
+        test-api test-embed test-ingest test-ui test-mfe smoke seed validate-fixture ollama-pull clean
 
 help: ## Show available targets
 	@grep -E '^[a-zA-Z0-9_-]+:.*?##' $(MAKEFILE_LIST) | sort | \
@@ -25,6 +25,12 @@ build: ## Build all packages via Turborepo
 build-mfe: ## Build UI federation remote + example host (issue #25)
 	cd packages/ui && npm run build
 	cd packages/ui/examples/host && npm install && npm run build
+
+test-mfe: ## MFE federation build, UI MFE tests, host typecheck + build (issue #26)
+	cd packages/ui && npm run build
+	cd packages/ui && npx vitest run --config vitest.config.ts \
+		src/SearchWidget.test.tsx src/mfeExports.test.ts src/mfeSharedSurface.test.tsx
+	cd packages/ui/examples/host && npm install && npm run typecheck && npm run build
 
 test: ## Run all tests (unit + integration)
 	npx turbo run test

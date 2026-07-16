@@ -29,5 +29,5 @@ declare module 'queriva/SearchWidget' {
 
   const SearchWidget: ComponentType<SearchWidgetProps>;
   export default SearchWidget;
-  export type { SearchWidgetProps as FederatedSearchWidgetProps };
+  export type { SearchMode, SearchResult, SearchWidgetProps };
 }
